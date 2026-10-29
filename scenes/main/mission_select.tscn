@@ -1,0 +1,151 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://scenes/main/mission_select.gd" id="1_select"]
+[ext_resource type="Script" path="res://scripts/map_data.gd" id="2_mapdata"]
+[ext_resource type="Resource" path="res://resources/maps/greybox.tres" id="3_greybox"]
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="4_objdata"]
+[ext_resource type="Resource" path="res://resources/objectives/horde_standard.tres" id="5_horde"]
+[ext_resource type="Resource" path="res://resources/objectives/gather_moonleaf.tres" id="6_gather"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_ogre.tres" id="7_boss"]
+[ext_resource type="Resource" path="res://resources/objectives/gather_sunbloom.tres" id="8_sunbloom"]
+[ext_resource type="Script" path="res://scripts/challenge_data.gd" id="9_chdata"]
+[ext_resource type="Resource" path="res://resources/challenges/normal.tres" id="10_normal"]
+[ext_resource type="Resource" path="res://resources/challenges/hard.tres" id="11_hard"]
+[ext_resource type="Resource" path="res://resources/challenges/brutal.tres" id="12_brutal"]
+
+[sub_resource type="LabelSettings" id="TitleText"]
+font_size = 64
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="HeaderText"]
+font_size = 26
+font_color = Color(0.85, 0.85, 0.85, 1)
+
+[sub_resource type="LabelSettings" id="BodyText"]
+font_size = 20
+
+[node name="MissionSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_select")
+maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox")])
+objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("8_sunbloom")])
+challenges = Array[ExtResource("9_chdata")]([ExtResource("10_normal"), ExtResource("11_hard"), ExtResource("12_brutal")])
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.07, 0.09, 0.94)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "UI_MISSION_BOARD"
+label_settings = SubResource("TitleText")
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "UI_CHOOSE_MISSION"
+label_settings = SubResource("HeaderText")
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="MapColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MapHeader" type="Label" parent="Margin/VBox/Columns/MapColumn"]
+layout_mode = 2
+text = "UI_MAP"
+label_settings = SubResource("HeaderText")
+
+[node name="MapList" type="VBoxContainer" parent="Margin/VBox/Columns/MapColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ObjectiveColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ObjectiveHeader" type="Label" parent="Margin/VBox/Columns/ObjectiveColumn"]
+layout_mode = 2
+text = "UI_OBJECTIVE"
+label_settings = SubResource("HeaderText")
+
+[node name="ObjectiveList" type="VBoxContainer" parent="Margin/VBox/Columns/ObjectiveColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ChallengeColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ChallengeHeader" type="Label" parent="Margin/VBox/Columns/ChallengeColumn"]
+layout_mode = 2
+text = "UI_DIFFICULTY"
+label_settings = SubResource("HeaderText")
+
+[node name="ChallengeList" type="VBoxContainer" parent="Margin/VBox/Columns/ChallengeColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Details" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+auto_translate_mode = 2
+label_settings = SubResource("BodyText")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartButton" type="Button" parent="Margin/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "UI_START"
+
+[node name="BackButton" type="Button" parent="Margin/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "UI_BACK"

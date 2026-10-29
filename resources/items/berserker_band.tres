@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/moonleaf.tres" id="4_mat"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 1
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 4
+
+[resource]
+script = ExtResource("1_item")
+id = &"berserker_band"
+name_key = "ITEM_BERSERKER_BAND"
+description_key = "ITEM_BERSERKER_BAND_DESC"
+slot = 6
+tier = 2
+category = &"trinket"
+color = Color(0.8, 0.2, 0.2, 1)
+max_health = -20
+attack_power = 5
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

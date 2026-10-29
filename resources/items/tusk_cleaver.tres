@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="4_mat"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="20_skill"]
+[ext_resource type="Resource" path="res://resources/skills/cleave.tres" id="21_cleave"]
+[ext_resource type="Resource" path="res://resources/skills/ground_slam.tres" id="22_ground_slam"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 1
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 6
+
+[resource]
+script = ExtResource("1_item")
+id = &"tusk_cleaver"
+name_key = "ITEM_TUSK_CLEAVER"
+description_key = "ITEM_TUSK_CLEAVER_DESC"
+slot = 0
+two_handed = true
+tier = 2
+category = &"axe"
+color = Color(0.95, 0.92, 0.8, 1)
+attack_power = 8
+defense = -2
+skills = Array[ExtResource("20_skill")]([ExtResource("21_cleave"), ExtResource("22_ground_slam")])
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

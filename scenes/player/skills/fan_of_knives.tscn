@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/skills/projectile_fan.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/knife.tscn" id="2_knife"]
+
+[node name="FanOfKnives" type="Node3D"]
+script = ExtResource("1_script")
+projectile_scene = ExtResource("2_knife")
+count = 5
+spread_degrees = 18.0

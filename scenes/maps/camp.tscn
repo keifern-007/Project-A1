@@ -1,0 +1,560 @@
+[gd_scene load_steps=32 format=3]
+
+[ext_resource type="Script" path="res://scenes/maps/hero_area.gd" id="1_area"]
+[ext_resource type="Resource" path="res://resources/characters/brawler.tres" id="4_brawler"]
+[ext_resource type="Resource" path="res://resources/characters/warden.tres" id="5_warden"]
+[ext_resource type="Resource" path="res://resources/characters/mystic.tres" id="6_mystic"]
+[ext_resource type="Script" path="res://components/camera_follow.gd" id="2_cam"]
+[ext_resource type="PackedScene" path="res://scenes/maps/interactable.tscn" id="3_interact"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.35, 0.6, 0.9, 1)
+sky_horizon_color = Color(0.85, 0.85, 0.75, 1)
+ground_horizon_color = Color(0.85, 0.85, 0.75, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="GrassMat"]
+albedo_color = Color(0.42, 0.58, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="DirtMat"]
+albedo_color = Color(0.5, 0.4, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="WoodMat"]
+albedo_color = Color(0.48, 0.33, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="DarkWoodMat"]
+albedo_color = Color(0.32, 0.22, 0.14, 1)
+
+[sub_resource type="StandardMaterial3D" id="PaperMat"]
+albedo_color = Color(0.9, 0.85, 0.7, 1)
+
+[sub_resource type="StandardMaterial3D" id="StoneMat"]
+albedo_color = Color(0.6, 0.6, 0.62, 1)
+
+[sub_resource type="StandardMaterial3D" id="IronMat"]
+albedo_color = Color(0.25, 0.25, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="TentMat"]
+albedo_color = Color(0.8, 0.72, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="TentMat2"]
+albedo_color = Color(0.6, 0.35, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="FireMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="EmberMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.4, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="OrbMat"]
+shading_mode = 0
+albedo_color = Color(0.5, 0.75, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="MatRedMat"]
+albedo_color = Color(0.55, 0.25, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StrawMat"]
+albedo_color = Color(0.85, 0.75, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="SackMat"]
+albedo_color = Color(0.55, 0.45, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerMat"]
+albedo_color = Color(0.3, 0.45, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="RuneMat"]
+albedo_color = Color(0.6, 0.4, 0.9, 1)
+emission_enabled = true
+emission = Color(0.5, 0.3, 0.9, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="StandardMaterial3D" id="CandleMat"]
+albedo_color = Color(0.95, 0.92, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="BookMat"]
+albedo_color = Color(0.45, 0.2, 0.55, 1)
+
+[sub_resource type="PrismMesh" id="TentMesh"]
+size = Vector3(3, 2.2, 3.5)
+
+[sub_resource type="BoxShape3D" id="TentShape"]
+size = Vector3(2.6, 2, 3.4)
+
+[sub_resource type="SphereMesh" id="OrbMesh"]
+radius = 0.35
+height = 0.7
+
+[node name="Camp" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 8, 0)
+light_color = Color(1, 0.95, 0.85, 1)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 11.547, 11.547, 11.547)
+projection = 1
+size = 14.0
+current = true
+script = ExtResource("2_cam")
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(32, 1, 32)
+material = SubResource("GrassMat")
+
+[node name="Clearing" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+size = Vector3(9, 0.02, 9)
+material = SubResource("DirtMat")
+
+[node name="FenceNorth" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -15)
+use_collision = true
+size = Vector3(30.6, 0.8, 0.6)
+material = SubResource("DarkWoodMat")
+
+[node name="FenceSouth" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 15)
+use_collision = true
+size = Vector3(30.6, 0.8, 0.6)
+material = SubResource("DarkWoodMat")
+
+[node name="FenceWest" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.4, 0)
+use_collision = true
+size = Vector3(0.6, 0.8, 30.6)
+material = SubResource("DarkWoodMat")
+
+[node name="FenceEast" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.4, 0)
+use_collision = true
+size = Vector3(0.6, 0.8, 30.6)
+material = SubResource("DarkWoodMat")
+
+[node name="Campfire" type="Node3D" parent="."]
+
+[node name="Log1" type="CSGCylinder3D" parent="Campfire"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0.15, 0)
+radius = 0.15
+height = 1.4
+sides = 8
+material = SubResource("WoodMat")
+
+[node name="Log2" type="CSGCylinder3D" parent="Campfire"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.15, 0)
+radius = 0.15
+height = 1.4
+sides = 8
+material = SubResource("WoodMat")
+
+[node name="Flame" type="CSGCylinder3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+radius = 0.35
+height = 0.9
+sides = 6
+cone = true
+material = SubResource("FireMat")
+
+[node name="Ring" type="CSGCylinder3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+use_collision = true
+radius = 0.9
+height = 0.1
+sides = 10
+material = SubResource("StoneMat")
+
+[node name="FireLight" type="OmniLight3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+light_color = Color(1, 0.6, 0.3, 1)
+light_energy = 1.5
+omni_range = 6.0
+
+[node name="Tent1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.1, -8)
+mesh = SubResource("TentMesh")
+surface_material_override/0 = SubResource("TentMat")
+
+[node name="TentBody1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -8)
+
+[node name="Shape" type="CollisionShape3D" parent="TentBody1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("TentShape")
+
+[node name="Tent2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.1, -8.3)
+mesh = SubResource("TentMesh")
+surface_material_override/0 = SubResource("TentMat2")
+
+[node name="TentBody2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -8.3)
+
+[node name="Shape" type="CollisionShape3D" parent="TentBody2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("TentShape")
+
+[node name="MissionBoard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -4)
+
+[node name="PostL" type="CSGBox3D" parent="MissionBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.9, 0)
+use_collision = true
+size = Vector3(0.15, 1.8, 0.15)
+material = SubResource("DarkWoodMat")
+
+[node name="PostR" type="CSGBox3D" parent="MissionBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.9, 0)
+use_collision = true
+size = Vector3(0.15, 1.8, 0.15)
+material = SubResource("DarkWoodMat")
+
+[node name="Board" type="CSGBox3D" parent="MissionBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+size = Vector3(1.8, 1.0, 0.1)
+material = SubResource("WoodMat")
+
+[node name="Note1" type="CSGBox3D" parent="MissionBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 1.4, 0.06)
+size = Vector3(0.45, 0.55, 0.02)
+material = SubResource("PaperMat")
+
+[node name="Note2" type="CSGBox3D" parent="MissionBoard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.25, 0.06)
+size = Vector3(0.5, 0.4, 0.02)
+material = SubResource("PaperMat")
+
+[node name="Interact" parent="MissionBoard" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+action = &"missions"
+prompt_key = "UI_MISSION_BOARD"
+
+[node name="Forge" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -4)
+
+[node name="Furnace" type="CSGBox3D" parent="Forge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.8, -0.4)
+use_collision = true
+size = Vector3(1.4, 1.6, 1.2)
+material = SubResource("StoneMat")
+
+[node name="Mouth" type="CSGBox3D" parent="Forge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.5, 0.21)
+size = Vector3(0.6, 0.4, 0.02)
+material = SubResource("EmberMat")
+
+[node name="AnvilBase" type="CSGBox3D" parent="Forge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.3, 0.4)
+use_collision = true
+size = Vector3(0.4, 0.6, 0.4)
+material = SubResource("IronMat")
+
+[node name="AnvilTop" type="CSGBox3D" parent="Forge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.7, 0.4)
+size = Vector3(0.9, 0.25, 0.45)
+material = SubResource("IronMat")
+
+[node name="Interact" parent="Forge" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+action = &"crafting"
+prompt_key = "UI_FORGE"
+
+[node name="SkillShrine" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 4)
+
+[node name="Pillar" type="CSGCylinder3D" parent="SkillShrine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+use_collision = true
+radius = 0.45
+height = 1.4
+sides = 6
+material = SubResource("StoneMat")
+
+[node name="Orb" type="MeshInstance3D" parent="SkillShrine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+mesh = SubResource("OrbMesh")
+surface_material_override/0 = SubResource("OrbMat")
+
+[node name="Interact" parent="SkillShrine" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+action = &"skills"
+prompt_key = "UI_SKILL_SHRINE"
+
+[node name="Stash" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+
+[node name="Chest" type="CSGBox3D" parent="Stash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+use_collision = true
+size = Vector3(1.2, 0.7, 0.8)
+material = SubResource("WoodMat")
+
+[node name="Lid" type="CSGBox3D" parent="Stash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+size = Vector3(1.25, 0.16, 0.85)
+material = SubResource("DarkWoodMat")
+
+[node name="Lock" type="CSGBox3D" parent="Stash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.41)
+size = Vector3(0.15, 0.2, 0.04)
+material = SubResource("IronMat")
+
+[node name="Interact" parent="Stash" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+action = &"stash"
+prompt_key = "UI_STASH"
+
+[node name="GearRack" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+
+[node name="RackPostL" type="CSGBox3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.8, 0)
+use_collision = true
+size = Vector3(0.15, 1.6, 0.15)
+material = SubResource("DarkWoodMat")
+
+[node name="RackPostR" type="CSGBox3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.8, 0)
+use_collision = true
+size = Vector3(0.15, 1.6, 0.15)
+material = SubResource("DarkWoodMat")
+
+[node name="RackBar" type="CSGBox3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+size = Vector3(1.95, 0.12, 0.12)
+material = SubResource("DarkWoodMat")
+
+[node name="Sword" type="CSGBox3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.85, 0.1)
+size = Vector3(0.12, 1.1, 0.04)
+material = SubResource("IronMat")
+
+[node name="SwordGuard" type="CSGBox3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.15, 0.1)
+size = Vector3(0.4, 0.08, 0.06)
+material = SubResource("DarkWoodMat")
+
+[node name="Shield" type="CSGCylinder3D" parent="GearRack"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.4, 0.85, 0.12)
+radius = 0.35
+height = 0.08
+sides = 10
+material = SubResource("WoodMat")
+
+[node name="Interact" parent="GearRack" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9)
+action = &"loadout"
+prompt_key = "UI_LOADOUT"
+
+[node name="BrawlerArea" type="Node3D" parent="."]
+transform = Transform3D(0.447214, 0, -0.894427, 0, 1, 0, 0.894427, 0, 0.447214, -12, 0, 6)
+script = ExtResource("1_area")
+character = ExtResource("4_brawler")
+side = 0
+
+[node name="Mat" type="CSGBox3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.4)
+size = Vector3(3, 0.04, 3.2)
+material = SubResource("MatRedMat")
+
+[node name="DummyPost" type="CSGCylinder3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.7, 1.3)
+use_collision = true
+radius = 0.1
+height = 1.4
+sides = 8
+material = SubResource("WoodMat")
+
+[node name="DummyBody" type="CSGCylinder3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.25, 1.3)
+radius = 0.32
+height = 0.8
+sides = 8
+material = SubResource("StrawMat")
+
+[node name="DummyArms" type="CSGBox3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.4, 1.3)
+size = Vector3(1, 0.12, 0.12)
+material = SubResource("StrawMat")
+
+[node name="DummyHead" type="CSGSphere3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.85, 1.3)
+radius = 0.22
+radial_segments = 8
+rings = 5
+material = SubResource("StrawMat")
+
+[node name="Sandbag" type="CSGCylinder3D" parent="BrawlerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.5, 1.3)
+use_collision = true
+radius = 0.35
+height = 1.0
+sides = 8
+material = SubResource("SackMat")
+
+[node name="WardenArea" type="Node3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 9, 0, 9)
+script = ExtResource("1_area")
+character = ExtResource("5_warden")
+side = 1
+
+[node name="ShieldRack" type="CSGBox3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.45, 1.6)
+size = Vector3(2.8, 0.1, 0.1)
+material = SubResource("DarkWoodMat")
+
+[node name="Shield1" type="CSGCylinder3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -1.3, 0.7, 1.5)
+use_collision = true
+radius = 0.45
+height = 0.1
+sides = 10
+material = SubResource("IronMat")
+
+[node name="Shield2" type="CSGCylinder3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -0.4, 0.7, 1.5)
+use_collision = true
+radius = 0.45
+height = 0.1
+sides = 10
+material = SubResource("BannerMat")
+
+[node name="Shield3" type="CSGCylinder3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0.5, 0.7, 1.5)
+use_collision = true
+radius = 0.45
+height = 0.1
+sides = 10
+material = SubResource("IronMat")
+
+[node name="BannerPole" type="CSGCylinder3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 1.3, 1.4)
+use_collision = true
+radius = 0.06
+height = 2.6
+sides = 6
+material = SubResource("DarkWoodMat")
+
+[node name="Banner" type="CSGBox3D" parent="WardenArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.78, 2, 1.4)
+size = Vector3(0.7, 1, 0.04)
+material = SubResource("BannerMat")
+
+[node name="MysticArea" type="Node3D" parent="."]
+transform = Transform3D(-0.894427, 0, 0.447214, 0, 1, 0, -0.447214, 0, -0.894427, 6, 0, -12)
+script = ExtResource("1_area")
+character = ExtResource("6_mystic")
+side = 2
+
+[node name="RuneCircle" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+radius = 1.5
+height = 0.03
+sides = 16
+material = SubResource("RuneMat")
+
+[node name="RuneInner" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+radius = 1.25
+height = 0.035
+sides = 16
+material = SubResource("DirtMat")
+
+[node name="Lectern" type="CSGBox3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.1)
+use_collision = true
+size = Vector3(0.5, 1, 0.4)
+material = SubResource("StoneMat")
+
+[node name="Book" type="CSGBox3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 2.1)
+size = Vector3(0.45, 0.08, 0.35)
+material = SubResource("BookMat")
+
+[node name="Candle1" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.674, 0.175, 0.295)
+radius = 0.07
+height = 0.35
+sides = 6
+material = SubResource("CandleMat")
+
+[node name="Flame1" type="CSGSphere3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.674, 0.41, 0.295)
+radius = 0.06
+radial_segments = 6
+rings = 3
+material = SubResource("FireMat")
+
+[node name="Candle2" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.093, 0.175, 1.302)
+radius = 0.07
+height = 0.35
+sides = 6
+material = SubResource("CandleMat")
+
+[node name="Flame2" type="CSGSphere3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.093, 0.41, 1.302)
+radius = 0.06
+radial_segments = 6
+rings = 3
+material = SubResource("FireMat")
+
+[node name="Candle3" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 1.7)
+radius = 0.07
+height = 0.35
+sides = 6
+material = SubResource("CandleMat")
+
+[node name="Flame3" type="CSGSphere3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 1.7)
+radius = 0.06
+radial_segments = 6
+rings = 3
+material = SubResource("FireMat")
+
+[node name="Candle4" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.093, 0.175, 1.302)
+radius = 0.07
+height = 0.35
+sides = 6
+material = SubResource("CandleMat")
+
+[node name="Flame4" type="CSGSphere3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.093, 0.41, 1.302)
+radius = 0.06
+radial_segments = 6
+rings = 3
+material = SubResource("FireMat")
+
+[node name="Candle5" type="CSGCylinder3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.674, 0.175, 0.295)
+radius = 0.07
+height = 0.35
+sides = 6
+material = SubResource("CandleMat")
+
+[node name="Flame5" type="CSGSphere3D" parent="MysticArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.674, 0.41, 0.295)
+radius = 0.06
+radial_segments = 6
+rings = 3
+material = SubResource("FireMat")
+
+[node name="Overview" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)

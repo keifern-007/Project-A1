@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/main/hub.gd" id="1_hub"]
+[ext_resource type="PackedScene" path="res://scenes/main/retro_screen.tscn" id="2_screen"]
+
+[sub_resource type="LabelSettings" id="Text"]
+font_size = 20
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="SmallText"]
+font_size = 16
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Hub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hub")
+
+[node name="RetroScreen" parent="." instance=ExtResource("2_screen")]
+layout_mode = 1
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 48.0
+text = "UI_CAMP"
+label_settings = SubResource("Text")
+
+[node name="HintLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -44.0
+offset_right = 620.0
+offset_bottom = -16.0
+grow_vertical = 0
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+
+[node name="QuitButton" type="Button" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -140.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = 52.0
+grow_horizontal = 0
+focus_mode = 0
+text = "UI_QUIT"
+
+[node name="Toast" type="Label" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -110.0
+offset_right = 300.0
+offset_bottom = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+auto_translate_mode = 2
+label_settings = SubResource("Text")
+horizontal_alignment = 1
+
+[node name="PanelHost" type="Control" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

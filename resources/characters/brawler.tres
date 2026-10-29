@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/passives/bloodrush.tres" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="3_skill"]
+[ext_resource type="Resource" path="res://resources/skills/dash_strike.tres" id="4_dash_strike"]
+[ext_resource type="Resource" path="res://resources/skills/whirlwind.tres" id="5_whirlwind"]
+[ext_resource type="Script" path="res://scripts/talent_data.gd" id="30_talent"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/quick_feet.tres" id="31_quick_feet"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/hot_blood.tres" id="32_hot_blood"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/frenzy.tres" id="33_frenzy"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/cyclone.tres" id="34_cyclone"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/glass_cannon.tres" id="35_glass_cannon"]
+[ext_resource type="Resource" path="res://resources/talents/brawler/iron_skin.tres" id="36_iron_skin"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"brawler"
+name_key = "CHAR_BRAWLER"
+role_key = "CHAR_BRAWLER_ROLE"
+description_key = "CHAR_BRAWLER_DESC"
+sort_order = 0
+max_health = 80
+attack_power = 14
+defense = 0
+move_speed = 7.0
+dodge_cooldown = 0.45
+max_stamina = 110.0
+stamina_regen = 18.0
+max_mana = 30.0
+mana_regen = 1.5
+mana_per_kill = 4.0
+color = Color(0.9, 0.35, 0.2, 1)
+body_scale = Vector3(0.9, 0.95, 0.9)
+passive = ExtResource("2_passive")
+signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_dash_strike"), ExtResource("5_whirlwind")])
+talents = Array[ExtResource("30_talent")]([ExtResource("31_quick_feet"), ExtResource("32_hot_blood"), ExtResource("33_frenzy"), ExtResource("34_cyclone"), ExtResource("35_glass_cannon"), ExtResource("36_iron_skin")])

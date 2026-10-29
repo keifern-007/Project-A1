@@ -1,0 +1,245 @@
+keys,en
+UI_TITLE,Get Good
+UI_START,Start
+UI_OPTIONS,Options
+UI_QUIT,Quit
+SKILL_GROUND_SLAM,Ground Slam
+ENEMY_GOBLIN,Goblin
+HUD_HP,HP %d/%d
+HUD_KILLS,Kills: %d
+HUD_WAVE,Wave %d
+HUD_READY,Ready
+UI_GAME_OVER,You Died
+UI_GAME_OVER_SUB,Get good.
+UI_RUN_STATS,Time %s  |  Kills %d  |  Level %d
+UI_RESTART,Restart
+OBJ_HORDE,Survive the Horde
+UI_VICTORY,Mission Complete
+UI_VICTORY_SUB,Got good.
+MAT_MOONLEAF,Moonleaf
+OBJ_GATHER_MOONLEAF,Gather Moonleaf
+UI_GATHER_PROMPT,[%s] Gather
+ENEMY_OGRE,Ogre
+MAT_OGRE_TUSK,Ogre Tusk
+OBJ_BOSS_PREP,Lure out the boss
+OBJ_BOSS_OGRE,Defeat the Ogre
+UI_CHOOSE_MISSION,Choose your mission
+UI_MAP,Map
+UI_OBJECTIVE,Objective
+UI_MISSION_SELECT,Mission Select
+MAP_GREYBOX,Training Grounds
+MAP_GREYBOX_DESC,A grey test arena. Goblins included.
+OBJ_HORDE_DESC,Survive 5 waves of goblins. Every wave is bigger and tougher.
+OBJ_GATHER_MOONLEAF_DESC,Hold interact on Moonleaf plants to collect 10 while goblins harass you.
+OBJ_BOSS_OGRE_DESC,Thin out the goblins to lure the Ogre. Then face it alone for an Ogre Tusk.
+MAT_GOBLIN_EAR,Goblin Ear
+ITEM_HEAL_POTION,Healing Draught
+ITEM_FURY_TONIC,Fury Tonic
+HUD_LEVEL,Lv %d
+HUD_LEVEL_UP,Level Up!
+HUD_BOOST,%s  %ds
+UI_REWARDS,Earned this run
+UI_NO_REWARDS,Nothing this time.
+UI_REWARD_ROW,%s  x%d
+UI_REWARD_OWNED,(%d owned)
+UI_CAMP,Camp
+UI_MISSION_BOARD,Mission Board
+UI_STASH,Stash
+UI_FORGE,Forge
+UI_SKILL_SHRINE,Skill Shrine
+UI_INTERACT_PROMPT,[%s] %s
+UI_COMING_SOON,%s: coming soon
+UI_BACK,Back
+UI_RETURN_TO_CAMP,Return to Camp
+UI_STASH_EMPTY,Nothing stored yet. Go earn something!
+UI_STASH_STATS,Runs %d  |  Wins %d
+UI_HUB_HINT,WASD: move   %s: interact
+SLOT_WEAPON,Weapon
+SLOT_ARMOR,Armor
+SLOT_TRINKET,Trinket
+STAT_MAX_HEALTH,Max HP
+STAT_ATTACK,Attack
+STAT_DEFENSE,Defense
+UI_CRAFT,Craft
+UI_OWNED,Owned
+UI_OWNED_TAG,(owned)
+UI_CRAFTED,Crafted %s!
+UI_COST,Materials
+UI_COST_ROW,%s  %d/%d
+UI_COST_SHORT,(need %d more)
+ITEM_GOBLIN_CHARM,Goblin-Ear Charm
+ITEM_GOBLIN_CHARM_DESC,Ugly but lucky. Mostly ugly.
+ITEM_MOONLEAF_VEST,Moonleaf Vest
+ITEM_MOONLEAF_VEST_DESC,Woven leaves that harden like bark.
+ITEM_TUSK_CLEAVER,Tusk Cleaver
+ITEM_TUSK_CLEAVER_DESC,Hits like an Ogre. Leaves you as open as one.
+ITEM_BERSERKER_BAND,Berserker Band
+ITEM_BERSERKER_BAND_DESC,More fury. Less sense.
+UI_LOADOUT,Gear Rack
+UI_EQUIPPED,Equipped
+UI_EQUIPPED_TAG,(equipped)
+UI_EMPTY_SLOT,empty
+UI_NOTHING_FOR_SLOT,Nothing crafted for this slot yet. Visit the Forge.
+SLOT_MAIN_HAND,Main hand
+SLOT_OFF_HAND,Off hand
+SLOT_HELMET,Helmet
+SLOT_CHEST,Chest
+SLOT_WAIST,Waist
+SLOT_BOOTS,Boots
+SLOT_CONSUMABLE,Consumable
+ITEM_TWO_HANDED,Two-handed
+UI_TIER,T%d
+UI_HANDS_FULL,(two-handed)
+UI_OTHER_HAND_TAG,(other hand)
+ITEM_GOBLIN_SHIV,Goblin Shiv
+ITEM_GOBLIN_SHIV_DESC,Small. Rusty. Surprisingly personal.
+ITEM_MOONLEAF_WAND,Moonleaf Wand
+ITEM_MOONLEAF_WAND_DESC,Hums softly. Drinks a little of your life to do it.
+ITEM_GOBLIN_BUCKLER,Goblin Buckler
+ITEM_GOBLIN_BUCKLER_DESC,A pot lid with ambition.
+ITEM_MOONLEAF_HOOD,Moonleaf Hood
+ITEM_MOONLEAF_HOOD_DESC,Keeps the rain off. Mostly.
+ITEM_GOBLIN_HIDE_BELT,Goblin-Hide Belt
+ITEM_GOBLIN_HIDE_BELT_DESC,Don't ask whose hide.
+ITEM_MOONLEAF_SANDALS,Moonleaf Sandals
+ITEM_MOONLEAF_SANDALS_DESC,Quiet steps on soft ground.
+UI_TRACK_GATHERING,%s
+UI_TRACK_CRAFTING,%s Crafting
+UI_TRACK_MASTERY,%s Mastery
+UI_KIND_GATHERING,Gathering
+UI_KIND_CRAFTING,Crafting
+UI_KIND_MASTERY,Mastery
+UI_RANK_ROW,Rank %d   (%d/%d)
+UI_TRACK_LEVEL,Lv %d
+UI_XP_ROW,%s  +%d XP
+UI_RANK_UP,Rank %d!  +%d skill points (spend them at the Skill Shrine)
+CATEGORY_HERBALISM,Herbalism
+CATEGORY_AXE,Axe
+CATEGORY_DAGGER,Dagger
+CATEGORY_WAND,Wand
+CATEGORY_SHIELD,Shield
+CATEGORY_LEAF_ARMOR,Leaf Armor
+CATEGORY_LEATHER_ARMOR,Leather Armor
+CATEGORY_TRINKET,Trinket
+CATEGORY_FISTS,Fists
+ITEM_GOBLIN_HATCHET,Goblin Hatchet
+ITEM_GOBLIN_HATCHET_DESC,Chops wood. Chops goblins. Not picky.
+ITEM_SUNBLOOM_ROBE,Sunbloom Robe
+ITEM_SUNBLOOM_ROBE_DESC,Warm as noon. Tough as a vow.
+MAT_SUNBLOOM,Sunbloom
+OBJ_GATHER_SUNBLOOM,Gather Sunbloom
+OBJ_GATHER_SUNBLOOM_DESC,Rare golden herbs grow among angrier goblins. Needs Herbalism 3 to harvest.
+UI_REQUIRES,Requires %s
+UI_REQUIRES_YOU,Requires %s (you: %d)
+UI_TO_EQUIP,To equip: %s
+UI_COUNT_TAG,x%d
+UI_LOCKED_TAG,(locked)
+UI_RANK_LOCKED,(Rank %d)
+UI_RANK_NEEDED,Requires Rank %d (you: Rank %d)
+CATEGORY_POTION,Potion
+ITEM_MOONLEAF_DRAUGHT,Moonleaf Draught
+ITEM_MOONLEAF_DRAUGHT_DESC,Tastes like a wet forest. Works like a miracle.
+ITEM_GOBLIN_GROG,Goblin Grog
+ITEM_GOBLIN_GROG_DESC,Fermented in a boot. You'll fight like it, too.
+EFFECT_HEAL,Restores %d HP
+EFFECT_DAMAGE_UP,+%d%% damage for %ds
+UI_USE_COOLDOWN,Cooldown %ds
+HUD_EMPTY,Empty
+UI_SKILL_POINTS,Skill points: %d
+UI_SKILL_POINTS_HINT,Earn 3 skill points every Rank. Each spends on +1 level in any track.
+UI_LEVEL_UP_BUTTON,+ Level
+UI_NEXT_TIER,Unlocks T%d at Lv %d
+UI_MAX_TIER,All tiers unlocked
+UI_DIFFICULTY,Difficulty
+CHALLENGE_NORMAL,Normal
+CHALLENGE_HARD,Hard
+CHALLENGE_BRUTAL,Brutal
+CHALLENGE_NORMAL_DESC,The standard mission.
+CHALLENGE_DESC,"Challenge: enemy HP +%d%%, damage taken +%d%%. Rewards x%.1f on victory."
+UI_CHALLENGE_BONUS,%s cleared: rewards x%.1f
+UI_PLAY_AS,Play as %s
+UI_LOADOUT_OF,Gear Rack: %s
+STAT_SPEED,Speed
+CHAR_BRAWLER,Brawler
+CHAR_BRAWLER_ROLE,Fast damage dealer
+CHAR_BRAWLER_DESC,"Hits hard and moves fast, with a quick dodge. Fragile: a few mistakes and it's over."
+CHAR_WARDEN,Warden
+CHAR_WARDEN_ROLE,Defender
+CHAR_WARDEN_DESC,"A walking wall: lots of HP and armor. Slow on foot, slow to dodge, and hits softer."
+CHAR_MYSTIC,Mystic
+CHAR_MYSTIC_ROLE,Ranged caster
+CHAR_MYSTIC_DESC,"Fights from a distance with magic bolts. Low HP: keep enemies away, blink out of trouble."
+UI_CHOOSE_HERO,Choose your hero: click one or browse the cards
+UI_CHOOSE_HERO_HINT,Left / Right: other heroes
+UI_PASSIVE_ROW,Passive — %s: %s
+PASSIVE_BLOODRUSH,Bloodrush
+PASSIVE_BLOODRUSH_DESC,"Each kill: +%d%% damage for %ds, stacking up to %d times."
+PASSIVE_BULWARK,Bulwark
+PASSIVE_BULWARK_DESC,Takes %d%% less damage.
+PASSIVE_NO_KNOCKBACK,Can't be knocked back.
+PASSIVE_ATTUNEMENT,Attunement
+PASSIVE_ATTUNEMENT_DESC,Skill cooldowns recover %d%% faster.
+HUD_PASSIVE_STACKS,%s x%d  %ds
+SKILL_MAGIC_BOLT,Magic Bolt
+SKILL_ARCANE_BARRAGE,Arcane Barrage
+SKILL_BLINK,Blink
+SKILL_DASH_STRIKE,Dash Strike
+SKILL_WHIRLWIND,Whirlwind
+SKILL_SHIELD_BASH,Shield Bash
+SKILL_IRON_GUARD,Iron Guard
+UI_SKILLS_ROW,Skills: %s
+UI_BASIC_RANGED,Attack: %s (ranged)
+SKILL_CLEAVE,Cleave
+SKILL_HATCHET_THROW,Hatchet Throw
+SKILL_FLURRY,Flurry
+SKILL_FAN_OF_KNIVES,Fan of Knives
+SKILL_MOONLEAF_BOLT,Moonleaf Bolt
+SKILL_HEALING_BLOOM,Healing Bloom
+SKILL_HAYMAKER,Haymaker
+UI_WEAPON_SKILLS,Skills: %s
+TALENT_QUICK_FEET,Quick Feet
+TALENT_HOT_BLOOD,Hot Blood
+TALENT_FRENZY,Frenzy
+TALENT_CYCLONE,Cyclone
+TALENT_GLASS_CANNON,Glass Cannon
+TALENT_IRON_SKIN,Iron Skin
+TALENT_THICK_HIDE,Thick Hide
+TALENT_SHIELD_TRAINING,Shield Training
+TALENT_BASTION,Bastion
+TALENT_UNBREAKABLE,Unbreakable
+TALENT_JUGGERNAUT,Juggernaut
+TALENT_FORTRESS,Fortress
+TALENT_FOCUS,Focus
+TALENT_PHASE_STEP,Phase Step
+TALENT_DEEP_ATTUNEMENT,Deep Attunement
+TALENT_STORM_OF_BOLTS,Storm of Bolts
+TALENT_OVERCHARGE,Overcharge
+TALENT_WARDING,Warding
+TALENT_MAX_HEALTH,%+d%% max HP
+TALENT_DAMAGE,%+d%% damage
+TALENT_MOVE_SPEED,%+d%% move speed
+TALENT_DAMAGE_TAKEN,%+d%% damage taken
+TALENT_PASSIVE,Passive %+d%% stronger
+TALENT_SKILL_DAMAGE,%s: %+d%% damage
+TALENT_SKILL_COOLDOWN,%s: %+d%% cooldown
+UI_TAB_TRACKS,Tracks
+UI_TAB_TALENTS,%s Talents
+UI_TALENT_TIER,Tier %d
+UI_TALENT_TIER_CHOICE,Tier %d (choose one)
+UI_TALENT_COST,Learn (%d pts)
+UI_TALENT_OWNED,Learned
+UI_TALENT_NEEDS_TIER,Needs a Tier %d talent
+UI_TALENT_OTHER_CHOSEN,Other choice taken
+UI_TALENT_NO_POINTS,Not enough points
+ITEM_MANA_DRAUGHT,Mana Draught
+ITEM_MANA_DRAUGHT_DESC,Bottled sunlight and moon-dew. Tingles all the way down.
+EFFECT_MANA,Restores %d mana
+HUD_STAMINA,Stamina %d/%d
+HUD_MANA,Mana %d/%d
+HUD_CASTING,Casting %s
+HUD_NO_STAMINA,No stamina
+HUD_NO_MANA,No mana
+HUD_COST_STAMINA,%d ST
+HUD_COST_MANA,%d MP
+STAT_STAMINA,Stamina
+STAT_MANA,Mana

@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/skills/frontal_strike.gd" id="1_script"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="2_hitbox"]
+
+[sub_resource type="BoxShape3D" id="HitShape"]
+size = Vector3(3.6, 2, 2.2)
+
+[sub_resource type="BoxMesh" id="SlabMesh"]
+size = Vector3(3.4, 0.25, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="SlabMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.3, 0.7)
+
+[node name="Cleave" type="Node3D"]
+script = ExtResource("1_script")
+shake = 0.3
+
+[node name="HitboxComponent" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_hitbox")
+knockback = 9.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.3)
+shape = SubResource("HitShape")
+
+[node name="Slab" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.2)
+mesh = SubResource("SlabMesh")
+surface_material_override/0 = SubResource("SlabMat")

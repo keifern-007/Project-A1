@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/challenge_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "CHALLENGE_NORMAL"
+required_rank = 1
+enemy_health_multiplier = 1.0
+damage_taken_multiplier = 1.0
+reward_multiplier = 1.0

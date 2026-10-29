@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3 uid="uid://b20bd8vltfc11"]
+
+[ext_resource type="Script" uid="uid://dg1rvuqtci4b6" path="res://scripts/objective_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_HORDE"
+description_key = "OBJ_HORDE_DESC"

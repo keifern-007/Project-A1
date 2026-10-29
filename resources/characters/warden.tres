@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/passives/bulwark.tres" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="3_skill"]
+[ext_resource type="Resource" path="res://resources/skills/shield_bash.tres" id="4_shield_bash"]
+[ext_resource type="Resource" path="res://resources/skills/iron_guard.tres" id="5_iron_guard"]
+[ext_resource type="Script" path="res://scripts/talent_data.gd" id="30_talent"]
+[ext_resource type="Resource" path="res://resources/talents/warden/thick_hide.tres" id="31_thick_hide"]
+[ext_resource type="Resource" path="res://resources/talents/warden/shield_training.tres" id="32_shield_training"]
+[ext_resource type="Resource" path="res://resources/talents/warden/bastion.tres" id="33_bastion"]
+[ext_resource type="Resource" path="res://resources/talents/warden/unbreakable.tres" id="34_unbreakable"]
+[ext_resource type="Resource" path="res://resources/talents/warden/juggernaut.tres" id="35_juggernaut"]
+[ext_resource type="Resource" path="res://resources/talents/warden/fortress.tres" id="36_fortress"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"warden"
+name_key = "CHAR_WARDEN"
+role_key = "CHAR_WARDEN_ROLE"
+description_key = "CHAR_WARDEN_DESC"
+sort_order = 1
+max_health = 140
+attack_power = 9
+defense = 4
+move_speed = 5.2
+dodge_cooldown = 0.8
+max_stamina = 120.0
+stamina_regen = 14.0
+max_mana = 30.0
+mana_regen = 1.5
+mana_per_kill = 4.0
+color = Color(0.35, 0.5, 0.8, 1)
+body_scale = Vector3(1.3, 1.05, 1.3)
+passive = ExtResource("2_passive")
+signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_shield_bash"), ExtResource("5_iron_guard")])
+talents = Array[ExtResource("30_talent")]([ExtResource("31_thick_hide"), ExtResource("32_shield_training"), ExtResource("33_bastion"), ExtResource("34_unbreakable"), ExtResource("35_juggernaut"), ExtResource("36_fortress")])

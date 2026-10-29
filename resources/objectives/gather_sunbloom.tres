@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ObjectiveData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="2_mat"]
+[ext_resource type="PackedScene" path="res://scenes/maps/gather_node.tscn" id="3_node"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_GATHER_SUNBLOOM"
+description_key = "OBJ_GATHER_SUNBLOOM_DESC"
+type = 2
+required_rank = 3
+first_wave_size = 3
+wave_size_growth = 2
+health_growth_per_wave = 0.15
+gather_material = ExtResource("2_mat")
+gather_amount = 8
+gather_node_scene = ExtResource("3_node")

@@ -1,0 +1,282 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/boss_bar.tscn" id="2_bossbar"]
+
+[sub_resource type="StyleBoxFlat" id="HpBackground"]
+bg_color = Color(0.08, 0.08, 0.1, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.85, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="HpFill"]
+bg_color = Color(0.75, 0.18, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="XpFill"]
+bg_color = Color(0.45, 0.75, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StaminaFill"]
+bg_color = Color(0.45, 0.75, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="ManaFill"]
+bg_color = Color(0.3, 0.45, 0.95, 1)
+
+[sub_resource type="LabelSettings" id="SmallText"]
+font_size = 14
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="Text"]
+font_size = 20
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="BigText"]
+font_size = 34
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hud")
+
+[node name="HpBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 320.0
+offset_bottom = 52.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("HpBackground")
+theme_override_styles/fill = SubResource("HpFill")
+value = 100.0
+show_percentage = false
+
+[node name="HpLabel" type="Label" parent="HpBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate_mode = 2
+text = "100/100"
+label_settings = SubResource("Text")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaminaBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 320.0
+offset_bottom = 74.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("HpBackground")
+theme_override_styles/fill = SubResource("StaminaFill")
+step = 0.0
+show_percentage = false
+
+[node name="StaminaLabel" type="Label" parent="StaminaBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ManaBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 78.0
+offset_right = 320.0
+offset_bottom = 96.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("HpBackground")
+theme_override_styles/fill = SubResource("ManaFill")
+step = 0.0
+show_percentage = false
+
+[node name="ManaLabel" type="Label" parent="ManaBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 102.0
+offset_right = 320.0
+offset_bottom = 128.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="LevelLabel" type="Label" parent="LevelRow"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+text = "Lv 1"
+label_settings = SubResource("Text")
+
+[node name="XpBar" type="ProgressBar" parent="LevelRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("HpBackground")
+theme_override_styles/fill = SubResource("XpFill")
+show_percentage = false
+
+[node name="BoostLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 132.0
+offset_right = 420.0
+offset_bottom = 160.0
+auto_translate_mode = 2
+label_settings = SubResource("Text")
+
+[node name="LevelUpLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -160.0
+offset_right = 200.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "HUD_LEVEL_UP"
+label_settings = SubResource("BigText")
+horizontal_alignment = 1
+
+[node name="TopCenter" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 12.0
+offset_right = 150.0
+offset_bottom = 90.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="TimerLabel" type="Label" parent="TopCenter"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+text = "00:00"
+label_settings = SubResource("BigText")
+horizontal_alignment = 1
+
+[node name="ObjectiveLabel" type="Label" parent="TopCenter"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+label_settings = SubResource("Text")
+horizontal_alignment = 1
+
+[node name="KillsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 52.0
+grow_horizontal = 0
+auto_translate_mode = 2
+label_settings = SubResource("Text")
+horizontal_alignment = 2
+
+[node name="SkillRow" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -110.0
+offset_right = 300.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="CastBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = -126.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("HpBackground")
+theme_override_styles/fill = SubResource("ManaFill")
+max_value = 1.0
+step = 0.0
+show_percentage = false
+
+[node name="CastLabel" type="Label" parent="CastBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossBar" parent="." instance=ExtResource("2_bossbar")]
+layout_mode = 1

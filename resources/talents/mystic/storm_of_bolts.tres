@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TalentData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/talent_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/skills/arcane_barrage.tres" id="2_skill"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"storm_of_bolts"
+name_key = "TALENT_STORM_OF_BOLTS"
+tier = 2
+skill_damage_percent = 0.3
+skill = ExtResource("2_skill")

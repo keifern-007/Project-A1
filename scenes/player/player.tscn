@@ -1,0 +1,163 @@
+[gd_scene load_steps=28 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://components/player_input.gd" id="2_input"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/melee_attack_component.gd" id="6_melee"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
+[ext_resource type="Script" path="res://components/skill_caster_component.gd" id="8_caster"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="9_skilldata"]
+[ext_resource type="Resource" path="res://resources/skills/ground_slam.tres" id="10_slam"]
+[ext_resource type="Resource" path="res://resources/skills/haymaker.tres" id="17_haymaker"]
+[ext_resource type="Script" path="res://components/level_component.gd" id="11_level"]
+[ext_resource type="Script" path="res://components/booster_component.gd" id="12_boosters"]
+[ext_resource type="Script" path="res://components/equipment_component.gd" id="13_equipment"]
+[ext_resource type="Script" path="res://components/consumable_component.gd" id="14_consumable"]
+[ext_resource type="Script" path="res://components/character_component.gd" id="15_character"]
+[ext_resource type="Script" path="res://components/passive_component.gd" id="16_passive"]
+[ext_resource type="Script" path="res://components/talent_component.gd" id="18_talent"]
+[ext_resource type="Script" path="res://components/meter_component.gd" id="19_meter"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+
+[sub_resource type="StandardMaterial3D" id="BodyMat"]
+albedo_color = Color(0.85, 0.45, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="NoseMesh"]
+size = Vector3(0.25, 0.25, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="NoseMat"]
+albedo_color = Color(0.2, 0.2, 0.25, 1)
+
+[sub_resource type="BoxShape3D" id="SwingShape"]
+size = Vector3(1.8, 1.5, 1.4)
+
+[sub_resource type="BoxMesh" id="SwingMesh"]
+size = Vector3(1.8, 0.08, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="SwingMat"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.95, 1, 1)
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BodyShape")
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("2_input")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="CharacterComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("15_character")
+stats = NodePath("../StatsComponent")
+unarmed_skills = Array[ExtResource("9_skilldata")]([ExtResource("17_haymaker"), ExtResource("10_slam")])
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="EquipmentComponent" type="Node" parent="." node_paths=PackedStringArray("stats", "health", "character")]
+script = ExtResource("13_equipment")
+stats = NodePath("../StatsComponent")
+health = NodePath("../HealthComponent")
+character = NodePath("../CharacterComponent")
+
+[node name="TalentComponent" type="Node" parent="." node_paths=PackedStringArray("character", "stats", "health", "hurtbox", "skill_caster")]
+script = ExtResource("18_talent")
+character = NodePath("../CharacterComponent")
+stats = NodePath("../StatsComponent")
+health = NodePath("../HealthComponent")
+hurtbox = NodePath("../HurtboxComponent")
+skill_caster = NodePath("../SkillCaster")
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats")]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BodyShape")
+
+[node name="StaminaMeter" type="Node" parent="."]
+script = ExtResource("19_meter")
+
+[node name="ManaMeter" type="Node" parent="."]
+script = ExtResource("19_meter")
+regen_per_second = 2.0
+
+[node name="LevelComponent" type="Node" parent="." node_paths=PackedStringArray("stats", "health")]
+script = ExtResource("11_level")
+stats = NodePath("../StatsComponent")
+health = NodePath("../HealthComponent")
+
+[node name="BoosterComponent" type="Node" parent="." node_paths=PackedStringArray("stats", "health", "mana")]
+script = ExtResource("12_boosters")
+mana = NodePath("../ManaMeter")
+stats = NodePath("../StatsComponent")
+health = NodePath("../HealthComponent")
+
+[node name="ConsumableComponent" type="Node" parent="." node_paths=PackedStringArray("boosters", "health", "mana")]
+script = ExtResource("14_consumable")
+mana = NodePath("../ManaMeter")
+boosters = NodePath("../BoosterComponent")
+health = NodePath("../HealthComponent")
+
+[node name="MeleeAttack" type="Node3D" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("6_melee")
+stats = NodePath("../StatsComponent")
+
+[node name="HitboxComponent" type="Area3D" parent="MeleeAttack"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("7_hitbox")
+knockback = 7.0
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack/HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+shape = SubResource("SwingShape")
+
+[node name="SwingVisual" type="MeshInstance3D" parent="MeleeAttack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.2)
+mesh = SubResource("SwingMesh")
+surface_material_override/0 = SubResource("SwingMat")
+
+[node name="SkillCaster" type="Node" parent="." node_paths=PackedStringArray("stats", "stamina", "mana")]
+script = ExtResource("8_caster")
+stamina = NodePath("../StaminaMeter")
+mana = NodePath("../ManaMeter")
+stats = NodePath("../StatsComponent")
+
+[node name="PassiveComponent" type="Node" parent="." node_paths=PackedStringArray("character", "stats", "hurtbox", "skill_caster", "talents")]
+script = ExtResource("16_passive")
+character = NodePath("../CharacterComponent")
+stats = NodePath("../StatsComponent")
+hurtbox = NodePath("../HurtboxComponent")
+skill_caster = NodePath("../SkillCaster")
+talents = NodePath("../TalentComponent")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("BodyMat")
+
+[node name="Nose" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -0.5)
+mesh = SubResource("NoseMesh")
+surface_material_override/0 = SubResource("NoseMat")

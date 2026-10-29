@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scenes/maps/pickup.gd" id="1_pickup"]
+
+[sub_resource type="SphereShape3D" id="MagnetShape"]
+radius = 3.0
+
+[sub_resource type="SphereMesh" id="GemMesh"]
+radius = 0.2
+height = 0.5
+radial_segments = 4
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="GemMat"]
+albedo_color = Color(0.45, 0.75, 1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.4, 0.8, 1)
+
+[sub_resource type="BoxMesh" id="CubeMesh"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxMesh" id="PlusMesh"]
+size = Vector3(0.45, 0.14, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="HealMat"]
+albedo_color = Color(0.9, 0.25, 0.3, 1)
+
+[sub_resource type="CylinderMesh" id="ConeMesh"]
+top_radius = 0.0
+bottom_radius = 0.2
+height = 0.45
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="BoostMat"]
+albedo_color = Color(1, 0.6, 0.15, 1)
+
+[node name="Pickup" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_pickup")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("MagnetShape")
+
+[node name="Visual" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+
+[node name="XpGem" type="MeshInstance3D" parent="Visual"]
+mesh = SubResource("GemMesh")
+surface_material_override/0 = SubResource("GemMat")
+
+[node name="MaterialCube" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.707107, 0, 0.707107, 0.5, 0.707107, -0.5, -0.5, 0.707107, 0.5, 0, 0, 0)
+mesh = SubResource("CubeMesh")
+
+[node name="HealPlus" type="Node3D" parent="Visual"]
+
+[node name="Bar1" type="MeshInstance3D" parent="Visual/HealPlus"]
+mesh = SubResource("PlusMesh")
+surface_material_override/0 = SubResource("HealMat")
+
+[node name="Bar2" type="MeshInstance3D" parent="Visual/HealPlus"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlusMesh")
+surface_material_override/0 = SubResource("HealMat")
+
+[node name="BoostCone" type="MeshInstance3D" parent="Visual"]
+mesh = SubResource("ConeMesh")
+surface_material_override/0 = SubResource("BoostMat")

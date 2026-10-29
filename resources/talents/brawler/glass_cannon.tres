@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TalentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/talent_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"glass_cannon"
+name_key = "TALENT_GLASS_CANNON"
+tier = 3
+exclusive_group = &"brawler_capstone"
+damage_percent = 0.2
+max_health_percent = -0.2

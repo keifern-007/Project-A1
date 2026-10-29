@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/moonleaf.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="4_mat"]
+[ext_resource type="Script" path="res://scripts/booster_data.gd" id="5_booster"]
+
+[sub_resource type="Resource" id="Effect"]
+script = ExtResource("5_booster")
+name_key = "ITEM_MANA_DRAUGHT"
+effect = 2
+value = 50.0
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 2
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 2
+
+[resource]
+script = ExtResource("1_item")
+id = &"mana_draught"
+name_key = "ITEM_MANA_DRAUGHT"
+description_key = "ITEM_MANA_DRAUGHT_DESC"
+slot = 7
+tier = 1
+category = &"potion"
+color = Color(0.35, 0.55, 1, 1)
+use_effect = SubResource("Effect")
+use_cooldown = 10.0
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

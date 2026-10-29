@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MaterialData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/material_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"goblin_ear"
+name_key = "MAT_GOBLIN_EAR"
+color = Color(0.4, 0.6, 0.3, 1)

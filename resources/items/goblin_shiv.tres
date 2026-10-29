@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="3_mat"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="20_skill"]
+[ext_resource type="Resource" path="res://resources/skills/flurry.tres" id="21_flurry"]
+[ext_resource type="Resource" path="res://resources/skills/fan_of_knives.tres" id="22_fan_of_knives"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 4
+
+[resource]
+script = ExtResource("1_item")
+id = &"goblin_shiv"
+name_key = "ITEM_GOBLIN_SHIV"
+description_key = "ITEM_GOBLIN_SHIV_DESC"
+slot = 0
+tier = 1
+category = &"dagger"
+color = Color(0.6, 0.6, 0.65, 1)
+attack_power = 3
+skills = Array[ExtResource("20_skill")]([ExtResource("21_flurry"), ExtResource("22_fan_of_knives")])
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3")])

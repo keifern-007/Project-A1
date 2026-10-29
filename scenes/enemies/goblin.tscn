@@ -1,0 +1,114 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/melee_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/goblin.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/melee_attack_component.gd" id="6_melee"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.4
+height = 1.4
+
+[sub_resource type="BoxShape3D" id="SwingShape"]
+size = Vector3(1.4, 1.2, 1.2)
+
+[sub_resource type="BoxMesh" id="SwingMesh"]
+size = Vector3(1.2, 0.08, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="SwingMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.85, 0.85, 1)
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 0.4
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="SkinMat"]
+albedo_color = Color(0.35, 0.55, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="EarMesh"]
+top_radius = 0.0
+bottom_radius = 0.12
+height = 0.45
+radial_segments = 4
+
+[sub_resource type="BoxMesh" id="NoseMesh"]
+size = Vector3(0.15, 0.15, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="DarkMat"]
+albedo_color = Color(0.2, 0.2, 0.18, 1)
+
+[node name="Goblin" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BodyShape")
+
+[node name="MeleeAttack" type="Node3D" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("6_melee")
+stats = NodePath("../StatsComponent")
+cooldown = 0.0
+
+[node name="HitboxComponent" type="Area3D" parent="MeleeAttack"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("7_hitbox")
+knockback = 9.0
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack/HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -0.9)
+shape = SubResource("SwingShape")
+
+[node name="SwingVisual" type="MeshInstance3D" parent="MeleeAttack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -1)
+mesh = SubResource("SwingMesh")
+surface_material_override/0 = SubResource("SwingMat")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0, 1, -0.4, 1.2, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0.4, 1.2, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Nose" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -0.4)
+mesh = SubResource("NoseMesh")
+surface_material_override/0 = SubResource("DarkMat")

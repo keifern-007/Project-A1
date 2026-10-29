@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/passives/attunement.tres" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="3_skill"]
+[ext_resource type="Resource" path="res://resources/skills/arcane_barrage.tres" id="4_arcane_barrage"]
+[ext_resource type="Resource" path="res://resources/skills/blink.tres" id="5_blink"]
+[ext_resource type="Resource" path="res://resources/skills/magic_bolt.tres" id="6_magic_bolt"]
+[ext_resource type="Script" path="res://scripts/talent_data.gd" id="30_talent"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/focus.tres" id="31_focus"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/phase_step.tres" id="32_phase_step"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/deep_attunement.tres" id="33_deep_attunement"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/storm_of_bolts.tres" id="34_storm_of_bolts"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/overcharge.tres" id="35_overcharge"]
+[ext_resource type="Resource" path="res://resources/talents/mystic/warding.tres" id="36_warding"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"mystic"
+name_key = "CHAR_MYSTIC"
+role_key = "CHAR_MYSTIC_ROLE"
+description_key = "CHAR_MYSTIC_DESC"
+sort_order = 2
+max_health = 75
+attack_power = 12
+defense = 0
+move_speed = 6.0
+dodge_cooldown = 0.6
+max_stamina = 60.0
+stamina_regen = 12.0
+max_mana = 100.0
+mana_regen = 2.5
+mana_per_kill = 8.0
+color = Color(0.65, 0.4, 0.85, 1)
+body_scale = Vector3(0.8, 1.2, 0.8)
+passive = ExtResource("2_passive")
+signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_arcane_barrage"), ExtResource("5_blink")])
+basic_attack = ExtResource("6_magic_bolt")
+talents = Array[ExtResource("30_talent")]([ExtResource("31_focus"), ExtResource("32_phase_step"), ExtResource("33_deep_attunement"), ExtResource("34_storm_of_bolts"), ExtResource("35_overcharge"), ExtResource("36_warding")])

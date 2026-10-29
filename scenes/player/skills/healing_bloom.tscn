@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/skills/healing_bloom.gd" id="1_script"]
+
+[sub_resource type="TorusMesh" id="RingMesh"]
+inner_radius = 0.9
+outer_radius = 1.2
+rings = 12
+ring_segments = 4
+
+[sub_resource type="StandardMaterial3D" id="RingMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.5, 1, 0.6, 0.6)
+
+[node name="HealingBloom" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Ring" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("RingMesh")
+surface_material_override/0 = SubResource("RingMat")
