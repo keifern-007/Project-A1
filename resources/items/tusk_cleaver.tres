@@ -25,6 +25,7 @@ name_key = "ITEM_TUSK_CLEAVER"
 description_key = "ITEM_TUSK_CLEAVER_DESC"
 slot = 0
 two_handed = true
+windup_multiplier = 1.6
 tier = 2
 category = &"axe"
 color = Color(0.95, 0.92, 0.8, 1)

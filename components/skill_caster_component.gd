@@ -26,6 +26,7 @@ var cooldown_speed: float = 1.0
 ## Per-skill multipliers from talents: SkillData -> float (missing = 1.0).
 var skill_damage_mods: Dictionary = {}
 var skill_cooldown_mods: Dictionary = {}
+var skill_windup_mods: Dictionary = {} ## From the main-hand weapon.
 
 var _cooldowns: Array[float] = []
 var _basic_left: float = 0.0
@@ -70,7 +71,7 @@ func is_casting() -> bool:
 func cast_progress() -> float:
 	if not is_casting():
 		return 0.0
-	return 1.0 - _cast["left"] / maxf((_cast["skill"] as SkillData).cast_time, 0.01)
+	return 1.0 - _cast["left"] / maxf(windup_of(_cast["skill"]), 0.01)
 
 
 func casting_skill() -> SkillData:
@@ -103,10 +104,10 @@ func try_cast(slot: int, caster: Node3D, direction: Vector3, world: Node) -> boo
 		return false
 	if skill.cost > 0.0 and meter_for(skill):
 		meter_for(skill).spend(skill.cost)
-	if skill.cast_time > 0.0:
+	if windup_of(skill) > 0.0:
 		_cast = { "slot": slot, "skill": skill, "caster": caster, "direction": direction, "world": world,
-			"left": skill.cast_time }
-		cast_started.emit(skill, skill.cast_time)
+			"left": windup_of(skill) }
+		cast_started.emit(skill, windup_of(skill))
 		return true
 	_fire(slot, skill, caster, direction, world)
 	return true
@@ -127,13 +128,18 @@ func cancel_cast() -> void:
 func try_basic(caster: Node3D, direction: Vector3, world: Node) -> bool:
 	if is_casting() or basic_attack == null or _basic_left > 0.0 or direction == Vector3.ZERO:
 		return false
-	if basic_attack.cast_time > 0.0:
+	if windup_of(basic_attack) > 0.0:
 		_cast = { "slot": BASIC_SLOT, "skill": basic_attack, "caster": caster, "direction": direction, "world": world,
-			"left": basic_attack.cast_time }
-		cast_started.emit(basic_attack, basic_attack.cast_time)
+			"left": windup_of(basic_attack) }
+		cast_started.emit(basic_attack, windup_of(basic_attack))
 		return true
 	_fire(BASIC_SLOT, basic_attack, caster, direction, world)
 	return true
+
+
+## A skill's wind-up after the weapon's weight.
+func windup_of(skill: SkillData) -> float:
+	return skill.cast_time * skill_windup_mods.get(skill, 1.0)
 
 
 ## A skill's cooldown after talents. The HUD uses it for the bar's full length.

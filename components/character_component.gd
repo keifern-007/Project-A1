@@ -9,6 +9,7 @@ extends Node
 @export var stats: StatsComponent
 ## Keys 3-4 when the main hand is empty or the weapon grants no skills.
 @export var unarmed_skills: Array[SkillData] = []
+@export var unarmed_windup_multiplier: float = 0.8 ## Fists are lighter than any axe.
 
 
 func _ready() -> void:
@@ -23,6 +24,20 @@ func _ready() -> void:
 ## (from this character's own loadout), else the unarmed ones.
 func skill_loadout() -> Array[SkillData]:
 	var loadout: Array[SkillData] = data.signature_skills.duplicate()
-	var weapon: ItemData = SaveManager.get_equipped(ItemData.Slot.MAIN_HAND, str(data.id))
-	loadout.append_array(weapon.skills if weapon and not weapon.skills.is_empty() else unarmed_skills)
+	loadout.append_array(weapon_skills())
 	return loadout
+
+
+func weapon_skills() -> Array[SkillData]:
+	var weapon: ItemData = _main_hand()
+	return weapon.skills if weapon and not weapon.skills.is_empty() else unarmed_skills
+
+
+## How much the main hand slows basic swings and weapon skills. Signature skills don't care.
+func weapon_windup_multiplier() -> float:
+	var weapon: ItemData = _main_hand()
+	return weapon.windup_multiplier if weapon else unarmed_windup_multiplier
+
+
+func _main_hand() -> ItemData:
+	return SaveManager.get_equipped(ItemData.Slot.MAIN_HAND, str(data.id))

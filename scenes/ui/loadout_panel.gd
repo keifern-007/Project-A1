@@ -145,6 +145,7 @@ func _short_stats(item: ItemData) -> String:
 			parts.append("%+d %s" % [stat[0], tr(stat[1])])
 	if not item.skills.is_empty():
 		parts.append(item.skills_text())
+		parts.append(item.weight_text())
 	if item.use_effect:
 		parts.append(item.use_effect.describe())
 	return "  ".join(parts)

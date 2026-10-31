@@ -268,3 +268,7 @@ ITEM_FROST_HEART,Frost Heart
 ITEM_FROST_HEART_DESC,Hits harder. Your own heart beats slower.
 ITEM_BURIAL_TALISMAN,Burial Talisman
 ITEM_BURIAL_TALISMAN_DESC,"Hard to kill. Hard to enjoy, too."
+UI_WEAPON_WEIGHT,%s weapon: wind-up x%.1f
+UI_WEIGHT_LIGHT,Light
+UI_WEIGHT_MEDIUM,Medium
+UI_WEIGHT_HEAVY,Heavy

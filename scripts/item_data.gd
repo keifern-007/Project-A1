@@ -19,6 +19,8 @@ enum Slot { MAIN_HAND, OFF_HAND, HELMET, CHEST, WAIST, BOOTS, TRINKET, CONSUMABL
 @export var color: Color = Color.WHITE ## Placeholder look until real art exists.
 ## Main-hand weapons: the skills it grants on keys 3-4 (up to 2). Empty = the unarmed default.
 @export var skills: Array[SkillData] = []
+## Main-hand weapons: scales the wind-up of basic swings and this weapon's skills. Bigger = slower.
+@export var windup_multiplier: float = 1.0
 
 @export_group("Stats")
 @export var max_health: int = 0
@@ -44,6 +46,18 @@ func can_go_in(target: Slot) -> bool:
 		return true
 	# Dual-wield: a one-handed weapon can be held in the off hand too.
 	return target == Slot.OFF_HAND and slot == Slot.MAIN_HAND and not two_handed
+
+
+## "Heavy weapon: wind-up x1.6" for the Forge and Gear Rack; "" if this isn't a weapon.
+func weight_text() -> String:
+	if slot != Slot.MAIN_HAND:
+		return ""
+	var weight_key: String = "UI_WEIGHT_MEDIUM"
+	if windup_multiplier > 1.0:
+		weight_key = "UI_WEIGHT_HEAVY"
+	elif windup_multiplier < 1.0:
+		weight_key = "UI_WEIGHT_LIGHT"
+	return TranslationServer.translate("UI_WEAPON_WEIGHT") % [TranslationServer.translate(weight_key), windup_multiplier]
 
 
 ## "Skills: Cleave, Hatchet Throw" for the Forge and Gear Rack; "" if it grants none.

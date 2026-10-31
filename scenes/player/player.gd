@@ -64,6 +64,10 @@ func _ready() -> void:
 	_apply_character(character.data)
 	skill_caster.set_skills(character.skill_loadout())
 	skill_caster.basic_attack = character.data.basic_attack
+	var weapon_windup: float = character.weapon_windup_multiplier()
+	melee.windup_time *= weapon_windup
+	for skill: SkillData in character.weapon_skills():
+		skill_caster.skill_windup_mods[skill] = weapon_windup
 	health.died.connect(_on_died)
 	hurtbox.hurt.connect(_on_hurt)
 	hurtbox.damage_taken_multiplier *= GameState.damage_taken_multiplier() # On top of passives (Bulwark).

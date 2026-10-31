@@ -110,6 +110,7 @@ func _stat_lines(item: ItemData) -> Array[String]:
 			lines.append("[color=%s]%+d %s[/color]" % [color, value, tr(stat[1])])
 	if not item.skills.is_empty():
 		lines.append(item.skills_text())
+		lines.append(item.weight_text())
 	if item.use_effect:
 		lines.append(item.use_effect.describe())
 		lines.append(tr("UI_USE_COOLDOWN") % roundi(item.use_cooldown))
