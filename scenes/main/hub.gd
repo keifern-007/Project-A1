@@ -13,6 +13,7 @@ const FORGE_PANEL: PackedScene = preload("res://scenes/ui/forge_panel.tscn")
 const LOADOUT_PANEL: PackedScene = preload("res://scenes/ui/loadout_panel.tscn")
 const SHRINE_PANEL: PackedScene = preload("res://scenes/ui/shrine_panel.tscn")
 const HERO_CARD: PackedScene = preload("res://scenes/ui/hero_card.tscn")
+const OPTIONS_PANEL: PackedScene = preload("res://scenes/ui/options_panel.tscn")
 const TOAST_TIME: float = 2.0
 const CHOOSE_ZOOM: float = 16.0 ## A bit wider than play zoom while picking a hero.
 ## While choosing, the browsed hero sits this far (world units) from screen center, away from their card.
@@ -33,6 +34,7 @@ var _open_panel: Control = null
 @onready var panel_host: Control = %PanelHost
 @onready var toast: Label = %Toast
 @onready var hint_label: Label = %HintLabel
+@onready var options_button: Button = %OptionsButton
 @onready var quit_button: Button = %QuitButton
 
 
@@ -53,6 +55,7 @@ func _ready() -> void:
 		if station.action != &"hero": # Hero prompts are handled by CampHeroes.
 			station.interacted.connect(_on_station_interacted.bind(station))
 	toast.hide()
+	options_button.pressed.connect(_open_options)
 	quit_button.pressed.connect(get_tree().quit)
 	if GameState.character: # Back from a run: same hero as before.
 		_play_as(GameState.character, true)
@@ -148,9 +151,22 @@ func _on_station_interacted(_by: Player, station: Interactable) -> void:
 			_show_toast(tr("UI_COMING_SOON") % tr(station.prompt_key))
 
 
+# Esc / Start with nothing else open. An open panel handles its own Esc before this runs.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		get_viewport().set_input_as_handled()
+		_open_options()
+
+
+func _open_options() -> void:
+	if _open_panel == null:
+		_open(OPTIONS_PANEL.instantiate())
+
+
 ## Panels emit `closed`. While one is open the hero can't move or interact.
 func _open(panel: Control) -> void:
 	_open_panel = panel
+	options_button.disabled = true
 	if panel.has_signal("closed") and not panel is HeroCard:
 		panel.connect("closed", _close_panel)
 	panel_host.add_child(panel)
@@ -161,6 +177,7 @@ func _open(panel: Control) -> void:
 func _close_panel() -> void:
 	_open_panel.queue_free()
 	_open_panel = null
+	options_button.disabled = false
 	# Wait a frame so the button press that closed the panel doesn't also reach the hero.
 	await get_tree().process_frame
 	if _heroes.controlled and _open_panel == null:

@@ -46,6 +46,8 @@ func _ready() -> void:
 		data = data.variant_for(GameState.biome())
 		data.apply_look(visual)
 		_apply_arachnophobia()
+		if data.is_arachnid: # The option can change mid-run, from the pause menu.
+			EventBus.settings_changed.connect(_apply_arachnophobia)
 	status.data = data
 	if data:
 		stats.max_health = data.max_health

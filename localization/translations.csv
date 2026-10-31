@@ -305,3 +305,14 @@ POPUP_BLOCKED,Blocked!
 STATUS_GUARD_BROKEN,! Guard broken
 ENEMY_SHIELDBACK,Shieldback
 ENEMY_SHIELDBACK_FROST,Frost Shieldback
+UI_OPTIONS,Options
+UI_OPT_REDUCE_FLASHING,"Reduce flashing (no lightning, less shake)"
+UI_OPT_SCREEN_SHAKE,Screen shake: %d%%
+UI_OPT_ARACHNOPHOBIA,Arachnophobia mode (spiders become mud blobs)
+UI_OPT_FULLSCREEN,Fullscreen
+UI_PAUSED,Paused
+UI_RESUME,Resume
+UI_LEAVE_MISSION,Leave Mission
+UI_LEAVE_CONFIRM,Leave? Press again (you keep what you collected)
+UI_LEFT_MISSION,Mission Abandoned
+UI_LEFT_MISSION_SUB,You keep what you collected.

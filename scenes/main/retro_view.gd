@@ -12,6 +12,7 @@ const GAME_OVER_DELAY: float = 1.2 ## Seconds to watch the death before the scre
 @onready var retro_screen: RetroScreen = $RetroScreen
 @onready var hud: HUD = $UI/HUD
 @onready var game_over: GameOverScreen = $UI/GameOver
+@onready var pause_menu: PauseMenu = $UI/PauseMenu
 
 var _player: Player
 
@@ -28,6 +29,7 @@ func _ready() -> void:
 	game_over.restart_requested.connect(_restart)
 	game_over.quit_requested.connect(get_tree().quit)
 	game_over.camp_requested.connect(_go_to_camp)
+	pause_menu.leave_requested.connect(_leave_mission)
 	_start_objective()
 
 
@@ -65,11 +67,24 @@ func _on_player_died(_player: Node) -> void:
 
 
 func _end_run(victory: bool) -> void:
+	# Only the first result counts: a Burn tick can finish the boss during the death delay.
+	if not GameState.run_active:
+		return
 	GameState.end_run(victory)
 	if victory:
 		# Deferred so it runs after the killing blow's loot is spawned (also deferred).
 		_vacuum_loot.call_deferred()
 	await get_tree().create_timer(GAME_OVER_DELAY).timeout
+	_show_results(victory)
+
+
+## Pause menu: the run ends now, under the same rules as a defeat (the game is already paused).
+func _leave_mission() -> void:
+	GameState.end_run(false)
+	_show_results(false, true)
+
+
+func _show_results(victory: bool, left_mission: bool = false) -> void:
 	GameFeel.cancel_hit_stop()
 	get_tree().paused = true
 	hud.hide() # The results screen says it all; avoids a frozen banner or skill box underneath.
@@ -78,7 +93,7 @@ func _end_run(victory: bool) -> void:
 	var level_ups: Array[Dictionary] = SaveManager.commit_run(GameState.run_rewards, victory)
 	var level: int = _player.level.level if _player else 1
 	game_over.show_results(victory, GameState.run_time, GameState.kills, level, _collect_rewards(),
-		_xp_lines(level_ups, bonus))
+		_xp_lines(level_ups, bonus), left_mission)
 
 
 func _restart() -> void:
