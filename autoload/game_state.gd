@@ -76,18 +76,13 @@ func end_run(victory: bool) -> void:
 
 func _on_enemy_killed(enemy: Node) -> void:
 	kills += 1
-	# Mastery: every weapon/armor category you're wearing learns from the kill.
 	var data: EnemyData = enemy.get("data") as EnemyData
 	if data == null or data.xp_reward <= 0:
 		return
-	var categories: Array[StringName] = []
-	for item: ItemData in SaveManager.equipped_items():
-		if Progression.trains_mastery(item) and not categories.has(item.category):
-			categories.append(item.category)
-	if SaveManager.get_equipped(ItemData.Slot.MAIN_HAND) == null:
-		categories.append(Progression.UNARMED_CATEGORY)
-	for category: StringName in categories:
-		_add_run_xp(Progression.track_key(Progression.MASTERY, category), data.xp_reward)
+	# Each kill counts once toward Rank, listed under the main hand (armor earns nothing extra).
+	var weapon: ItemData = SaveManager.get_equipped(ItemData.Slot.MAIN_HAND)
+	var category: StringName = weapon.category if weapon else Progression.UNARMED_CATEGORY
+	_add_run_xp(Progression.track_key(Progression.MASTERY, category), data.xp_reward)
 
 
 func _on_wave_started(wave_number: int) -> void:

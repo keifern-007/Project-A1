@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "CHALLENGE_BRUTAL"
-required_rank = 5
+required_rank = 9
 enemy_health_multiplier = 2.2
 damage_taken_multiplier = 1.7
 reward_multiplier = 2.5

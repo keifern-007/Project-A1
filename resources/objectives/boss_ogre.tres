@@ -3,15 +3,15 @@
 [ext_resource type="Script" uid="uid://dg1rvuqtci4b6" path="res://scripts/objective_data.gd" id="1_data"]
 [ext_resource type="PackedScene" path="res://scenes/bosses/ogre.tscn" id="2_boss"]
 [ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_drop"]
-[ext_resource type="Resource" path="res://resources/moods/storm.tres" id="mood_storm"]
+[ext_resource type="Resource" uid="uid://hfpnvup0y56r" path="res://resources/moods/storm.tres" id="mood_storm"]
 
 [resource]
 script = ExtResource("1_data")
 name_key = "OBJ_BOSS_OGRE"
 description_key = "OBJ_BOSS_OGRE_DESC"
 type = 1
-required_rank = 2
+required_rank = 3
+mood = ExtResource("mood_storm")
 health_growth_per_wave = 0.1
 boss_scene = ExtResource("2_boss")
 boss_drop = ExtResource("3_drop")
-mood = ExtResource("mood_storm")
