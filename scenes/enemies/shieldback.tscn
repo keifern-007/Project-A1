@@ -1,0 +1,161 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/guard_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/shieldback.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.45
+height = 1.4
+
+[sub_resource type="BoxShape3D" id="ShoveShape"]
+size = Vector3(1.6, 1.4, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="SkinMat"]
+albedo_color = Color(0.33, 0.5, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="IronMat"]
+albedo_color = Color(0.4, 0.42, 0.45, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="WoodMat"]
+albedo_color = Color(0.5, 0.34, 0.2, 1)
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 0.45
+height = 1.4
+
+[sub_resource type="BoxMesh" id="HelmetMesh"]
+size = Vector3(0.7, 0.3, 0.7)
+
+[sub_resource type="CylinderMesh" id="EarMesh"]
+top_radius = 0.0
+bottom_radius = 0.12
+height = 0.45
+radial_segments = 4
+
+[sub_resource type="BoxMesh" id="ShieldMesh"]
+size = Vector3(1.3, 1.5, 0.15)
+
+[sub_resource type="BoxMesh" id="RimMesh"]
+size = Vector3(1.4, 0.12, 0.2)
+
+[sub_resource type="SphereMesh" id="BossMesh"]
+radius = 0.18
+height = 0.2
+radial_segments = 8
+rings = 3
+
+[node name="Shieldback" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+label_height = 2.0
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BodyShape")
+
+[node name="GuardLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+auto_translate_mode = 2
+pixel_size = 0.015
+billboard = 1
+no_depth_test = true
+font_size = 24
+outline_size = 8
+
+[node name="BlockLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+auto_translate_mode = 2
+pixel_size = 0.015
+billboard = 1
+no_depth_test = true
+font_size = 24
+outline_size = 8
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Helmet" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, 0)
+mesh = SubResource("HelmetMesh")
+surface_material_override/0 = SubResource("IronMat")
+
+[node name="EarLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0, 1, -0.45, 1.2, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0.45, 1.2, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="ShieldPivot" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -0.5)
+
+[node name="Shield" type="MeshInstance3D" parent="Visual/ShieldPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+mesh = SubResource("ShieldMesh")
+surface_material_override/0 = SubResource("WoodMat")
+
+[node name="RimTop" type="MeshInstance3D" parent="Visual/ShieldPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.1)
+mesh = SubResource("RimMesh")
+surface_material_override/0 = SubResource("IronMat")
+
+[node name="RimBottom" type="MeshInstance3D" parent="Visual/ShieldPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.1)
+mesh = SubResource("RimMesh")
+surface_material_override/0 = SubResource("IronMat")
+
+[node name="Boss" type="MeshInstance3D" parent="Visual/ShieldPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
+mesh = SubResource("BossMesh")
+surface_material_override/0 = SubResource("IronMat")
+
+[node name="ShoveHitbox" type="Area3D" parent="Visual"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("7_hitbox")
+knockback = 12.0
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visual/ShoveHitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -1.0)
+shape = SubResource("ShoveShape")

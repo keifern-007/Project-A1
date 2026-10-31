@@ -28,7 +28,7 @@ UI_MAP,Map
 UI_OBJECTIVE,Objective
 UI_MISSION_SELECT,Mission Select
 MAP_GREYBOX,Training Grounds
-MAP_GREYBOX_DESC,A grey test arena. Goblins included.
+MAP_GREYBOX_DESC,A sunny forest clearing where heroes practise. The goblins did not get the memo.
 OBJ_HORDE_DESC,Survive 5 waves of goblins. Every wave is bigger and tougher.
 OBJ_GATHER_MOONLEAF_DESC,Hold interact on Moonleaf plants to collect 10 while goblins harass you.
 OBJ_BOSS_OGRE_DESC,Thin out the goblins to lure the Ogre. Then face it alone for an Ogre Tusk.
@@ -272,3 +272,36 @@ UI_WEAPON_WEIGHT,%s weapon: wind-up x%.1f
 UI_WEIGHT_LIGHT,Light
 UI_WEIGHT_MEDIUM,Medium
 UI_WEIGHT_HEAVY,Heavy
+ENEMY_SLINGER,Goblin Slinger
+ENEMY_SLINGER_FROST,Frost Slinger
+ENEMY_SLINGER_MUMMY,Mummified Slinger
+ENEMY_TUSKER,Tusker
+ENEMY_TUSKER_FROST,Frost Tusker
+ENEMY_TUSKER_MUMMY,Bone Tusker
+STATUS_STUNNED,@ Stunned
+ENEMY_PUFFCAP,Puffcap
+ENEMY_SKITTERLING,Skitterling
+ENEMY_SKITTERLING_FROST,Frost Skitterling
+ENEMY_SKITTERLING_DUNE,Dune Skitterling
+ENEMY_HOARFROST,Old Hoarfrost
+MAT_HOARFROST_PELT,Hoarfrost Pelt
+OBJ_BOSS_HOARFROST,Defeat Old Hoarfrost
+OBJ_BOSS_HOARFROST_DESC,Thin out the horde until the old yeti comes down the pass. Mind the icicles. Alone.
+ITEM_HOARFROST_MANTLE,Hoarfrost Mantle
+ITEM_HOARFROST_MANTLE_DESC,"Still smells of yeti. Warm, heavy and slightly judgemental."
+ENEMY_SUN_EATEN_KING,The Sun-Eaten King
+STATUS_SEALED,= Sealed: break the jars
+HINT_BREAK_JAR,Break me!
+OBJ_BREAK_JARS,Break the canopic jars
+MAT_CROWN_SHARD,Sun-Eaten Crown Shard
+OBJ_BOSS_KING,Defeat the Sun-Eaten King
+OBJ_BOSS_KING_DESC,Thin out the horde until the old king wakes. He hides in his sarcophagus when hurt: smash his jars.
+ITEM_SUN_EATEN_SIGNET,Sun-Eaten Signet
+ITEM_SUN_EATEN_SIGNET_DESC,"A king's strength, and maybe his curse. Probably fine."
+STATUS_WARDED,+ Warded
+ENEMY_SHAMAN,Goblin Shaman
+ENEMY_SHAMAN_MUMMY,Mummified Shaman
+POPUP_BLOCKED,Blocked!
+STATUS_GUARD_BROKEN,! Guard broken
+ENEMY_SHIELDBACK,Shieldback
+ENEMY_SHIELDBACK_FROST,Frost Shieldback

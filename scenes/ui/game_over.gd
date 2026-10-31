@@ -10,10 +10,12 @@ signal quit_requested
 
 const REWARD_REVEAL_DELAY: float = 0.15 ## Between reward rows appearing.
 const SWATCH_SIZE: Vector2 = Vector2(16, 16)
+const MAX_REWARDS_HEIGHT: float = 240.0 ## Longer tallies scroll, so the buttons stay on screen.
 
 @onready var title_label: Label = %Title
 @onready var subtitle_label: Label = %Subtitle
 @onready var stats_label: Label = %StatsLabel
+@onready var rewards_scroll: ScrollContainer = %RewardsScroll
 @onready var rewards_list: VBoxContainer = %RewardsList
 @onready var restart_button: Button = %RestartButton
 @onready var camp_button: Button = %CampButton
@@ -47,6 +49,7 @@ func _fill_rewards(rewards: Array[Dictionary], xp_lines: Array[String]) -> void:
 		child.queue_free()
 	if rewards.is_empty() and xp_lines.is_empty():
 		rewards_list.add_child(_make_label(tr("UI_NO_REWARDS")))
+		_fit_rewards_height()
 		return
 	var rows: Array[Control] = []
 	for i: int in rewards.size():
@@ -58,6 +61,12 @@ func _fill_rewards(rewards: Array[Dictionary], xp_lines: Array[String]) -> void:
 		# Rows appear one after another, like a loot tally.
 		rows[i].modulate.a = 0.0
 		create_tween().tween_property(rows[i], "modulate:a", 1.0, 0.3).set_delay(0.4 + i * REWARD_REVEAL_DELAY)
+	_fit_rewards_height()
+
+
+# A ScrollContainer doesn't size to its content: as tall as the rows, up to the limit.
+func _fit_rewards_height() -> void:
+	rewards_scroll.custom_minimum_size.y = minf(rewards_list.get_combined_minimum_size().y, MAX_REWARDS_HEIGHT)
 
 
 ## Color swatch + name + amount (the name carries the meaning; the swatch is just a hint).

@@ -4,13 +4,16 @@ extends CharacterBody3D
 ## a basic melee attack, skills and the loadout's consumable.
 ## Every attack is wind-up (slow walk, keeps aiming, dodging cancels and refunds) -> fires ->
 ## commit (locked in, no dodging), Dark Souls style. Taking a hit doesn't interrupt either.
+## Basic attacks and dodging spend stamina (amounts from CharacterData); a cancelled wind-up refunds it.
 
 const LEAN_BACK: float = 0.436 ## ~25 degrees, in radians. The wind-up telegraph.
 const LEAN_FORWARD: float = -0.262 ## ~-15 degrees. The strike.
 const LEAN_STRIKE_TIME: float = 0.05
 const DODGE_BUFFER: float = 0.2 ## A dodge pressed this soon before the commit ends still happens.
+const HEAVY_WEAPON: float = 1.3 ## Main hand wind-up multiplier from which hits break guards.
 
 signal dodged
+signal stamina_short ## An attack or dodge was refused for lack of stamina (HUD shows 'No stamina').
 signal collected(pickup: Pickup) ## Hook for pickup sounds.
 
 @export var move_speed: float = 6.0
@@ -40,6 +43,9 @@ var _dash_invulnerable: bool = false
 var _dodge_cooldown_left: float = 0.0
 var _dodge_buffer_left: float = 0.0
 var _commit_left: float = 0.0
+var _attack_stamina_cost: float = 0.0
+var _speed_modifiers: Dictionary = {} # source -> walk speed multiplier (quicksand...).
+var _dodge_stamina_cost: float = 0.0
 var _lean_tween: Tween
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -57,6 +63,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var talents: TalentComponent = $TalentComponent
 @onready var stamina: MeterComponent = $StaminaMeter
 @onready var mana: MeterComponent = $ManaMeter
+## Chill slows us, Freeze stops us (enemy Ice/Poison/Fire hits). Shown above our head as text.
+@onready var status: StatusEffectComponent = $StatusEffectComponent
 
 
 func _ready() -> void:
@@ -66,8 +74,12 @@ func _ready() -> void:
 	skill_caster.basic_attack = character.data.basic_attack
 	var weapon_windup: float = character.weapon_windup_multiplier()
 	melee.windup_time *= weapon_windup
+	var heavy: bool = weapon_windup >= HEAVY_WEAPON
+	melee.hitbox.guard_break = heavy
 	for skill: SkillData in character.weapon_skills():
 		skill_caster.skill_windup_mods[skill] = weapon_windup
+		if heavy:
+			skill_caster.guard_break_skills[skill] = true
 	health.died.connect(_on_died)
 	hurtbox.hurt.connect(_on_hurt)
 	hurtbox.damage_taken_multiplier *= GameState.damage_taken_multiplier() # On top of passives (Bulwark).
@@ -88,14 +100,22 @@ func _physics_process(delta: float) -> void:
 	_commit_left = maxf(_commit_left - delta, 0.0)
 	var move_dir: Vector3 = input.get_move_direction()
 
+	var frozen: bool = status.is_frozen()
+	if frozen and is_winding_up():
+		_cancel_windup() # Frozen solid: the attack fizzles (refunded).
 	if input.is_dodge_pressed():
 		_dodge_buffer_left = DODGE_BUFFER
-	if _dodge_buffer_left > 0.0 and not is_committed() and _dodge_cooldown_left == 0.0 and _dash_time_left == 0.0:
+	if _dodge_buffer_left > 0.0 and not frozen and not is_committed() and _dodge_cooldown_left == 0.0 and _dash_time_left == 0.0:
 		_dodge_buffer_left = 0.0
-		_cancel_windup() # Dodging out of a wind-up refunds it.
-		_start_dodge(move_dir)
+		# The wind-up's refund counts, so a dodge out of a wind-up works even on an empty bar.
+		if stamina.current + _windup_refund() >= _dodge_stamina_cost:
+			_cancel_windup() # Dodging out of a wind-up refunds it.
+			stamina.spend(_dodge_stamina_cost)
+			_start_dodge(move_dir)
+		else:
+			stamina_short.emit()
 
-	if combat_enabled and _dash_time_left == 0.0:
+	if combat_enabled and _dash_time_left == 0.0 and not frozen:
 		_handle_combat()
 
 	if _dash_time_left > 0.0:
@@ -105,7 +125,7 @@ func _physics_process(delta: float) -> void:
 		if _dash_time_left == 0.0:
 			_end_dash()
 	else:
-		var target: Vector3 = move_dir * move_speed * _attack_move_factor()
+		var target: Vector3 = move_dir * move_speed * _attack_move_factor() * status.speed_multiplier() * speed_modifier()
 		velocity.x = move_toward(velocity.x, target.x, acceleration * delta)
 		velocity.z = move_toward(velocity.z, target.z, acceleration * delta)
 		# While attacking, keep facing the attack instead of the walk direction.
@@ -121,6 +141,8 @@ func _physics_process(delta: float) -> void:
 func _apply_character(data: CharacterData) -> void:
 	move_speed = data.move_speed * talents.move_speed_multiplier()
 	dodge_cooldown = data.dodge_cooldown
+	_attack_stamina_cost = data.attack_stamina_cost
+	_dodge_stamina_cost = data.dodge_stamina_cost
 	stamina.configure(data.max_stamina, data.stamina_regen)
 	mana.configure(data.max_mana, data.mana_regen, data.mana_per_kill)
 	# Placeholder look: tint + silhouette (shape, so it never relies on color alone).
@@ -219,19 +241,47 @@ func _handle_combat() -> void:
 		visual.rotation.y = atan2(-aim.x, -aim.z)
 		return
 	if input.is_attack_pressed():
-		var dir: Vector3 = _aim_direction()
-		var attacked: bool = false
-		if skill_caster.basic_attack: # Ranged characters (Mystic) cast their basic attack skill.
-			attacked = skill_caster.try_basic(self, dir, get_parent())
-		else:
-			attacked = melee.start_attack(dir)
-		if attacked:
-			visual.rotation.y = atan2(-dir.x, -dir.z)
+		_try_basic_attack()
 	for slot: int in range(1, 5):
 		if input.is_skill_pressed(slot):
 			skill_caster.try_cast(slot - 1, self, _aim_direction(), get_parent())
 	if input.is_consumable_pressed():
 		consumables.try_use()
+
+
+## Melee swing or the character's basic attack skill, paid with stamina when it starts.
+func _try_basic_attack() -> void:
+	var off_cooldown: bool = skill_caster.basic_ready() if skill_caster.basic_attack else melee.can_attack()
+	if not off_cooldown:
+		return
+	if not stamina.has(_attack_stamina_cost):
+		stamina_short.emit()
+		return
+	var dir: Vector3 = _aim_direction()
+	var attacked: bool = false
+	if skill_caster.basic_attack: # Ranged characters (Mystic) cast their basic attack skill.
+		attacked = skill_caster.try_basic(self, dir, get_parent())
+	else:
+		attacked = melee.start_attack(dir)
+	if attacked:
+		stamina.spend(_attack_stamina_cost)
+		visual.rotation.y = atan2(-dir.x, -dir.z)
+
+
+## Ground effects slow walking through this (quicksand). Each source sets its own; 1.0 removes it.
+## Only the strongest one counts, so overlapping pools never pin you in place.
+func set_speed_modifier(source: StringName, multiplier: float) -> void:
+	if is_equal_approx(multiplier, 1.0):
+		_speed_modifiers.erase(source)
+	else:
+		_speed_modifiers[source] = multiplier
+
+
+func speed_modifier() -> float:
+	var strongest: float = 1.0
+	for multiplier: float in _speed_modifiers.values():
+		strongest = minf(strongest, multiplier)
+	return strongest
 
 
 ## Mouse/right stick if aiming, otherwise the way we're facing.
@@ -251,7 +301,14 @@ func _attack_move_factor() -> float:
 	return cast_move_factor if is_winding_up() else 1.0
 
 
+## Stamina a cancel would give back: only a basic attack still winding up (skills refund themselves).
+func _windup_refund() -> float:
+	var basic_winding: bool = skill_caster.is_casting() and skill_caster.casting_skill() == skill_caster.basic_attack
+	return _attack_stamina_cost if melee.is_winding_up() or basic_winding else 0.0
+
+
 func _cancel_windup() -> void:
+	stamina.restore(_windup_refund())
 	skill_caster.cancel_cast()
 	melee.cancel_windup()
 

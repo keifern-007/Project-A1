@@ -8,7 +8,9 @@ extends Node3D
 signal wave_started(wave: int)
 signal wave_cleared(wave: int)
 
-@export var enemy_scenes: Array[PackedScene] = []
+@export var enemy_scenes: Array[PackedScene] = [] ## Fallback when enemy_pool is empty.
+## Weighted, wave-gated list (set from MapData by the objective). Wins over enemy_scenes.
+@export var enemy_pool: Array[SpawnEntry] = []
 @export var autostart: bool = true
 
 @export_group("Waves")
@@ -56,7 +58,7 @@ func stop() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not _running or enemy_scenes.is_empty() or _spawn_points.is_empty():
+	if not _running or (enemy_scenes.is_empty() and enemy_pool.is_empty()) or _spawn_points.is_empty():
 		return
 	if _break_timer > 0.0:
 		_break_timer -= delta
@@ -92,7 +94,24 @@ func _start_wave() -> void:
 
 func _spawn_enemy() -> void:
 	var rng: RandomNumberGenerator = GameState.rng
-	var scene: PackedScene = enemy_scenes[rng.randi_range(0, enemy_scenes.size() - 1)]
+	var scene: PackedScene
+	var count: int = 1
+	if enemy_pool.is_empty():
+		scene = enemy_scenes[rng.randi_range(0, enemy_scenes.size() - 1)]
+	else:
+		var entry: SpawnEntry = _pick_entry(rng)
+		if entry == null:
+			return
+		scene = entry.enemy_scene
+		count = maxi(entry.pack_size, 1)
+	var point: Marker3D = _pick_spawn_point()
+	for i: int in count:
+		if i > 0 and alive >= max_alive:
+			break
+		_spawn_one(scene, point, rng)
+
+
+func _spawn_one(scene: PackedScene, point: Marker3D, rng: RandomNumberGenerator) -> void:
 	var enemy: Node3D = scene.instantiate()
 	# Spawned enemies know where you are — no waiting in IDLE.
 	if "hunt_from_start" in enemy:
@@ -102,9 +121,27 @@ func _spawn_enemy() -> void:
 	enemy.tree_exited.connect(_on_enemy_removed.bind(enemy))
 	get_parent().add_child(enemy)
 	var jitter: Vector3 = Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0))
-	enemy.global_position = _pick_spawn_point().global_position + jitter
+	enemy.global_position = point.global_position + jitter
 	alive += 1
 	_spawned.append(enemy)
+
+
+## Weighted pick among the pool entries allowed this wave.
+func _pick_entry(rng: RandomNumberGenerator) -> SpawnEntry:
+	var allowed: Array[SpawnEntry] = []
+	var total: float = 0.0
+	for entry: SpawnEntry in enemy_pool:
+		if entry.enemy_scene and entry.from_wave <= wave and entry.weight > 0.0:
+			allowed.append(entry)
+			total += entry.weight
+	if allowed.is_empty():
+		return null
+	var roll: float = rng.randf() * total
+	for entry: SpawnEntry in allowed:
+		roll -= entry.weight
+		if roll <= 0.0:
+			return entry
+	return allowed[-1]
 
 
 ## A random spawn point that isn't too close to any player (or any point, if all are close).

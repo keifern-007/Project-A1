@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/crown_shard.tres" id="3_shard"]
+[ext_resource type="Resource" path="res://resources/materials/burial_wrap.tres" id="4_wrap"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="5_bloom"]
+
+[sub_resource type="Resource" id="CostShard"]
+script = ExtResource("2_cost")
+material = ExtResource("3_shard")
+amount = 1
+
+[sub_resource type="Resource" id="CostWrap"]
+script = ExtResource("2_cost")
+material = ExtResource("4_wrap")
+amount = 4
+
+[sub_resource type="Resource" id="CostBloom"]
+script = ExtResource("2_cost")
+material = ExtResource("5_bloom")
+amount = 2
+
+[resource]
+script = ExtResource("1_item")
+id = &"sun_eaten_signet"
+name_key = "ITEM_SUN_EATEN_SIGNET"
+description_key = "ITEM_SUN_EATEN_SIGNET_DESC"
+slot = 6
+tier = 3
+category = &"trinket"
+color = Color(0.95, 0.75, 0.25, 1)
+max_health = 15
+attack_power = 6
+defense = -1
+cost = Array[ExtResource("2_cost")]([SubResource("CostShard"), SubResource("CostWrap"), SubResource("CostBloom")])

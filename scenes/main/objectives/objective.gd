@@ -40,6 +40,9 @@ func _setup_spawner(max_waves: int) -> WaveSpawner:
 	spawner.wave_size_growth = data.wave_size_growth
 	spawner.health_growth_per_wave = data.health_growth_per_wave
 	spawner.max_waves = max_waves
+	var map_data: MapData = GameState.map as MapData
+	if map_data and not map_data.enemy_pool.is_empty():
+		spawner.enemy_pool = map_data.enemy_pool
 	spawner.start()
 	return spawner
 

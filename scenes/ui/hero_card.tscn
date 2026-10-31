@@ -19,7 +19,7 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="NameText"]
-font_size = 36
+font_size = 32
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
@@ -38,7 +38,7 @@ script = ExtResource("1_card")
 
 [node name="Card" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 theme_override_styles/panel = SubResource("PanelStyle")
 
@@ -54,21 +54,31 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Silhouette" type="ColorRect" parent="Card/VBox"]
+[node name="Scroll" type="ScrollContainer" parent="Card/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="Card/VBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
+
+[node name="Silhouette" type="ColorRect" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(44, 90)
+custom_minimum_size = Vector2(27, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 
-[node name="NameLabel" type="Label" parent="Card/VBox"]
+[node name="NameLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
 label_settings = SubResource("NameText")
 horizontal_alignment = 1
 
-[node name="RoleLabel" type="Label" parent="Card/VBox"]
+[node name="RoleLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
@@ -76,24 +86,22 @@ theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
-[node name="StatsLabel" type="Label" parent="Card/VBox"]
+[node name="StatsLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
 label_settings = SubResource("BodyText")
 
-[node name="PassiveLabel" type="Label" parent="Card/VBox"]
+[node name="PassiveLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 auto_translate_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
-[node name="DescriptionLabel" type="Label" parent="Card/VBox"]
+[node name="DescriptionLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 auto_translate_mode = 2
 theme_override_font_sizes/font_size = 16

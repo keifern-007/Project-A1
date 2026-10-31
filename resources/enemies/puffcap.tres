@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dokhle2kbtdhl"]
+
+[ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" uid="uid://4a8axcif7d6d" path="res://resources/materials/moonleaf.tres" id="5_leaf"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/projectiles/poison_cloud.tscn" id="6_cloud"]
+
+[sub_resource type="Resource" id="DropLeaf"]
+script = ExtResource("2_drop")
+material = ExtResource("5_leaf")
+chance = 0.3
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.06
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_PUFFCAP"
+max_health = 18
+attack_power = 16
+move_speed = 2.4
+fire_multiplier = 2.0
+poison_multiplier = 0.0
+detection_range = 14.0
+attack_range = 1.8
+attack_windup = 1.2
+attack_recovery = 0.0
+burst_scene = ExtResource("6_cloud")
+drops = Array[ExtResource("2_drop")]([SubResource("DropLeaf"), SubResource("DropHeal")])

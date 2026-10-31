@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/materials/burial_wrap.tres" id="6_mat"]
+[ext_resource type="Resource" path="res://resources/biomes/desert.tres" id="7_biome"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/variants/mummy_wraps.tscn" id="8_look"]
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.03
+
+[sub_resource type="Resource" id="DropExclusive"]
+script = ExtResource("2_drop")
+material = ExtResource("6_mat")
+chance = 0.12
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_SKITTERLING_DUNE"
+max_health = 9
+attack_power = 7
+move_speed = 5.2
+fire_multiplier = 0.5
+ice_multiplier = 1.5
+poison_multiplier = 0.25
+detection_range = 14.0
+attack_range = 1.6
+attack_windup = 0.35
+attack_recovery = 0.5
+xp_reward = 2
+is_arachnid = true
+drops = Array[ExtResource("2_drop")]([SubResource("DropExclusive"), SubResource("DropHeal")])
+biome = ExtResource("7_biome")
+tint = Color(1.5, 1.3, 0.9, 1)
+accessory = ExtResource("8_look")
+accessory_scale = 0.6

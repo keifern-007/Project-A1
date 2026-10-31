@@ -3,6 +3,7 @@ extends Control
 ## In-run HUD: HP, run timer, wave, kills, skill and consumable cooldowns.
 ## Whoever owns the HUD calls bind_player(); the HUD never goes looking for the player itself.
 
+const STAMINA_WARNING_TIME: float = 0.8 ## How long 'No stamina' shows after a refused attack/dodge.
 const SKILL_SLOT_SCENE: PackedScene = preload("res://scenes/ui/skill_slot.tscn")
 
 var _skill_caster: SkillCasterComponent
@@ -11,6 +12,8 @@ var _passives: PassiveComponent
 var _slots: Array[SkillSlot] = []
 var _consumables: ConsumableComponent
 var _consumable_slot: SkillSlot
+var _stamina: MeterComponent
+var _stamina_warning_left: float = 0.0
 
 @onready var hp_bar: ProgressBar = %HpBar
 @onready var hp_label: Label = %HpLabel
@@ -40,6 +43,8 @@ func bind_player(player: Player) -> void:
 	_on_health_changed(player.health.current, player.health.max_health)
 
 	player.stamina.changed.connect(_on_meter_changed.bind(stamina_bar, stamina_label, "HUD_STAMINA"))
+	_stamina = player.stamina
+	player.stamina_short.connect(func() -> void: _stamina_warning_left = STAMINA_WARNING_TIME)
 	player.mana.changed.connect(_on_meter_changed.bind(mana_bar, mana_label, "HUD_MANA"))
 	_on_meter_changed(player.stamina.current, player.stamina.max_value, stamina_bar, stamina_label, "HUD_STAMINA")
 	_on_meter_changed(player.mana.current, player.mana.max_value, mana_bar, mana_label, "HUD_MANA")
@@ -72,7 +77,8 @@ func bind_player(player: Player) -> void:
 
 
 # Timer, kills and cooldowns change every frame anyway, so just read them.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_update_stamina_warning(delta)
 	timer_label.text = format_time(GameState.run_time)
 	kills_label.text = tr("HUD_KILLS") % GameState.kills
 	var lines: Array[String] = []
@@ -124,10 +130,20 @@ func _blocked_text(skill: SkillData) -> String:
 	return tr("HUD_NO_MANA" if skill.kind == SkillData.Kind.MAGIC else "HUD_NO_STAMINA")
 
 
+## Text, not just the bar's color: 'Stamina 3/110 - No stamina' after a refused attack or dodge.
+func _update_stamina_warning(delta: float) -> void:
+	if _stamina_warning_left <= 0.0:
+		return
+	_stamina_warning_left = maxf(_stamina_warning_left - delta, 0.0)
+	_on_meter_changed(_stamina.current, _stamina.max_value, stamina_bar, stamina_label, "HUD_STAMINA")
+
+
 func _on_meter_changed(current: float, maximum: float, bar: ProgressBar, label: Label, key: String) -> void:
 	bar.max_value = maxf(maximum, 1.0)
 	bar.value = current
 	label.text = tr(key) % [floori(current), roundi(maximum)]
+	if bar == stamina_bar and _stamina_warning_left > 0.0:
+		label.text += "  -  " + tr("HUD_NO_STAMINA")
 
 
 func _on_health_changed(current: int, maximum: int) -> void:

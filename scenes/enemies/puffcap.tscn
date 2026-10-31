@@ -1,0 +1,158 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/exploder_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/puffcap.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
+
+[sub_resource type="CylinderShape3D" id="BodyShape"]
+height = 1.1
+radius = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StemMat"]
+albedo_color = Color(0.9, 0.86, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="CapMat"]
+albedo_color = Color(0.62, 0.3, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="SpotMat"]
+albedo_color = Color(0.95, 0.95, 0.85, 1)
+
+[sub_resource type="StandardMaterial3D" id="EyeMat"]
+albedo_color = Color(0.12, 0.1, 0.1, 1)
+
+[sub_resource type="CylinderMesh" id="StemMesh"]
+top_radius = 0.24
+bottom_radius = 0.32
+height = 0.6
+radial_segments = 8
+rings = 1
+
+[sub_resource type="SphereMesh" id="CapMesh"]
+radius = 0.55
+height = 0.6
+radial_segments = 10
+rings = 4
+
+[sub_resource type="SphereMesh" id="SpotMesh"]
+radius = 0.1
+height = 0.08
+radial_segments = 6
+rings = 2
+
+[sub_resource type="BoxMesh" id="EyeMesh"]
+size = Vector3(0.07, 0.12, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="RingMat"]
+shading_mode = 0
+albedo_color = Color(0.85, 0.95, 0.6, 1)
+
+[sub_resource type="TorusMesh" id="RingMesh"]
+material = SubResource("RingMat")
+inner_radius = 2.4
+outer_radius = 2.52
+rings = 28
+ring_segments = 4
+
+[sub_resource type="StandardMaterial3D" id="FillMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.55, 0.72, 0.3, 0.4)
+
+[sub_resource type="CylinderMesh" id="FillMesh"]
+material = SubResource("FillMat")
+top_radius = 2.4
+bottom_radius = 2.4
+height = 0.02
+radial_segments = 24
+rings = 1
+
+[node name="Puffcap" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+label_height = 1.6
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BodyShape")
+
+[node name="BlastMarker" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+
+[node name="Ring" type="MeshInstance3D" parent="BlastMarker"]
+mesh = SubResource("RingMesh")
+
+[node name="Fill" type="MeshInstance3D" parent="BlastMarker"]
+mesh = SubResource("FillMesh")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Puff" type="Node3D" parent="Visual"]
+
+[node name="Stem" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("StemMesh")
+surface_material_override/0 = SubResource("StemMat")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.42, -0.27)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.42, -0.27)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="Cap" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+mesh = SubResource("CapMesh")
+surface_material_override/0 = SubResource("CapMat")
+
+[node name="Spot1" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07, 0)
+mesh = SubResource("SpotMesh")
+surface_material_override/0 = SubResource("SpotMat")
+
+[node name="Spot2" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(0.85, -0.5, 0, 0.5, 0.85, 0, 0, 0, 1, 0.33, 0.98, 0.1)
+mesh = SubResource("SpotMesh")
+surface_material_override/0 = SubResource("SpotMat")
+
+[node name="Spot3" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(0.85, 0.5, 0, -0.5, 0.85, 0, 0, 0, 1, -0.3, 0.98, -0.15)
+mesh = SubResource("SpotMesh")
+surface_material_override/0 = SubResource("SpotMat")
+
+[node name="Spot4" type="MeshInstance3D" parent="Visual/Puff"]
+transform = Transform3D(1, 0, 0, 0, 0.85, 0.5, 0, -0.5, 0.85, 0.05, 0.95, 0.35)
+mesh = SubResource("SpotMesh")
+surface_material_override/0 = SubResource("SpotMat")

@@ -1,8 +1,45 @@
 [gd_resource type="Resource" script_class="MapData" format=3]
 
 [ext_resource type="Script" path="res://scripts/map_data.gd" id="1_data"]
-[ext_resource type="PackedScene" path="res://scenes/maps/greybox.tscn" id="2_scene"]
+[ext_resource type="PackedScene" path="res://scenes/maps/sunscar_dunes.tscn" id="2_scene"]
 [ext_resource type="Resource" path="res://resources/biomes/desert.tres" id="3_biome"]
+[ext_resource type="Script" path="res://scripts/spawn_entry.gd" id="pool_entry"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/goblin.tscn" id="pool_goblin"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/slinger.tscn" id="pool_slinger"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shaman.tscn" id="pool_shaman"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/skitterling.tscn" id="pool_skitterling"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/puffcap.tscn" id="pool_puffcap"]
+
+[sub_resource type="Resource" id="PoolGoblin"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_goblin")
+weight = 1.0
+from_wave = 1
+
+[sub_resource type="Resource" id="PoolSlinger"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_slinger")
+weight = 0.4
+from_wave = 2
+
+[sub_resource type="Resource" id="PoolPuffcap"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_puffcap")
+weight = 0.3
+from_wave = 2
+
+[sub_resource type="Resource" id="PoolSkitterling"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_skitterling")
+weight = 0.25
+from_wave = 3
+pack_size = 6
+
+[sub_resource type="Resource" id="PoolShaman"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_shaman")
+weight = 0.2
+from_wave = 4
 
 [resource]
 script = ExtResource("1_data")
@@ -11,3 +48,4 @@ description_key = "MAP_SUNSCAR_DESC"
 required_rank = 6
 biome = ExtResource("3_biome")
 scene = ExtResource("2_scene")
+enemy_pool = Array[ExtResource("pool_entry")]([SubResource("PoolGoblin"), SubResource("PoolSlinger"), SubResource("PoolPuffcap"), SubResource("PoolSkitterling"), SubResource("PoolShaman")])

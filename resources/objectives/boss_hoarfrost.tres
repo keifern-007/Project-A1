@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/hoarfrost.tscn" id="2_boss"]
+[ext_resource type="Resource" path="res://resources/materials/hoarfrost_pelt.tres" id="3_drop"]
+[ext_resource type="Resource" path="res://resources/moods/storm.tres" id="4_mood"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_BOSS_HOARFROST"
+description_key = "OBJ_BOSS_HOARFROST_DESC"
+type = 1
+required_rank = 5
+health_growth_per_wave = 0.1
+boss_scene = ExtResource("2_boss")
+boss_drop = ExtResource("3_drop")
+mood = ExtResource("4_mood")

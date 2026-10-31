@@ -1,0 +1,380 @@
+[gd_scene load_steps=50 format=3]
+
+[ext_resource type="Script" path="res://scenes/bosses/sun_eaten_king.gd" id="1_boss"]
+[ext_resource type="Resource" path="res://resources/enemies/sun_eaten_king.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="6_hitbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="7_status"]
+[ext_resource type="Script" path="res://scenes/bosses/king_animator.gd" id="8_animator"]
+[ext_resource type="Script" path="res://scenes/bosses/moves/melee_move.gd" id="9_melee"]
+[ext_resource type="Script" path="res://scenes/bosses/moves/area_rain_move.gd" id="10_rain"]
+[ext_resource type="Script" path="res://scenes/bosses/moves/cone_move.gd" id="11_cone"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/moves/drop_zone.tscn" id="13_zone"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/props/quicksand.tscn" id="14_sand"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/props/canopic_jar.tscn" id="15_jar"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 1.1
+height = 4.2
+
+[sub_resource type="StandardMaterial3D" id="WrapMat"]
+albedo_color = Color(0.82, 0.74, 0.58, 1)
+
+[sub_resource type="StandardMaterial3D" id="BandMat"]
+albedo_color = Color(0.62, 0.53, 0.4, 1)
+
+[sub_resource type="StandardMaterial3D" id="GoldMat"]
+albedo_color = Color(0.95, 0.75, 0.25, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="EyeMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.85, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="LapisMat"]
+albedo_color = Color(0.2, 0.3, 0.65, 1)
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 1.1
+height = 3.8
+
+[sub_resource type="CylinderMesh" id="BandMesh"]
+material = SubResource("BandMat")
+top_radius = 1.13
+bottom_radius = 1.13
+height = 0.14
+radial_segments = 12
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CollarMesh"]
+material = SubResource("GoldMat")
+top_radius = 0.75
+bottom_radius = 1.15
+height = 0.35
+radial_segments = 12
+rings = 1
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+radius = 0.7
+height = 1.3
+
+[sub_resource type="BoxMesh" id="EyeMesh"]
+size = Vector3(0.16, 0.08, 0.05)
+
+[sub_resource type="CylinderMesh" id="CrownMesh"]
+material = SubResource("GoldMat")
+top_radius = 0.6
+bottom_radius = 0.5
+height = 0.5
+radial_segments = 10
+rings = 1
+
+[sub_resource type="CylinderMesh" id="SpikeMesh"]
+material = SubResource("GoldMat")
+top_radius = 0.0
+bottom_radius = 0.12
+height = 0.45
+radial_segments = 5
+rings = 1
+
+[sub_resource type="BoxMesh" id="ArmMesh"]
+size = Vector3(0.5, 2.2, 0.5)
+
+[sub_resource type="CylinderMesh" id="ScepterMesh"]
+material = SubResource("GoldMat")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 2.6
+radial_segments = 6
+rings = 1
+
+[sub_resource type="SphereMesh" id="OrbMesh"]
+material = SubResource("LapisMat")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="BoxMesh" id="CasketMesh"]
+material = SubResource("GoldMat")
+size = Vector3(2.8, 4.8, 2.2)
+
+[sub_resource type="BoxMesh" id="LidMesh"]
+material = SubResource("LapisMat")
+size = Vector3(2.6, 4.4, 0.3)
+
+[sub_resource type="BoxMesh" id="MaskMesh"]
+material = SubResource("GoldMat")
+size = Vector3(1.0, 1.2, 0.12)
+
+[sub_resource type="BoxShape3D" id="SmashShape"]
+size = Vector3(3.5, 3, 3.5)
+
+[sub_resource type="StandardMaterial3D" id="MarkerMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.9, 0.6, 0.6)
+
+[sub_resource type="BoxMesh" id="SmashMarkerMesh"]
+material = SubResource("MarkerMat")
+size = Vector3(3.5, 0.02, 3.5)
+
+[sub_resource type="StandardMaterial3D" id="WedgeMat"]
+transparency = 1
+shading_mode = 0
+cull_mode = 2
+albedo_color = Color(1, 0.9, 0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="HintMat"]
+shading_mode = 0
+cull_mode = 2
+albedo_color = Color(1, 0.95, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="BeamMat"]
+transparency = 1
+shading_mode = 0
+cull_mode = 2
+albedo_color = Color(1, 0.82, 0.35, 0.75)
+
+[node name="SunEatenKing" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_boss")
+data = ExtResource("2_data")
+turn_speed = 2.0
+stop_distance = 3.0
+jar_scene = ExtResource("15_jar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("7_status")
+health = NodePath("../HealthComponent")
+label_height = 5.6
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+shape = SubResource("BodyShape")
+
+[node name="StunLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.1, 0)
+auto_translate_mode = 2
+pixel_size = 0.02
+billboard = 1
+no_depth_test = true
+font_size = 28
+outline_size = 8
+
+[node name="SealLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.3, 0)
+auto_translate_mode = 2
+pixel_size = 0.02
+billboard = 1
+no_depth_test = true
+font_size = 28
+outline_size = 8
+
+[node name="Animator" type="Node" parent="." node_paths=PackedStringArray("visual", "left_arm", "right_arm")]
+script = ExtResource("8_animator")
+visual = NodePath("../Visual")
+left_arm = NodePath("../Visual/LeftArm")
+right_arm = NodePath("../Visual/RightArm")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("WrapMat")
+
+[node name="Band1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.98, 0, 0.17, 0, 1, 0, -0.17, 0, 0.98, 0, 1.2, 0)
+mesh = SubResource("BandMesh")
+
+[node name="Band2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BandMesh")
+
+[node name="Band3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.98, 0, -0.17, 0, 1, 0, 0.17, 0, 0.98, 0, 2.8, 0)
+mesh = SubResource("BandMesh")
+
+[node name="Collar" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.45, 0)
+mesh = SubResource("CollarMesh")
+
+[node name="Head" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0)
+mesh = SubResource("HeadMesh")
+surface_material_override/0 = SubResource("WrapMat")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 4.15, -0.63)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 4.15, -0.63)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="Crown" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.75, 0)
+mesh = SubResource("CrownMesh")
+
+[node name="SpikeFront" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, -0.45)
+mesh = SubResource("SpikeMesh")
+
+[node name="SpikeLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 5.15, 0.15)
+mesh = SubResource("SpikeMesh")
+
+[node name="SpikeRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 5.15, 0.15)
+mesh = SubResource("SpikeMesh")
+
+[node name="LeftArm" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 3.2, 0)
+
+[node name="Arm" type="MeshInstance3D" parent="Visual/LeftArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("WrapMat")
+
+[node name="RightArm" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 3.2, 0)
+
+[node name="Arm" type="MeshInstance3D" parent="Visual/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("WrapMat")
+
+[node name="Scepter" type="MeshInstance3D" parent="Visual/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0, -0.35)
+mesh = SubResource("ScepterMesh")
+
+[node name="Orb" type="MeshInstance3D" parent="Visual/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65, -0.35)
+mesh = SubResource("OrbMesh")
+
+[node name="Sarcophagus" type="Node3D" parent="."]
+
+[node name="Casket" type="MeshInstance3D" parent="Sarcophagus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("CasketMesh")
+
+[node name="Lid" type="Node3D" parent="Sarcophagus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -1.2)
+
+[node name="LidMesh" type="MeshInstance3D" parent="Sarcophagus/Lid"]
+mesh = SubResource("LidMesh")
+
+[node name="Mask" type="MeshInstance3D" parent="Sarcophagus/Lid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.2)
+mesh = SubResource("MaskMesh")
+
+[node name="Moves" type="Node3D" parent="."]
+
+[node name="ScepterSmash" type="Node3D" parent="Moves"]
+script = ExtResource("9_melee")
+anim = &"smash"
+damage = 24
+knockback = 12.0
+windup = 1.0
+recovery = 1.0
+max_range = 4.5
+weight = 1.2
+
+[node name="HitboxComponent" type="Area3D" parent="Moves/ScepterSmash"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_hitbox")
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Moves/ScepterSmash/HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -2.2)
+shape = SubResource("SmashShape")
+
+[node name="Marker" type="MeshInstance3D" parent="Moves/ScepterSmash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, -2.2)
+mesh = SubResource("SmashMarkerMesh")
+
+[node name="CurseBeam" type="Node3D" parent="Moves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.8)
+script = ExtResource("11_cone")
+length = 14.0
+half_angle_degrees = 3.5
+sweep_degrees = 240.0
+phase_two_sweep_degrees = 300.0
+random_sweep_direction = true
+anim = &"beam"
+damage = 20
+knockback = 6.0
+shake = 0.3
+windup = 1.4
+track_fraction = 0.8
+active_time = 3.0
+recovery = 1.4
+cooldown = 7.0
+max_range = 14.0
+weight = 1.2
+
+[node name="HitboxComponent" type="Area3D" parent="Moves/CurseBeam"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("6_hitbox")
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Moves/CurseBeam/HitboxComponent"]
+
+[node name="Marker" type="MeshInstance3D" parent="Moves/CurseBeam"]
+material_override = SubResource("WedgeMat")
+
+[node name="SweepHint" type="MeshInstance3D" parent="Moves/CurseBeam/Marker"]
+material_override = SubResource("HintMat")
+
+[node name="Mist" type="MeshInstance3D" parent="Moves/CurseBeam"]
+material_override = SubResource("BeamMat")
+
+[node name="SandSink" type="Node3D" parent="Moves"]
+script = ExtResource("10_rain")
+drop_zone_scene = ExtResource("13_zone")
+zone_count = 3
+phase_two_extra_zones = 2
+zone_radius = 2.0
+spread = 7.0
+stagger = 0.2
+obstacle_scene = ExtResource("14_sand")
+obstacle_time = 5.0
+show_falling = false
+anim = &"sink"
+damage = 6
+knockback = 0.0
+shake = 0.2
+windup = 1.3
+track_fraction = 0.2
+active_time = 0.3
+recovery = 1.0
+cooldown = 6.0
+max_range = 20.0
+needs_facing = false

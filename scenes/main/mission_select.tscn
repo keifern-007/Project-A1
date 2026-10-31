@@ -14,18 +14,20 @@
 [ext_resource type="Resource" path="res://resources/challenges/brutal.tres" id="12_brutal"]
 [ext_resource type="Resource" path="res://resources/maps/frost_pass.tres" id="13_frost"]
 [ext_resource type="Resource" path="res://resources/maps/sunscar_dunes.tres" id="14_sunscar"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_hoarfrost.tres" id="15_hoarfrost"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_king.tres" id="16_king"]
 
 [sub_resource type="LabelSettings" id="TitleText"]
-font_size = 64
-outline_size = 10
+font_size = 44
+outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="HeaderText"]
-font_size = 26
+font_size = 22
 font_color = Color(0.85, 0.85, 0.85, 1)
 
 [sub_resource type="LabelSettings" id="BodyText"]
-font_size = 20
+font_size = 18
 
 [node name="MissionSelect" type="Control"]
 layout_mode = 3
@@ -36,7 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_select")
 maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox"), ExtResource("13_frost"), ExtResource("14_sunscar")])
-objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("8_sunbloom")])
+objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("15_hoarfrost"), ExtResource("16_king"), ExtResource("8_sunbloom")])
 challenges = Array[ExtResource("9_chdata")]([ExtResource("10_normal"), ExtResource("11_hard"), ExtResource("12_brutal")])
 
 [node name="Background" type="ColorRect" parent="."]
@@ -56,13 +58,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 60
-theme_override_constants/margin_top = 40
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 60
-theme_override_constants/margin_bottom = 40
+theme_override_constants/margin_bottom = 20
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="Margin/VBox"]
 layout_mode = 2
@@ -76,58 +78,69 @@ text = "UI_CHOOSE_MISSION"
 label_settings = SubResource("HeaderText")
 horizontal_alignment = 1
 
-[node name="Columns" type="HBoxContainer" parent="Margin/VBox"]
+[node name="ColumnsScroll" type="ScrollContainer" parent="Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 60
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Columns" type="HBoxContainer" parent="Margin/VBox/ColumnsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
 alignment = 1
 
-[node name="MapColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+[node name="MapColumn" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 
-[node name="MapHeader" type="Label" parent="Margin/VBox/Columns/MapColumn"]
+[node name="MapHeader" type="Label" parent="Margin/VBox/ColumnsScroll/Columns/MapColumn"]
 layout_mode = 2
 text = "UI_MAP"
 label_settings = SubResource("HeaderText")
 
-[node name="MapList" type="VBoxContainer" parent="Margin/VBox/Columns/MapColumn"]
+[node name="MapList" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns/MapColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="ObjectiveColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+[node name="ObjectiveColumn" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 
-[node name="ObjectiveHeader" type="Label" parent="Margin/VBox/Columns/ObjectiveColumn"]
+[node name="ObjectiveHeader" type="Label" parent="Margin/VBox/ColumnsScroll/Columns/ObjectiveColumn"]
 layout_mode = 2
 text = "UI_OBJECTIVE"
 label_settings = SubResource("HeaderText")
 
-[node name="ObjectiveList" type="VBoxContainer" parent="Margin/VBox/Columns/ObjectiveColumn"]
+[node name="ObjectiveList" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns/ObjectiveColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="ChallengeColumn" type="VBoxContainer" parent="Margin/VBox/Columns"]
+[node name="ChallengeColumn" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 
-[node name="ChallengeHeader" type="Label" parent="Margin/VBox/Columns/ChallengeColumn"]
+[node name="ChallengeHeader" type="Label" parent="Margin/VBox/ColumnsScroll/Columns/ChallengeColumn"]
 layout_mode = 2
 text = "UI_DIFFICULTY"
 label_settings = SubResource("HeaderText")
 
-[node name="ChallengeList" type="VBoxContainer" parent="Margin/VBox/Columns/ChallengeColumn"]
+[node name="ChallengeList" type="VBoxContainer" parent="Margin/VBox/ColumnsScroll/Columns/ChallengeColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="Details" type="Label" parent="Margin/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 64)
+[node name="DetailsScroll" type="ScrollContainer" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Details" type="Label" parent="Margin/VBox/DetailsScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 auto_translate_mode = 2
 label_settings = SubResource("BodyText")
 horizontal_alignment = 1
@@ -140,14 +153,14 @@ alignment = 1
 
 [node name="StartButton" type="Button" parent="Margin/VBox/Buttons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(240, 56)
+custom_minimum_size = Vector2(240, 48)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 22
 text = "UI_START"
 
 [node name="BackButton" type="Button" parent="Margin/VBox/Buttons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(240, 56)
+custom_minimum_size = Vector2(240, 48)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 22
 text = "UI_BACK"

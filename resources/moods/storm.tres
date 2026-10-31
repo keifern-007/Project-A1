@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MoodData" format=3 uid="uid://hfpnvup0y56r"]
+
+[ext_resource type="Script" uid="uid://c7g1lwxkne481" path="res://scripts/mood_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/weather/rain.tscn" id="2_rain"]
+
+[resource]
+script = ExtResource("1_data")
+sky_top_color = Color(0.17, 0.19, 0.25, 1)
+sky_horizon_color = Color(0.36, 0.38, 0.44, 1)
+sky_blend = 0.85
+sun_energy_multiplier = 0.7
+sun_color = Color(0.7, 0.76, 0.9, 1)
+sun_color_blend = 0.6
+ambient_energy_multiplier = 0.85
+saturation_multiplier = 0.95
+fog_color = Color(0.34, 0.37, 0.44, 1)
+fog_blend = 0.7
+fog_density_min = 0.002
+weather = ExtResource("2_rain")
+use_biome_storm_weather = true
+lightning_interval_min = 7.0
+lightning_interval_max = 15.0

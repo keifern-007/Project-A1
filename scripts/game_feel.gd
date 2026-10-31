@@ -1,6 +1,6 @@
 class_name GameFeel
 extends RefCounted
-## The single place for "juice" that affects the whole screen: hit stop and screen shake.
+## The single place for "juice" that affects the whole screen: hit stop, screen shake, flashes.
 ## Everything here respects the accessibility settings, so call these instead of doing it by hand.
 
 const HIT_STOP_TIME_SCALE: float = 0.05
@@ -34,3 +34,8 @@ static func shake(trauma: float) -> void:
 		amount *= REDUCED_FLASHING_SHAKE
 	if amount > 0.0:
 		EventBus.screen_shake_requested.emit(amount)
+
+
+## Bright full-screen flashes (lightning) only happen when this is true. Respects reduce_flashing.
+static func flashes_allowed() -> bool:
+	return not Settings.reduce_flashing

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dg1rvuqtci4b6" path="res://scripts/objective_data.gd" id="1_data"]
 [ext_resource type="Resource" uid="uid://4a8axcif7d6d" path="res://resources/materials/moonleaf.tres" id="2_mat"]
 [ext_resource type="PackedScene" path="res://scenes/maps/gather_node.tscn" id="3_node"]
+[ext_resource type="Resource" path="res://resources/moods/bright.tres" id="mood_bright"]
 
 [resource]
 script = ExtResource("1_data")
@@ -14,3 +15,4 @@ wave_size_growth = 1
 health_growth_per_wave = 0.1
 gather_material = ExtResource("2_mat")
 gather_node_scene = ExtResource("3_node")
+mood = ExtResource("mood_bright")

@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="CliffMat"]
+albedo_color = Color(0.33, 0.35, 0.41, 1)
+
+[sub_resource type="StandardMaterial3D" id="SnowMat"]
+albedo_color = Color(0.93, 0.95, 1, 1)
+
+[sub_resource type="BoxMesh" id="SlabMesh"]
+material = SubResource("CliffMat")
+size = Vector3(3.2, 5, 2.4)
+
+[sub_resource type="BoxMesh" id="SlabSmallMesh"]
+material = SubResource("CliffMat")
+size = Vector3(2.2, 3, 2)
+
+[sub_resource type="BoxMesh" id="SnowCapMesh"]
+material = SubResource("SnowMat")
+size = Vector3(3.3, 0.35, 2.5)
+
+[sub_resource type="BoxShape3D" id="CliffShape"]
+size = Vector3(3.4, 5, 2.6)
+
+[node name="Cliff" type="StaticBody3D"]
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+shape = SubResource("CliffShape")
+
+[node name="Slab" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.98, 0, 0.17, 0, 1, 0, -0.17, 0, 0.98, 0, 2.5, 0)
+mesh = SubResource("SlabMesh")
+
+[node name="SnowCap" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.98, 0, 0.17, 0, 1, 0, -0.17, 0, 0.98, 0, 5.1, 0)
+mesh = SubResource("SnowCapMesh")
+
+[node name="Ledge" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.94, 0, -0.34, 0, 1, 0, 0.34, 0, 0.94, 1.1, 1.5, 0.9)
+mesh = SubResource("SlabSmallMesh")

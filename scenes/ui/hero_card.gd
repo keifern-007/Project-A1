@@ -8,8 +8,10 @@ signal confirmed(character: CharacterData)
 signal closed
 signal browse(step: int) ## -1 = previous hero, +1 = next (choosing mode only).
 
-const MARGIN: int = 40
-const SILHOUETTE_SIZE: Vector2 = Vector2(44, 90) ## At body_scale 1.
+const MARGIN: int = 24
+const TOP_MARGIN: int = 60 ## Stays below the camp's Quit button.
+const BOTTOM_MARGIN: int = 16
+const SILHOUETTE_SIZE: Vector2 = Vector2(27, 56) ## At body_scale 1.
 
 var _character: CharacterData
 var _choosing: bool = false
@@ -35,8 +37,13 @@ func _ready() -> void:
 func show_character(character: CharacterData, on_right: bool, choosing: bool) -> void:
 	_character = character
 	_choosing = choosing
-	card.set_anchors_and_offsets_preset(Control.PRESET_CENTER_RIGHT if on_right else Control.PRESET_CENTER_LEFT,
+	# Full height, so the card can never leave the screen: the text scrolls, the buttons stay put.
+	# On the right it must grow leftward, or its minimum width pushes it off the screen edge.
+	card.grow_horizontal = Control.GROW_DIRECTION_BEGIN if on_right else Control.GROW_DIRECTION_END
+	card.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE if on_right else Control.PRESET_LEFT_WIDE,
 		Control.PRESET_MODE_MINSIZE, MARGIN)
+	card.offset_top = TOP_MARGIN
+	card.offset_bottom = -BOTTOM_MARGIN
 	header_label.text = tr("UI_CHOOSE_HERO_HINT")
 	header_label.visible = choosing
 	back_button.visible = not choosing

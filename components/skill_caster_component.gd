@@ -27,6 +27,7 @@ var cooldown_speed: float = 1.0
 var skill_damage_mods: Dictionary = {}
 var skill_cooldown_mods: Dictionary = {}
 var skill_windup_mods: Dictionary = {} ## From the main-hand weapon.
+var guard_break_skills: Dictionary = {} ## skill -> true: a heavy weapon's skills knock shields aside.
 
 var _cooldowns: Array[float] = []
 var _basic_left: float = 0.0
@@ -124,7 +125,7 @@ func cancel_cast() -> void:
 	cast_ended.emit(false)
 
 
-## Fires the basic attack skill (ranged characters). Free. Returns true if it fired.
+## Fires the basic attack skill (ranged characters). Its stamina is paid by the Player. Returns true if it fired.
 func try_basic(caster: Node3D, direction: Vector3, world: Node) -> bool:
 	if is_casting() or basic_attack == null or _basic_left > 0.0 or direction == Vector3.ZERO:
 		return false
@@ -174,3 +175,12 @@ func _spawn(skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -
 	effect.caster = caster
 	world.add_child(effect)
 	effect.global_position = caster.global_position
+	if guard_break_skills.has(skill):
+		_mark_guard_break(effect)
+
+
+func _mark_guard_break(node: Node) -> void:
+	if node is HitboxComponent:
+		(node as HitboxComponent).guard_break = true
+	for child: Node in node.get_children():
+		_mark_guard_break(child)

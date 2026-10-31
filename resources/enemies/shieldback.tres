@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="3_ear"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/items/fury_tonic.tres" id="5_fury"]
+[ext_resource type="Resource" path="res://resources/enemies/shieldback_frost.tres" id="6_frost"]
+
+[sub_resource type="Resource" id="DropEar"]
+script = ExtResource("2_drop")
+material = ExtResource("3_ear")
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.08
+
+[sub_resource type="Resource" id="DropFury"]
+script = ExtResource("2_drop")
+booster = ExtResource("5_fury")
+chance = 0.04
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_SHIELDBACK"
+max_health = 40
+attack_power = 12
+defense = 2
+move_speed = 2.6
+fire_multiplier = 1.5
+detection_range = 14.0
+attack_range = 2.2
+attack_windup = 0.9
+attack_recovery = 1.0
+knockback_resistance = 0.9
+guard_multiplier = 0.2
+guard_angle_degrees = 70.0
+guard_break_time = 2.0
+turn_speed = 2.5
+xp_reward = 10
+drops = Array[ExtResource("2_drop")]([SubResource("DropEar"), SubResource("DropHeal"), SubResource("DropFury")])
+variants = Array[ExtResource("1_data")]([ExtResource("6_frost")])

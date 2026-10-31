@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cgebx35pen4x2"]
 
-[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
-[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="2_drop"]
 [ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="3_ear"]
 [ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
 [ext_resource type="Resource" path="res://resources/items/fury_tonic.tres" id="5_fury"]

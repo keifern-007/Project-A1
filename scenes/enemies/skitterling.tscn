@@ -1,0 +1,183 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/swarm_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/skitterling.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
+
+[sub_resource type="CylinderShape3D" id="BodyShape"]
+height = 0.6
+radius = 0.35
+
+[sub_resource type="BoxShape3D" id="BiteShape"]
+size = Vector3(0.8, 0.6, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="ShellMat"]
+albedo_color = Color(0.3, 0.2, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="EyeMat"]
+albedo_color = Color(0.95, 0.85, 0.4, 1)
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+radius = 0.18
+height = 0.32
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereMesh" id="AbdomenMesh"]
+radius = 0.3
+height = 0.48
+radial_segments = 8
+rings = 4
+
+[sub_resource type="BoxMesh" id="LegMesh"]
+size = Vector3(0.55, 0.05, 0.05)
+
+[sub_resource type="BoxMesh" id="EyeMesh"]
+size = Vector3(0.05, 0.05, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="MudMat"]
+albedo_color = Color(0.45, 0.33, 0.22, 1)
+
+[sub_resource type="SphereMesh" id="MudMesh"]
+radius = 0.32
+height = 0.64
+radial_segments = 10
+rings = 5
+
+[sub_resource type="StandardMaterial3D" id="MudEyeMat"]
+albedo_color = Color(0.95, 0.95, 0.9, 1)
+
+[sub_resource type="BoxMesh" id="MudEyeMesh"]
+size = Vector3(0.09, 0.11, 0.04)
+
+[node name="Skitterling" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+label_height = 1.0
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BodyShape")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Arachnid" type="Node3D" parent="Visual"]
+
+[node name="Head" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, -0.25)
+mesh = SubResource("HeadMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="Abdomen" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(1, 0, 0, 0, 0.85, 0, 0, 0, 1, 0, 0.34, 0.15)
+mesh = SubResource("AbdomenMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0.33, -0.41)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, 0.33, -0.41)
+mesh = SubResource("EyeMesh")
+surface_material_override/0 = SubResource("EyeMat")
+
+[node name="LegR1" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, 0.4794, 0, -0.4794, 0.8776, 0, 0, 0, 1, 0.3, 0.2, -0.25)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegR2" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, 0.4794, 0, -0.4794, 0.8776, 0, 0, 0, 1, 0.32, 0.2, -0.08)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegR3" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, 0.4794, 0, -0.4794, 0.8776, 0, 0, 0, 1, 0.32, 0.2, 0.09)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegR4" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, 0.4794, 0, -0.4794, 0.8776, 0, 0, 0, 1, 0.3, 0.2, 0.26)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegL1" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, -0.4794, 0, 0.4794, 0.8776, 0, 0, 0, 1, -0.3, 0.2, -0.25)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegL2" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, -0.4794, 0, 0.4794, 0.8776, 0, 0, 0, 1, -0.32, 0.2, -0.08)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegL3" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, -0.4794, 0, 0.4794, 0.8776, 0, 0, 0, 1, -0.32, 0.2, 0.09)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="LegL4" type="MeshInstance3D" parent="Visual/Arachnid"]
+transform = Transform3D(0.8776, -0.4794, 0, 0.4794, 0.8776, 0, 0, 0, 1, -0.3, 0.2, 0.26)
+mesh = SubResource("LegMesh")
+surface_material_override/0 = SubResource("ShellMat")
+
+[node name="Alternate" type="Node3D" parent="Visual"]
+visible = false
+
+[node name="Blob" type="MeshInstance3D" parent="Visual/Alternate"]
+transform = Transform3D(1, 0, 0, 0, 0.75, 0, 0, 0, 1, 0, 0.26, 0)
+mesh = SubResource("MudMesh")
+surface_material_override/0 = SubResource("MudMat")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visual/Alternate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.35, -0.29)
+mesh = SubResource("MudEyeMesh")
+surface_material_override/0 = SubResource("MudEyeMat")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visual/Alternate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.35, -0.29)
+mesh = SubResource("MudEyeMesh")
+surface_material_override/0 = SubResource("MudEyeMat")
+
+[node name="BiteHitbox" type="Area3D" parent="Visual"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("7_hitbox")
+knockback = 3.0
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visual/BiteHitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.5)
+shape = SubResource("BiteShape")

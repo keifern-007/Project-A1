@@ -7,6 +7,8 @@ extends Area3D
 ## How hard this pushes whatever it hits, away from the hitbox's origin.
 @export var knockback: float = 0.0
 @export var element: Element.Type = Element.Type.PHYSICAL
+## Heavy hits (big weapons) knock guards aside, e.g. a Shieldback's shield.
+@export var guard_break: bool = false
 ## Turn on only during an attack's active frames. Traps just leave it on.
 @export var active: bool = true:
 	set(value):

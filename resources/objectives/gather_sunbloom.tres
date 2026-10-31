@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectiveData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ObjectiveData" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="2_mat"]
 [ext_resource type="PackedScene" path="res://scenes/maps/gather_node.tscn" id="3_node"]
+[ext_resource type="Resource" path="res://resources/moods/bright.tres" id="mood_bright"]
 
 [resource]
 script = ExtResource("1_data")
@@ -16,3 +17,4 @@ health_growth_per_wave = 0.15
 gather_material = ExtResource("2_mat")
 gather_amount = 8
 gather_node_scene = ExtResource("3_node")
+mood = ExtResource("mood_bright")

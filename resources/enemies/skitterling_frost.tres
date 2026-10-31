@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/materials/frost_shard.tres" id="6_mat"]
+[ext_resource type="Resource" path="res://resources/biomes/snow.tres" id="7_biome"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/variants/frost_spikes.tscn" id="8_look"]
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.03
+
+[sub_resource type="Resource" id="DropExclusive"]
+script = ExtResource("2_drop")
+material = ExtResource("6_mat")
+chance = 0.12
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_SKITTERLING_FROST"
+max_health = 10
+attack_power = 6
+move_speed = 4.8
+fire_multiplier = 2.0
+ice_multiplier = 0.5
+can_be_frozen = false
+detection_range = 14.0
+attack_range = 1.6
+attack_windup = 0.35
+attack_recovery = 0.5
+xp_reward = 2
+is_arachnid = true
+drops = Array[ExtResource("2_drop")]([SubResource("DropExclusive"), SubResource("DropHeal")])
+biome = ExtResource("7_biome")
+tint = Color(0.8, 0.95, 1.4, 1)
+accessory = ExtResource("8_look")
+accessory_scale = 0.6

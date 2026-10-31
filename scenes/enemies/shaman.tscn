@@ -1,0 +1,170 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/support_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/shaman.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.38
+height = 1.3
+
+[sub_resource type="StandardMaterial3D" id="SkinMat"]
+albedo_color = Color(0.38, 0.56, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="RobeMat"]
+albedo_color = Color(0.42, 0.26, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="FeatherMat"]
+albedo_color = Color(0.9, 0.75, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="WoodMat"]
+albedo_color = Color(0.4, 0.28, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="OrbMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.9, 0.5, 1)
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 0.36
+height = 1.3
+
+[sub_resource type="CylinderMesh" id="RobeMesh"]
+top_radius = 0.3
+bottom_radius = 0.52
+height = 0.8
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CylinderMesh" id="FeatherMesh"]
+top_radius = 0.0
+bottom_radius = 0.07
+height = 0.5
+radial_segments = 4
+rings = 1
+
+[sub_resource type="CylinderMesh" id="EarMesh"]
+top_radius = 0.0
+bottom_radius = 0.11
+height = 0.4
+radial_segments = 4
+
+[sub_resource type="BoxMesh" id="ArmMesh"]
+size = Vector3(0.12, 0.5, 0.12)
+
+[sub_resource type="CylinderMesh" id="StaffMesh"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 1.5
+radial_segments = 6
+rings = 1
+
+[sub_resource type="SphereMesh" id="OrbMesh"]
+radius = 0.13
+height = 0.26
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="TetherMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.9, 0.5, 0.7)
+
+[sub_resource type="BoxMesh" id="TetherMesh"]
+material = SubResource("TetherMat")
+size = Vector3(0.08, 0.08, 1)
+
+[node name="Shaman" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+label_height = 2.1
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+shape = SubResource("BodyShape")
+
+[node name="Tether" type="MeshInstance3D" parent="."]
+mesh = SubResource("TetherMesh")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Robe" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("RobeMesh")
+surface_material_override/0 = SubResource("RobeMat")
+
+[node name="EarLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0, 1, -0.38, 1.12, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0.38, 1.12, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Feather1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.05)
+mesh = SubResource("FeatherMesh")
+surface_material_override/0 = SubResource("FeatherMat")
+
+[node name="Feather2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.94, -0.34, 0, 0.34, 0.94, 0, 0, 0, 1, -0.15, 1.45, 0.08)
+mesh = SubResource("FeatherMesh")
+surface_material_override/0 = SubResource("FeatherMat")
+
+[node name="Feather3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0, 1, 0.15, 1.45, 0.08)
+mesh = SubResource("FeatherMesh")
+surface_material_override/0 = SubResource("FeatherMat")
+
+[node name="Arm" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.0, 0)
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Visual/Arm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Staff" type="MeshInstance3D" parent="Visual/Arm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -0.12)
+mesh = SubResource("StaffMesh")
+surface_material_override/0 = SubResource("WoodMat")
+
+[node name="Orb" type="MeshInstance3D" parent="Visual/Arm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -0.12)
+mesh = SubResource("OrbMesh")
+surface_material_override/0 = SubResource("OrbMat")

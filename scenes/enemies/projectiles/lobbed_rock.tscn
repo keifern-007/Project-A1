@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/projectiles/lobbed_shot.gd" id="1_shot"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="2_hitbox"]
+
+[sub_resource type="StandardMaterial3D" id="RockMat"]
+albedo_color = Color(0.5, 0.48, 0.45, 1)
+
+[sub_resource type="SphereMesh" id="RockMesh"]
+radius = 0.28
+height = 0.5
+radial_segments = 6
+rings = 3
+
+[sub_resource type="StandardMaterial3D" id="RingMat"]
+shading_mode = 0
+albedo_color = Color(1, 0.95, 0.85, 1)
+
+[sub_resource type="TorusMesh" id="RingMesh"]
+material = SubResource("RingMat")
+inner_radius = 1.0
+outer_radius = 1.12
+rings = 24
+ring_segments = 4
+
+[sub_resource type="StandardMaterial3D" id="FillMat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.9, 0.3, 0.2, 0.45)
+
+[sub_resource type="CylinderMesh" id="FillMesh"]
+material = SubResource("FillMat")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.02
+radial_segments = 20
+rings = 1
+
+[sub_resource type="CylinderShape3D" id="HitShape"]
+height = 2.0
+radius = 1.1
+
+[node name="LobbedRock" type="Node3D"]
+script = ExtResource("1_shot")
+
+[node name="Rock" type="MeshInstance3D" parent="."]
+mesh = SubResource("RockMesh")
+surface_material_override/0 = SubResource("RockMat")
+
+[node name="Marker" type="Node3D" parent="."]
+
+[node name="Ring" type="MeshInstance3D" parent="Marker"]
+mesh = SubResource("RingMesh")
+
+[node name="Fill" type="MeshInstance3D" parent="Marker"]
+mesh = SubResource("FillMesh")
+
+[node name="HitboxComponent" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("2_hitbox")
+knockback = 4.0
+active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("HitShape")

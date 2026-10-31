@@ -8,6 +8,8 @@ enum Type { HORDE, BOSS, GATHER }
 @export var description_key: String = "" ## Shown on mission select.
 @export var type: Type = Type.HORDE
 @export var required_rank: int = 1 ## Locked on the Mission Board until this Rank.
+## Re-lights the map: storm for bosses, bright for gathering. Empty = the map as it is.
+@export var mood: MoodData
 
 @export_group("Horde")
 @export var waves_to_survive: int = 5

@@ -112,8 +112,10 @@ func _refresh_item_list() -> void:
 		var hands: String = "  [%s]" % tr("ITEM_TWO_HANDED") if item.two_handed else ""
 		var count: int = SaveManager.get_item_count(str(item.id))
 		var copies: String = "  " + tr("UI_COUNT_TAG") % count if count > 1 else ""
-		var button: Button = _make_button(Vector2(400, 48))
-		button.text = "%s %s%s%s%s   %s" % [tr("UI_TIER") % item.tier, tr(item.name_key), hands, copies, tag, _short_stats(item)]
+		var button: Button = _make_button(Vector2(0, 48))
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART # Long skill lists wrap instead of widening the panel.
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.text = "%s %s%s%s%s\n%s" % [tr("UI_TIER") % item.tier, tr(item.name_key), hands, copies, tag, _short_stats(item)]
 		if not SaveManager.can_use_tier(item):
 			button.disabled = true
 			button.text += "\n" + tr("UI_REQUIRES") % Progression.requirement_text(Progression.MASTERY, item.category, item.tier)
@@ -164,6 +166,5 @@ func _make_hint(text: String) -> Label:
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.custom_minimum_size = Vector2(380, 0)
 	label.add_theme_font_size_override("font_size", 18)
 	return label

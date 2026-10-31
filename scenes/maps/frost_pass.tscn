@@ -1,0 +1,576 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://components/camera_follow.gd" id="2_cam"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/goblin.tscn" id="3_goblin"]
+[ext_resource type="Script" path="res://components/wave_spawner.gd" id="4_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/tree_pine_snow.tscn" id="5_pine"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/rock_snow.tscn" id="6_rock"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/cliff.tscn" id="7_cliff"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/snowbank.tscn" id="8_bank"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/ice_crystal.tscn" id="9_crystal"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/weather/snowfall.tscn" id="10_snow"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.52, 0.6, 0.7, 1)
+sky_horizon_color = Color(0.8, 0.85, 0.9, 1)
+ground_bottom_color = Color(0.6, 0.65, 0.72, 1)
+ground_horizon_color = Color(0.8, 0.85, 0.9, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.75, 0.82, 0.95, 1)
+ambient_light_sky_contribution = 0.5
+ambient_light_energy = 0.7
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.8, 0.85, 0.93, 1)
+fog_density = 0.002
+fog_sky_affect = 0.5
+adjustment_enabled = true
+adjustment_contrast = 1.08
+
+[sub_resource type="StandardMaterial3D" id="SnowMat"]
+albedo_color = Color(0.86, 0.89, 0.94, 1)
+
+[sub_resource type="StandardMaterial3D" id="PackedSnowMat"]
+albedo_color = Color(0.64, 0.68, 0.76, 1)
+
+[sub_resource type="StandardMaterial3D" id="IceMat"]
+albedo_color = Color(0.58, 0.76, 0.88, 1)
+roughness = 0.1
+
+[sub_resource type="BoxShape3D" id="WallNS"]
+size = Vector3(27, 4, 1)
+
+[sub_resource type="BoxShape3D" id="WallEW"]
+size = Vector3(1, 4, 27)
+
+[node name="FrostPass" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.78087, -0.50902, 0.36214, 0.00000, 0.57971, 0.81482, -0.62470, -0.63627, 0.45268, 0.000, 8.000, 0.000)
+light_color = Color(0.82, 0.88, 1, 1)
+light_energy = 0.75
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 11.547, 11.547, 11.547)
+projection = 1
+size = 16.0
+current = true
+script = ExtResource("2_cam")
+target = NodePath("../Player")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+
+[node name="Bounds" type="StaticBody3D" parent="."]
+
+[node name="North" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00, 2.00, -13.00)
+shape = SubResource("WallNS")
+
+[node name="South" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00, 2.00, 13.00)
+shape = SubResource("WallNS")
+
+[node name="West" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.00, 2.00, 0.00)
+shape = SubResource("WallEW")
+
+[node name="East" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.00, 2.00, 0.00)
+shape = SubResource("WallEW")
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00, -0.50, 0.00)
+use_collision = true
+size = Vector3(60, 1, 60)
+material = SubResource("SnowMat")
+
+[node name="Field" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00, -0.49, 0.00)
+size = Vector3(25, 1, 25)
+material = SubResource("PackedSnowMat")
+
+[node name="FrozenPond" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00, -0.48, -1.00)
+radius = 4.5
+height = 1.0
+sides = 9
+material = SubResource("IceMat")
+
+[node name="Snowfall" parent="." instance=ExtResource("10_snow")]
+
+[node name="Cliffs" type="Node3D" parent="."]
+
+[node name="CliffN1" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.93325, 0.00000, 0.32946, 0.00000, 0.98970, 0.00000, -0.32946, 0.00000, 0.93325, -18.321, 0.000, -14.940)
+
+[node name="CliffN2" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.97181, 0.00000, -0.25050, 0.00000, 1.00357, 0.00000, 0.25050, 0.00000, 0.97181, -15.417, 0.000, -14.913)
+
+[node name="CliffN3" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.89185, 0.00000, -0.30021, 0.00000, 0.94102, 0.00000, 0.30021, 0.00000, 0.89185, -12.439, 0.000, -14.707)
+
+[node name="CliffN4" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.85226, 0.00000, 0.13295, 0.00000, 0.86256, 0.00000, -0.13295, 0.00000, 0.85226, -9.784, 0.000, -14.690)
+
+[node name="CliffN5" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.02683, 0.00000, 0.12709, 0.00000, 1.03467, 0.00000, -0.12709, 0.00000, 1.02683, -6.595, 0.000, -14.535)
+
+[node name="CliffN6" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.86764, 0.00000, 0.01970, 0.00000, 0.86787, 0.00000, -0.01970, 0.00000, 0.86764, -3.901, 0.000, -15.485)
+
+[node name="CliffN7" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.92010, 0.00000, -0.36317, 0.00000, 0.98918, 0.00000, 0.36317, 0.00000, 0.92010, -1.186, 0.000, -15.258)
+
+[node name="CliffN8" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.04197, 0.00000, 0.01594, 0.00000, 1.04209, 0.00000, -0.01594, 0.00000, 1.04197, 1.678, 0.000, -14.658)
+
+[node name="CliffN9" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.93291, 0.00000, -0.03186, 0.00000, 0.93345, 0.00000, 0.03186, 0.00000, 0.93291, 4.578, 0.000, -14.838)
+
+[node name="CliffN10" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.02324, 0.00000, 0.28558, 0.00000, 1.06234, 0.00000, -0.28558, 0.00000, 1.02324, 7.776, 0.000, -14.504)
+
+[node name="CliffN11" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.85869, 0.00000, -0.14631, 0.00000, 0.87107, 0.00000, 0.14631, 0.00000, 0.85869, 10.565, 0.000, -15.270)
+
+[node name="CliffN12" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.92906, 0.00000, 0.26441, 0.00000, 0.96595, 0.00000, -0.26441, 0.00000, 0.92906, 13.625, 0.000, -15.100)
+
+[node name="CliffN13" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.84101, 0.00000, -0.35514, 0.00000, 0.91292, 0.00000, 0.35514, 0.00000, 0.84101, 16.800, 0.000, -14.653)
+
+[node name="CliffW14" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.07147, 0.00000, 0.86898, 0.00000, 0.87191, 0.00000, -0.86898, 0.00000, 0.07147, -14.520, 0.000, -11.795)
+
+[node name="CliffW15" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.16045, 0.00000, 0.86133, 0.00000, 0.87614, 0.00000, -0.86133, 0.00000, 0.16045, -14.721, 0.000, -8.817)
+
+[node name="CliffW16" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.18148, 0.00000, 0.86660, 0.00000, 0.88540, 0.00000, -0.86660, 0.00000, -0.18148, -14.536, 0.000, -6.018)
+
+[node name="CliffW17" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.37558, 0.00000, 1.02230, 0.00000, 1.08911, 0.00000, -1.02230, 0.00000, 0.37558, -15.399, 0.000, -3.270)
+
+[node name="CliffW18" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.03814, 0.00000, 0.90640, 0.00000, 0.90721, 0.00000, -0.90640, 0.00000, 0.03814, -14.941, 0.000, -0.563)
+
+[node name="CliffW19" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.10152, 0.00000, 0.87911, 0.00000, 0.88495, 0.00000, -0.87911, 0.00000, -0.10152, -15.369, 0.000, 2.476)
+
+[node name="CliffW20" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.20899, 0.00000, 1.12198, 0.00000, 1.14128, 0.00000, -1.12198, 0.00000, 0.20899, -15.287, 0.000, 5.328)
+
+[node name="CliffW21" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.27675, 0.00000, 0.87027, 0.00000, 0.91321, 0.00000, -0.87027, 0.00000, -0.27675, -15.196, 0.000, 8.410)
+
+[node name="CliffW22" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.09965, 0.00000, 0.87444, 0.00000, 0.88010, 0.00000, -0.87444, 0.00000, -0.09965, -14.646, 0.000, 11.247)
+
+[node name="CliffW23" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.20789, 0.00000, 1.06164, 0.00000, 1.08181, 0.00000, -1.06164, 0.00000, 0.20789, -15.287, 0.000, 14.440)
+
+[node name="CliffW24" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.29354, 0.00000, 0.82645, 0.00000, 0.87704, 0.00000, -0.82645, 0.00000, 0.29354, -15.204, 0.000, 17.238)
+
+[node name="CliffN25" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.32404, 0.00000, -0.13637, 0.00000, 1.33105, 0.00000, 0.13637, 0.00000, 1.32404, -18.635, 0.000, -17.899)
+
+[node name="CliffN26" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.49578, 0.00000, 0.08934, 0.00000, 1.49844, 0.00000, -0.08934, 0.00000, 1.49578, -14.349, 0.000, -18.016)
+
+[node name="CliffN27" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.40048, 0.00000, 0.47460, 0.00000, 1.47871, 0.00000, -0.47460, 0.00000, 1.40048, -10.690, 0.000, -18.346)
+
+[node name="CliffN28" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.50041, 0.00000, 0.29096, 0.00000, 1.52836, 0.00000, -0.29096, 0.00000, 1.50041, -6.978, 0.000, -18.310)
+
+[node name="CliffN29" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.32737, 0.00000, 0.41899, 0.00000, 1.39193, 0.00000, -0.41899, 0.00000, 1.32737, -3.309, 0.000, -17.550)
+
+[node name="CliffN30" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.43388, 0.00000, -0.55457, 0.00000, 1.53739, 0.00000, 0.55457, 0.00000, 1.43388, 0.542, 0.000, -18.396)
+
+[node name="CliffN31" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.45320, 0.00000, -0.28614, 0.00000, 1.48111, 0.00000, 0.28614, 0.00000, 1.45320, 4.245, 0.000, -17.795)
+
+[node name="CliffN32" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.39100, 0.00000, -0.36952, 0.00000, 1.43924, 0.00000, 0.36952, 0.00000, 1.39100, 8.238, 0.000, -18.207)
+
+[node name="CliffN33" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.49104, 0.00000, 0.07087, 0.00000, 1.49272, 0.00000, -0.07087, 0.00000, 1.49104, 11.804, 0.000, -18.272)
+
+[node name="CliffN34" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.16218, 0.00000, 0.40313, 0.00000, 1.23011, 0.00000, -0.40313, 0.00000, 1.16218, 15.812, 0.000, -18.220)
+
+[node name="CliffN35" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(1.17088, 0.00000, -0.05089, 0.00000, 1.17198, 0.00000, 0.05089, 0.00000, 1.17088, 19.335, 0.000, -18.231)
+
+[node name="CliffW36" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.37594, 0.00000, 1.23836, 0.00000, 1.29417, 0.00000, -1.23836, 0.00000, 0.37594, -17.928, 0.000, -11.947)
+
+[node name="CliffW37" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.17874, 0.00000, 1.41621, 0.00000, 1.42744, 0.00000, -1.41621, 0.00000, -0.17874, -17.520, 0.000, -7.715)
+
+[node name="CliffW38" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(0.41965, 0.00000, 1.07579, 0.00000, 1.15475, 0.00000, -1.07579, 0.00000, 0.41965, -18.360, 0.000, -3.732)
+
+[node name="CliffW39" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.41830, 0.00000, 1.07778, 0.00000, 1.15611, 0.00000, -1.07778, 0.00000, -0.41830, -17.799, 0.000, 0.516)
+
+[node name="CliffW40" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.23409, 0.00000, 1.25501, 0.00000, 1.27666, 0.00000, -1.25501, 0.00000, -0.23409, -18.018, 0.000, 4.541)
+
+[node name="CliffW41" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.05332, 0.00000, 1.44500, 0.00000, 1.44599, 0.00000, -1.44500, 0.00000, -0.05332, -18.425, 0.000, 8.860)
+
+[node name="CliffW42" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.23829, 0.00000, 1.44931, 0.00000, 1.46877, 0.00000, -1.44931, 0.00000, -0.23829, -17.763, 0.000, 13.099)
+
+[node name="CliffW43" parent="Cliffs" instance=ExtResource("7_cliff")]
+transform = Transform3D(-0.22319, 0.00000, 1.49578, 0.00000, 1.51234, 0.00000, -1.49578, 0.00000, -0.22319, -18.148, 0.000, 17.351)
+
+[node name="Pines" type="Node3D" parent="."]
+
+[node name="PineN1" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.83874, 0.00000, -0.97538, 0.00000, 1.28640, 0.00000, 0.97538, 0.00000, 0.83874, -24.099, 0.000, -21.035)
+
+[node name="PineW2" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.13354, 0.00000, -0.64546, 0.00000, 1.30443, 0.00000, 0.64546, 0.00000, -1.13354, -21.300, 0.000, -24.141)
+
+[node name="PineN3" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.99054, 0.00000, -0.93787, 0.00000, 1.36410, 0.00000, 0.93787, 0.00000, 0.99054, -21.569, 0.000, -20.711)
+
+[node name="PineW4" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.06688, 0.00000, -0.59228, 0.00000, 1.22026, 0.00000, 0.59228, 0.00000, -1.06688, -21.679, 0.000, -21.454)
+
+[node name="PineN5" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.27795, 0.00000, 0.24191, 0.00000, 1.30064, 0.00000, -0.24191, 0.00000, 1.27795, -19.365, 0.000, -21.100)
+
+[node name="PineW6" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.40088, 0.00000, -1.18252, 0.00000, 1.24863, 0.00000, 1.18252, 0.00000, -0.40088, -21.530, 0.000, -19.189)
+
+[node name="PineN7" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.14762, 0.00000, 0.08163, 0.00000, 1.15052, 0.00000, -0.08163, 0.00000, 1.14762, -15.669, 0.000, -21.891)
+
+[node name="PineW8" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.70375, 0.00000, 1.27104, 0.00000, 1.45286, 0.00000, -1.27104, 0.00000, 0.70375, -21.215, 0.000, -16.530)
+
+[node name="PineN9" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.61850, 0.00000, 1.18077, 0.00000, 1.33295, 0.00000, -1.18077, 0.00000, -0.61850, -13.515, 0.000, -20.873)
+
+[node name="PineW10" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.49857, 0.00000, -1.36916, 0.00000, 1.45711, 0.00000, 1.36916, 0.00000, 0.49857, -21.982, 0.000, -13.528)
+
+[node name="PineN11" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.43234, 0.00000, 0.97667, 0.00000, 1.06809, 0.00000, -0.97667, 0.00000, -0.43234, -10.680, 0.000, -21.367)
+
+[node name="PineW12" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.78498, 0.00000, -1.10521, 0.00000, 1.35561, 0.00000, 1.10521, 0.00000, 0.78498, -21.506, 0.000, -10.137)
+
+[node name="PineN13" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.08283, 0.00000, 0.34867, 0.00000, 1.13758, 0.00000, -0.34867, 0.00000, -1.08283, -7.849, 0.000, -22.029)
+
+[node name="PineW14" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.87941, 0.00000, -0.88402, 0.00000, 1.24694, 0.00000, 0.88402, 0.00000, -0.87941, -21.957, 0.000, -7.685)
+
+[node name="PineN15" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.99100, 0.00000, 0.30659, 0.00000, 1.03734, 0.00000, -0.30659, 0.00000, -0.99100, -4.722, 0.000, -20.729)
+
+[node name="PineW16" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.30861, 0.00000, 0.34888, 0.00000, 1.35432, 0.00000, -0.34888, 0.00000, 1.30861, -22.250, 0.000, -4.682)
+
+[node name="PineN17" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.06026, 0.00000, 0.12788, 0.00000, 1.06794, 0.00000, -0.12788, 0.00000, 1.06026, -2.702, 0.000, -21.034)
+
+[node name="PineW18" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.53430, 0.00000, -0.98286, 0.00000, 1.11870, 0.00000, 0.98286, 0.00000, 0.53430, -21.572, 0.000, -3.043)
+
+[node name="PineN19" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.24071, 0.00000, 0.43567, 0.00000, 1.31498, 0.00000, -0.43567, 0.00000, -1.24071, -0.704, 0.000, -21.293)
+
+[node name="PineW20" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.29572, 0.00000, -0.35032, 0.00000, 1.34225, 0.00000, 0.35032, 0.00000, 1.29572, -21.252, 0.000, 0.209)
+
+[node name="PineN21" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.23328, 0.00000, 0.08351, 0.00000, 1.23610, 0.00000, -0.08351, 0.00000, 1.23328, 2.170, 0.000, -22.014)
+
+[node name="PineW22" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.16319, 0.00000, 1.16146, 0.00000, 1.17287, 0.00000, -1.16146, 0.00000, -0.16319, -21.157, 0.000, 1.815)
+
+[node name="PineN23" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.04378, 0.00000, -1.19596, 0.00000, 1.19676, 0.00000, 1.19596, 0.00000, 0.04378, 4.982, 0.000, -21.317)
+
+[node name="PineW24" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.25184, 0.00000, 0.76351, 0.00000, 1.46630, 0.00000, -0.76351, 0.00000, 1.25184, -21.033, 0.000, 5.445)
+
+[node name="PineN25" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.02733, 0.00000, -1.03032, 0.00000, 1.45498, 0.00000, 1.03032, 0.00000, -1.02733, 7.291, 0.000, -21.574)
+
+[node name="PineW26" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.01259, 0.00000, -0.96444, 0.00000, 1.39838, 0.00000, 0.96444, 0.00000, 1.01259, -21.697, 0.000, 7.818)
+
+[node name="PineN27" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.38142, 0.00000, 1.30643, 0.00000, 1.36097, 0.00000, -1.30643, 0.00000, 0.38142, 10.647, 0.000, -21.258)
+
+[node name="PineW28" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.22579, 0.00000, -1.08337, 0.00000, 1.10665, 0.00000, 1.08337, 0.00000, -0.22579, -20.991, 0.000, 10.861)
+
+[node name="PineN29" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.35849, 0.00000, -0.31879, 0.00000, 1.39539, 0.00000, 0.31879, 0.00000, -1.35849, 14.187, 0.000, -20.736)
+
+[node name="PineW30" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.72174, 0.00000, -0.92626, 0.00000, 1.17425, 0.00000, 0.92626, 0.00000, 0.72174, -21.787, 0.000, 14.103)
+
+[node name="PineN31" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.13915, 0.00000, -1.23591, 0.00000, 1.24372, 0.00000, 1.23591, 0.00000, 0.13915, 15.806, 0.000, -21.420)
+
+[node name="PineW32" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.28818, 0.00000, 0.54809, 0.00000, 1.39993, 0.00000, -0.54809, 0.00000, 1.28818, -22.255, 0.000, 16.248)
+
+[node name="PineN33" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.68258, 0.00000, 0.82963, 0.00000, 1.07434, 0.00000, -0.82963, 0.00000, 0.68258, 18.017, 0.000, -21.039)
+
+[node name="PineW34" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.71731, 0.00000, -1.13739, 0.00000, 1.34469, 0.00000, 1.13739, 0.00000, 0.71731, -21.474, 0.000, 18.484)
+
+[node name="PineN35" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.95253, 0.00000, 0.57127, 0.00000, 1.11071, 0.00000, -0.57127, 0.00000, 0.95253, -24.009, 0.000, -23.281)
+
+[node name="PineW36" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.17791, 0.00000, -1.30739, 0.00000, 1.31944, 0.00000, 1.30739, 0.00000, -0.17791, -23.957, 0.000, -24.252)
+
+[node name="PineN37" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.44898, 0.00000, 1.10271, 0.00000, 1.19061, 0.00000, -1.10271, 0.00000, -0.44898, -20.969, 0.000, -23.904)
+
+[node name="PineW38" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.37064, 0.00000, 1.37635, 0.00000, 1.42539, 0.00000, -1.37635, 0.00000, 0.37064, -23.448, 0.000, -20.901)
+
+[node name="PineN39" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.38526, 0.00000, 1.20801, 0.00000, 1.26795, 0.00000, -1.20801, 0.00000, 0.38526, -18.378, 0.000, -23.883)
+
+[node name="PineW40" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.46221, 0.00000, 0.25748, 0.00000, 1.48470, 0.00000, -0.25748, 0.00000, 1.46221, -23.995, 0.000, -18.281)
+
+[node name="PineN41" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.15047, 0.00000, -0.47723, 0.00000, 1.24552, 0.00000, 0.47723, 0.00000, -1.15047, -15.914, 0.000, -23.518)
+
+[node name="PineW42" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.17185, 0.00000, -0.28869, 0.00000, 1.20689, 0.00000, 0.28869, 0.00000, -1.17185, -23.694, 0.000, -16.315)
+
+[node name="PineN43" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.04813, 0.00000, 0.18007, 0.00000, 1.06348, 0.00000, -0.18007, 0.00000, -1.04813, -12.321, 0.000, -24.369)
+
+[node name="PineW44" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.00223, 0.00000, -0.72721, 0.00000, 1.23827, 0.00000, 0.72721, 0.00000, 1.00223, -24.106, 0.000, -12.450)
+
+[node name="PineN45" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.94808, 0.00000, -0.48456, 0.00000, 1.06473, 0.00000, 0.48456, 0.00000, 0.94808, -10.745, 0.000, -23.811)
+
+[node name="PineW46" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.38375, 0.00000, 1.04542, 0.00000, 1.11363, 0.00000, -1.04542, 0.00000, 0.38375, -23.553, 0.000, -10.948)
+
+[node name="PineN47" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.76967, 0.00000, -0.71780, 0.00000, 1.05244, 0.00000, 0.71780, 0.00000, -0.76967, -7.839, 0.000, -24.231)
+
+[node name="PineW48" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.12296, 0.00000, -0.07214, 0.00000, 1.12528, 0.00000, 0.07214, 0.00000, -1.12296, -23.631, 0.000, -8.078)
+
+[node name="PineN49" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.85619, 0.00000, 0.85034, 0.00000, 1.20670, 0.00000, -0.85034, 0.00000, -0.85619, -5.231, 0.000, -24.101)
+
+[node name="PineW50" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.37370, 0.00000, 1.26147, 0.00000, 1.31566, 0.00000, -1.26147, 0.00000, 0.37370, -23.953, 0.000, -5.675)
+
+[node name="PineN51" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.09253, 0.00000, -0.92014, 0.00000, 1.42838, 0.00000, 0.92014, 0.00000, -1.09253, -2.521, 0.000, -23.438)
+
+[node name="PineW52" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.53510, 0.00000, -1.34909, 0.00000, 1.45134, 0.00000, 1.34909, 0.00000, 0.53510, -24.428, 0.000, -2.267)
+
+[node name="PineN53" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.29909, 0.00000, 1.46904, 0.00000, 1.49918, 0.00000, -1.46904, 0.00000, 0.29909, -0.326, 0.000, -23.324)
+
+[node name="PineW54" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.09222, 0.00000, 1.36017, 0.00000, 1.36329, 0.00000, -1.36017, 0.00000, 0.09222, -23.380, 0.000, -0.543)
+
+[node name="PineN55" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.22835, 0.00000, 0.66112, 0.00000, 1.39497, 0.00000, -0.66112, 0.00000, -1.22835, 1.820, 0.000, -23.469)
+
+[node name="PineW56" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-0.40144, 0.00000, -0.92557, 0.00000, 1.00888, 0.00000, 0.92557, 0.00000, -0.40144, -24.598, 0.000, 2.187)
+
+[node name="PineN57" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.03625, 0.00000, -0.21197, 0.00000, 1.05771, 0.00000, 0.21197, 0.00000, 1.03625, 4.884, 0.000, -23.342)
+
+[node name="PineW58" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.34267, 0.00000, -0.02135, 0.00000, 1.34284, 0.00000, 0.02135, 0.00000, -1.34267, -23.991, 0.000, 4.974)
+
+[node name="PineN59" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.24074, 0.00000, 0.29719, 0.00000, 1.27584, 0.00000, -0.29719, 0.00000, 1.24074, 6.501, 0.000, -24.630)
+
+[node name="PineW60" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.66140, 0.00000, 0.86925, 0.00000, 1.09227, 0.00000, -0.86925, 0.00000, 0.66140, -23.976, 0.000, 7.098)
+
+[node name="PineN61" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.93765, 0.00000, -0.46725, 0.00000, 1.04762, 0.00000, 0.46725, 0.00000, 0.93765, 9.787, 0.000, -23.216)
+
+[node name="PineW62" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.34281, 0.00000, 0.32831, 0.00000, 1.38236, 0.00000, -0.32831, 0.00000, -1.34281, -24.701, 0.000, 9.921)
+
+[node name="PineN63" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.17622, 0.00000, 0.55472, 0.00000, 1.30046, 0.00000, -0.55472, 0.00000, -1.17622, 11.801, 0.000, -23.976)
+
+[node name="PineW64" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.60641, 0.00000, -0.90651, 0.00000, 1.09063, 0.00000, 0.90651, 0.00000, 0.60641, -24.779, 0.000, 12.082)
+
+[node name="PineN65" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.36652, 0.00000, 1.01860, 0.00000, 1.08254, 0.00000, -1.01860, 0.00000, 0.36652, 14.691, 0.000, -24.152)
+
+[node name="PineW66" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(1.09454, 0.00000, -0.87428, 0.00000, 1.40085, 0.00000, 0.87428, 0.00000, 1.09454, -23.980, 0.000, 13.822)
+
+[node name="PineN67" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(-1.07184, 0.00000, 0.73529, 0.00000, 1.29980, 0.00000, -0.73529, 0.00000, -1.07184, 17.600, 0.000, -23.793)
+
+[node name="PineW68" parent="Pines" instance=ExtResource("5_pine")]
+transform = Transform3D(0.37856, 0.00000, -1.06378, 0.00000, 1.12913, 0.00000, 1.06378, 0.00000, 0.37856, -23.993, 0.000, 17.747)
+
+[node name="Snowbanks" type="Node3D" parent="."]
+
+[node name="Bank0" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(0.47234, 0.00000, -1.10619, 0.00000, 1.20282, 0.00000, 1.10619, 0.00000, 0.47234, -13.707, 0.000, 14.622)
+
+[node name="Bank1" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-0.47321, 0.00000, -1.30020, 0.00000, 1.38363, 0.00000, 1.30020, 0.00000, -0.47321, -9.724, 0.000, 14.704)
+
+[node name="Bank2" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-0.17948, 0.00000, -1.01960, 0.00000, 1.03528, 0.00000, 1.01960, 0.00000, -0.17948, -6.082, 0.000, 14.325)
+
+[node name="EdgeRock3" parent="Snowbanks" instance=ExtResource("6_rock")]
+transform = Transform3D(1.19734, 0.00000, 0.07978, 0.00000, 1.20000, 0.00000, -0.07978, 0.00000, 1.19734, -2.790, 0.000, 14.375)
+
+[node name="Bank4" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-0.79557, 0.00000, -0.78272, 0.00000, 1.11605, 0.00000, 0.78272, 0.00000, -0.79557, 1.027, 0.000, 14.511)
+
+[node name="Bank5" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-0.69589, 0.00000, 1.13328, 0.00000, 1.32988, 0.00000, -1.13328, 0.00000, -0.69589, 5.534, 0.000, 14.533)
+
+[node name="Bank6" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-1.15209, 0.00000, 0.96048, 0.00000, 1.49994, 0.00000, -0.96048, 0.00000, -1.15209, 8.883, 0.000, 14.426)
+
+[node name="Bank7" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(0.10620, 0.00000, -1.48625, 0.00000, 1.49004, 0.00000, 1.48625, 0.00000, 0.10620, 12.771, 0.000, 14.561)
+
+[node name="Bank8" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(-0.08202, 0.00000, -1.12533, 0.00000, 1.12832, 0.00000, 1.12533, 0.00000, -0.08202, 14.018, 0.000, -13.862)
+
+[node name="Bank9" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(0.39993, 0.00000, 1.11849, 0.00000, 1.18784, 0.00000, -1.11849, 0.00000, 0.39993, 14.321, 0.000, -10.739)
+
+[node name="Bank10" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(1.05538, 0.00000, -0.71545, 0.00000, 1.27503, 0.00000, 0.71545, 0.00000, 1.05538, 14.079, 0.000, -6.699)
+
+[node name="EdgeRock11" parent="Snowbanks" instance=ExtResource("6_rock")]
+transform = Transform3D(-1.09309, 0.00000, -0.49513, 0.00000, 1.20000, 0.00000, 0.49513, 0.00000, -1.09309, 14.406, 0.000, -2.039)
+
+[node name="Bank12" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(0.37679, 0.00000, -0.96730, 0.00000, 1.03810, 0.00000, 0.96730, 0.00000, 0.37679, 14.796, 0.000, 1.366)
+
+[node name="Bank13" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(1.40667, 0.00000, 0.40955, 0.00000, 1.46508, 0.00000, -0.40955, 0.00000, 1.40667, 14.478, 0.000, 5.311)
+
+[node name="Bank14" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(0.60772, 0.00000, 1.08976, 0.00000, 1.24776, 0.00000, -1.08976, 0.00000, 0.60772, 14.128, 0.000, 8.766)
+
+[node name="Bank15" parent="Snowbanks" instance=ExtResource("8_bank")]
+transform = Transform3D(1.13827, 0.00000, -0.41146, 0.00000, 1.21035, 0.00000, 0.41146, 0.00000, 1.13827, 14.489, 0.000, 12.070)
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="OldPine" parent="Props" instance=ExtResource("5_pine")]
+transform = Transform3D(1.23800, 0.00000, 0.84696, 0.00000, 1.50000, 0.00000, -0.84696, 0.00000, 1.23800, -9.000, 0.000, -7.500)
+
+[node name="Crystal1" parent="Props" instance=ExtResource("9_crystal")]
+transform = Transform3D(0.92106, 0.00000, 0.38942, 0.00000, 1.00000, 0.00000, -0.38942, 0.00000, 0.92106, -4.000, 0.000, -3.000)
+
+[node name="Crystal2" parent="Props" instance=ExtResource("9_crystal")]
+transform = Transform3D(-0.25863, 0.00000, 0.75704, 0.00000, 0.80000, 0.00000, -0.75704, 0.00000, -0.25863, 9.500, 0.000, -10.000)
+
+[node name="Rock1" parent="Props" instance=ExtResource("6_rock")]
+transform = Transform3D(0.95534, 0.00000, 0.29552, 0.00000, 1.00000, 0.00000, -0.29552, 0.00000, 0.95534, 3.000, 0.000, -5.000)
+
+[node name="Rock2" parent="Props" instance=ExtResource("6_rock")]
+transform = Transform3D(0.39859, 0.00000, 1.02524, 0.00000, 1.10000, 0.00000, -1.02524, 0.00000, 0.39859, 5.000, 0.000, 2.000)
+
+[node name="Rock3" parent="Props" instance=ExtResource("6_rock")]
+transform = Transform3D(-0.64091, 0.00000, 0.47878, 0.00000, 0.80000, 0.00000, -0.47878, 0.00000, -0.64091, -10.500, 0.000, 9.000)
+
+[node name="WaveSpawner" type="Node3D" parent="."]
+script = ExtResource("4_spawner")
+autostart = false
+enemy_scenes = Array[PackedScene]([ExtResource("3_goblin")])
+
+[node name="SpawnPoint1" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -10)
+
+[node name="SpawnPoint2" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="SpawnPoint3" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -10)
+
+[node name="SpawnPoint4" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
+
+[node name="SpawnPoint5" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="SpawnPoint6" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 10)
+
+[node name="SpawnPoint7" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="SpawnPoint8" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 10)
+
+[node name="GatherPoints" type="Node3D" parent="."]
+
+[node name="GatherPoint1" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -1)
+
+[node name="GatherPoint2" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -8)
+
+[node name="GatherPoint3" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -8)
+
+[node name="GatherPoint4" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -3)
+
+[node name="GatherPoint5" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 6)
+
+[node name="GatherPoint6" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
+
+[node name="GatherPoint7" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 6)
+
+[node name="GatherPoint8" type="Marker3D" parent="GatherPoints" groups=["gather_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 3)
+
+[node name="BossSpawn" type="Marker3D" parent="." groups=["boss_spawns"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)

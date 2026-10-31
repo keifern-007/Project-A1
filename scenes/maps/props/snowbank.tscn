@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="SnowMat"]
+albedo_color = Color(0.9, 0.93, 0.98, 1)
+
+[sub_resource type="SphereMesh" id="BankMesh"]
+material = SubResource("SnowMat")
+radius = 1.0
+height = 0.9
+radial_segments = 8
+rings = 3
+
+[node name="Snowbank" type="Node3D"]
+
+[node name="Mound1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.4, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BankMesh")
+
+[node name="Mound2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 1.2, 0.05, 0.4)
+mesh = SubResource("BankMesh")

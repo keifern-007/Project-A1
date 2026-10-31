@@ -1,0 +1,106 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scenes/bosses/props/canopic_jar.gd" id="1_jar"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="3_hurtbox"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/moves/drop_zone.tscn" id="4_zone"]
+
+[sub_resource type="CylinderShape3D" id="JarShape"]
+height = 1.8
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="ClayMat"]
+albedo_color = Color(0.85, 0.72, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="GoldMat"]
+albedo_color = Color(0.95, 0.75, 0.25, 1)
+metallic = 0.6
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="DarkMat"]
+albedo_color = Color(0.15, 0.12, 0.1, 1)
+
+[sub_resource type="CylinderMesh" id="JarMesh"]
+material = SubResource("ClayMat")
+top_radius = 0.42
+bottom_radius = 0.5
+height = 1.2
+radial_segments = 10
+rings = 2
+
+[sub_resource type="CylinderMesh" id="BandMesh"]
+material = SubResource("GoldMat")
+top_radius = 0.47
+bottom_radius = 0.47
+height = 0.12
+radial_segments = 10
+rings = 1
+
+[sub_resource type="SphereMesh" id="LidMesh"]
+material = SubResource("GoldMat")
+radius = 0.36
+height = 0.6
+radial_segments = 10
+rings = 4
+
+[sub_resource type="CylinderMesh" id="EarMesh"]
+material = SubResource("DarkMat")
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.35
+radial_segments = 4
+rings = 1
+
+[node name="CanopicJar" type="StaticBody3D"]
+script = ExtResource("1_jar")
+pulse_zone_scene = ExtResource("4_zone")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("JarShape")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+max_health = 60
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_hurtbox")
+health = NodePath("../HealthComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("JarShape")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Jar" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("JarMesh")
+
+[node name="Band" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BandMesh")
+
+[node name="Lid" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("LidMesh")
+
+[node name="EarLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, 1.72, 0)
+mesh = SubResource("EarMesh")
+
+[node name="EarRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, 1.72, 0)
+mesh = SubResource("EarMesh")
+
+[node name="Hint" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+auto_translate_mode = 2
+pixel_size = 0.015
+billboard = 1
+no_depth_test = true
+font_size = 24
+outline_size = 8

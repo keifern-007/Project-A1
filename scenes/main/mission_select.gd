@@ -6,7 +6,8 @@ extends Control
 signal closed
 
 const RUN_SCENE: String = "res://scenes/main/retro_view.tscn"
-const BUTTON_FONT_SIZE: int = 22
+const BUTTON_FONT_SIZE: int = 20
+const BUTTON_SIZE: Vector2 = Vector2(280, 44)
 
 @export var maps: Array[MapData] = []
 @export var objectives: Array[ObjectiveData] = []
@@ -60,7 +61,7 @@ func _fill_list(list: VBoxContainer, entries: Array, on_select: Callable) -> Arr
 		button.toggled.connect(func(on: bool) -> void: button.text = ("»  " if on else "") + label)
 		button.toggle_mode = true
 		button.button_group = group
-		button.custom_minimum_size = Vector2(280, 52)
+		button.custom_minimum_size = BUTTON_SIZE
 		button.add_theme_font_size_override("font_size", BUTTON_FONT_SIZE)
 		button.pressed.connect(on_select.bind(entry))
 		list.add_child(button)

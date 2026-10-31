@@ -35,7 +35,13 @@ func _load_map() -> void:
 	if GameState.map == null:
 		GameState.map = default_map
 	var map_data: MapData = GameState.map as MapData
-	retro_screen.add_world(map_data.scene.instantiate())
+	var world: Node = map_data.scene.instantiate()
+	retro_screen.add_world(world)
+	if GameState.objective == null:
+		GameState.objective = default_objective
+	var objective_data: ObjectiveData = GameState.objective as ObjectiveData
+	if objective_data.mood:
+		add_child(MissionMood.create(objective_data.mood, world, map_data.biome))
 
 
 func _start_objective() -> void:

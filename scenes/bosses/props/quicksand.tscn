@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/bosses/props/slow_zone.gd" id="1_zone"]
+
+[sub_resource type="CylinderShape3D" id="ZoneShape"]
+height = 1.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="SandMat"]
+albedo_color = Color(0.55, 0.42, 0.28, 1)
+
+[sub_resource type="CylinderMesh" id="PitMesh"]
+material = SubResource("SandMat")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.03
+radial_segments = 20
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="SwirlMat"]
+shading_mode = 0
+albedo_color = Color(0.9, 0.78, 0.55, 1)
+
+[sub_resource type="BoxMesh" id="SpokeMesh"]
+material = SubResource("SwirlMat")
+size = Vector3(3.4, 0.02, 0.14)
+
+[sub_resource type="TorusMesh" id="RimMesh"]
+material = SubResource("SwirlMat")
+inner_radius = 1.9
+outer_radius = 2.02
+rings = 24
+ring_segments = 4
+
+[node name="Quicksand" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_zone")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("ZoneShape")
+
+[node name="Pit" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("PitMesh")
+
+[node name="Rim" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("RimMesh")
+
+[node name="Swirl" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+
+[node name="Spoke1" type="MeshInstance3D" parent="Swirl"]
+mesh = SubResource("SpokeMesh")
+
+[node name="Spoke2" type="MeshInstance3D" parent="Swirl"]
+transform = Transform3D(0.5, 0, 0.866, 0, 1, 0, -0.866, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SpokeMesh")
+
+[node name="Spoke3" type="MeshInstance3D" parent="Swirl"]
+transform = Transform3D(-0.5, 0, 0.866, 0, 1, 0, -0.866, 0, -0.5, 0, 0, 0)
+mesh = SubResource("SpokeMesh")

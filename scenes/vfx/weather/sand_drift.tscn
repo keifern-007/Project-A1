@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="Curve" id="FadeCurve"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="FadeTexture"]
+curve = SubResource("FadeCurve")
+
+[sub_resource type="ParticleProcessMaterial" id="SandProcess"]
+emission_shape = 3
+emission_box_extents = Vector3(24, 0.9, 24)
+direction = Vector3(1, 0.05, 0.35)
+spread = 8.0
+initial_velocity_min = 5.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, -0.2, 0)
+scale_min = 0.7
+scale_max = 1.4
+scale_curve = SubResource("FadeTexture")
+turbulence_enabled = true
+turbulence_noise_strength = 0.8
+turbulence_noise_scale = 6.0
+turbulence_influence_min = 0.05
+turbulence_influence_max = 0.12
+
+[sub_resource type="StandardMaterial3D" id="GrainMat"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.84, 0.62, 1)
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="GrainMesh"]
+material = SubResource("GrainMat")
+size = Vector2(0.22, 0.05)
+
+[node name="SandDrift" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+amount = 450
+lifetime = 2.5
+preprocess = 2.5
+visibility_aabb = AABB(-36, -2, -30, 72, 6, 60)
+process_material = SubResource("SandProcess")
+draw_pass_1 = SubResource("GrainMesh")

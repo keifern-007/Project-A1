@@ -1,0 +1,131 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/ranged_enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://resources/enemies/slinger.tres" id="2_data"]
+[ext_resource type="Script" path="res://components/stats_component.gd" id="3_stats"]
+[ext_resource type="Script" path="res://components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.36
+height = 1.25
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 0.36
+height = 1.25
+
+[sub_resource type="StandardMaterial3D" id="SkinMat"]
+albedo_color = Color(0.4, 0.58, 0.28, 1)
+
+[sub_resource type="CylinderMesh" id="EarMesh"]
+top_radius = 0.0
+bottom_radius = 0.11
+height = 0.4
+radial_segments = 4
+
+[sub_resource type="BoxMesh" id="NoseMesh"]
+size = Vector3(0.14, 0.14, 0.26)
+
+[sub_resource type="StandardMaterial3D" id="DarkMat"]
+albedo_color = Color(0.2, 0.2, 0.18, 1)
+
+[sub_resource type="BoxMesh" id="BandMesh"]
+size = Vector3(0.76, 0.1, 0.76)
+
+[sub_resource type="StandardMaterial3D" id="ClothMat"]
+albedo_color = Color(0.55, 0.25, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="ArmMesh"]
+size = Vector3(0.12, 0.5, 0.12)
+
+[sub_resource type="SphereMesh" id="StoneMesh"]
+radius = 0.12
+height = 0.22
+radial_segments = 6
+rings = 3
+
+[sub_resource type="StandardMaterial3D" id="StoneMat"]
+albedo_color = Color(0.5, 0.48, 0.45, 1)
+
+[sub_resource type="BoxMesh" id="PouchMesh"]
+size = Vector3(0.22, 0.22, 0.18)
+
+[node name="Slinger" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+shape = SubResource("BodyShape")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("3_stats")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
+script = ExtResource("4_health")
+stats = NodePath("../StatsComponent")
+
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("5_hurtbox")
+health = NodePath("../HealthComponent")
+stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
+hit_cooldown = 0.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+shape = SubResource("BodyShape")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+mesh = SubResource("BodyMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarLeft" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0, 1, -0.36, 1.08, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="EarRight" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0.36, 1.08, 0)
+mesh = SubResource("EarMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Nose" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.36)
+mesh = SubResource("NoseMesh")
+surface_material_override/0 = SubResource("DarkMat")
+
+[node name="Headband" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08, 0)
+mesh = SubResource("BandMesh")
+surface_material_override/0 = SubResource("ClothMat")
+
+[node name="Pouch" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.5, 0.05)
+mesh = SubResource("PouchMesh")
+surface_material_override/0 = SubResource("ClothMat")
+
+[node name="Arm" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.95, 0)
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Visual/Arm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("ArmMesh")
+surface_material_override/0 = SubResource("SkinMat")
+
+[node name="Stone" type="MeshInstance3D" parent="Visual/Arm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("StoneMesh")
+surface_material_override/0 = SubResource("StoneMat")

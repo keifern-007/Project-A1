@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="3_ear"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/items/fury_tonic.tres" id="5_fury"]
+[ext_resource type="Resource" path="res://resources/enemies/shaman_mummy.tres" id="7_mummy"]
+
+[sub_resource type="Resource" id="DropEar"]
+script = ExtResource("2_drop")
+material = ExtResource("3_ear")
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.1
+
+[sub_resource type="Resource" id="DropFury"]
+script = ExtResource("2_drop")
+booster = ExtResource("5_fury")
+chance = 0.1
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_SHAMAN"
+max_health = 26
+attack_power = 0
+move_speed = 3.2
+fire_multiplier = 1.5
+detection_range = 14.0
+attack_range = 9.0
+attack_windup = 0.8
+attack_recovery = 0.4
+attack_cooldown = 6.0
+retreat_range = 5.0
+ward_duration = 4.0
+ward_multiplier = 0.5
+ward_range = 10.0
+xp_reward = 8
+drops = Array[ExtResource("2_drop")]([SubResource("DropEar"), SubResource("DropHeal"), SubResource("DropFury")])
+variants = Array[ExtResource("1_data")]([ExtResource("7_mummy")])

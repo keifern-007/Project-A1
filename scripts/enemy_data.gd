@@ -25,6 +25,33 @@ extends Resource
 @export var attack_windup: float = 0.4 ## Telegraph time before the hit — the player's dodge window.
 @export var attack_recovery: float = 0.6 ## Pause after swinging, the player's punish window.
 
+@export_group("Ranged") ## Ranged enemies (Slinger). attack_range = farthest throw.
+@export var projectile_scene: PackedScene ## Root script must be LobbedShot.
+@export var projectile_element: Element.Type = Element.Type.PHYSICAL ## Frost throws ice, Mummified cursed sand.
+@export var attack_cooldown: float = 2.0 ## Seconds between throws.
+@export var retreat_range: float = 4.0 ## Backs away when a player is closer than this.
+
+@export_group("Charge") ## Chargers (Tusker). attack_range = distance it starts a charge from.
+@export var charge_speed: float = 14.0
+@export var charge_distance: float = 12.0 ## Stops after this far if it hits nothing.
+@export var stun_time: float = 2.0 ## Dazed after crashing into a wall or rock: the punish window.
+
+@export_group("Guard") ## Shield bearers (Shieldback).
+@export_range(0.0, 1.0) var guard_multiplier: float = 0.2 ## Damage taken from the front.
+@export var guard_angle_degrees: float = 70.0 ## Half-width of the shielded front.
+@export var guard_break_time: float = 2.0 ## Shield knocked aside by a heavy hit.
+@export var turn_speed: float = 2.5 ## Radians/sec: slow turning makes flanking work.
+
+@export_group("Support") ## Supports (Goblin Shaman). attack_range = how far it stays from you; attack_cooldown = time between wards.
+@export var ward_duration: float = 4.0
+@export_range(0.0, 1.0) var ward_multiplier: float = 0.5 ## Damage the warded ally takes.
+@export var ward_range: float = 10.0 ## Allies farther than this from the shaman can't be warded.
+
+@export_group("Exploder") ## Exploders (Puffcap). attack_range = how close it gets before swelling; attack_windup = swell time.
+@export var burst_scene: PackedScene ## Root script must be PoisonCloud.
+@export var cloud_duration: float = 4.0 ## How long the cloud lingers after the burst.
+@export_range(0.0, 1.0) var cloud_damage_fraction: float = 0.25 ## Cloud hits = attack_power × this; the burst hits for the full amount.
+
 @export_group("Rewards")
 @export var xp_reward: int = 5
 @export var drops: Array[DropEntry] = []

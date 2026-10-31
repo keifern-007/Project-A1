@@ -4,3 +4,5 @@ extends Resource
 
 @export var id: StringName = &""
 @export var name_key: String = ""
+## Weather for stormy missions here (blizzard, sandstorm). Empty = the mood's own weather (rain).
+@export var storm_weather: PackedScene

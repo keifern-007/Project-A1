@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="BarkMat"]
+albedo_color = Color(0.42, 0.29, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="LeafMat"]
+albedo_color = Color(0.3, 0.5, 0.22, 1)
+
+[sub_resource type="CylinderMesh" id="TrunkMesh"]
+material = SubResource("BarkMat")
+top_radius = 0.25
+bottom_radius = 0.38
+height = 3.0
+radial_segments = 6
+rings = 1
+
+[sub_resource type="SphereMesh" id="CanopyMesh"]
+material = SubResource("LeafMat")
+radius = 1.5
+height = 2.6
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereMesh" id="CanopySmallMesh"]
+material = SubResource("LeafMat")
+radius = 1.0
+height = 1.8
+radial_segments = 8
+rings = 4
+
+[sub_resource type="CylinderShape3D" id="TrunkShape"]
+height = 3.0
+radius = 0.4
+
+[node name="TreeRound" type="StaticBody3D"]
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("TrunkShape")
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("TrunkMesh")
+
+[node name="Canopy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 0)
+mesh = SubResource("CanopyMesh")
+
+[node name="CanopyTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 4.6, -0.3)
+mesh = SubResource("CanopySmallMesh")

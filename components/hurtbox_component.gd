@@ -18,6 +18,8 @@ signal hurt(amount: int, hitbox: HitboxComponent)
 
 ## Set by the owner (e.g. during a dodge) to ignore all hits.
 var invulnerable: bool = false
+## Optional, set by the owner: func(hitbox) -> float, scales one hit (a shield blocking hits from the front).
+var hit_modifier: Callable = Callable()
 
 var _cooldown_left: float = 0.0
 
@@ -40,7 +42,8 @@ func _physics_process(delta: float) -> void:
 func _take_hit(hitbox: HitboxComponent) -> void:
 	var defense: int = stats.defense if stats else 0
 	var element_scale: float = status.element_multiplier(hitbox.element) if status else 1.0
-	var amount: int = Combat.calculate_damage(roundi(hitbox.damage * damage_taken_multiplier * element_scale), defense)
+	var guard_scale: float = hit_modifier.call(hitbox) if hit_modifier.is_valid() else 1.0
+	var amount: int = Combat.calculate_damage(roundi(hitbox.damage * damage_taken_multiplier * element_scale * guard_scale), defense)
 	_cooldown_left = hit_cooldown
 	health.take_damage(amount)
 	if status:

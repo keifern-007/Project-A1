@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://components/player_input.gd" id="2_input"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://components/passive_component.gd" id="16_passive"]
 [ext_resource type="Script" path="res://components/talent_component.gd" id="18_talent"]
 [ext_resource type="Script" path="res://components/meter_component.gd" id="19_meter"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="20_status"]
 
 [sub_resource type="CapsuleShape3D" id="BodyShape"]
 
@@ -81,12 +82,18 @@ health = NodePath("../HealthComponent")
 hurtbox = NodePath("../HurtboxComponent")
 skill_caster = NodePath("../SkillCaster")
 
-[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats")]
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("20_status")
+health = NodePath("../HealthComponent")
+label_height = 2.3
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
 collision_layer = 0
 collision_mask = 8
 script = ExtResource("5_hurtbox")
 health = NodePath("../HealthComponent")
 stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

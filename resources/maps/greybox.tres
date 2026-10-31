@@ -1,10 +1,38 @@
-[gd_resource type="Resource" script_class="MapData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="MapData" format=3 uid="uid://c5itfihxjbc5g"]
 
-[ext_resource type="Script" path="res://scripts/map_data.gd" id="1_data"]
-[ext_resource type="PackedScene" path="res://scenes/maps/greybox.tscn" id="2_scene"]
+[ext_resource type="Script" uid="uid://7g1sq2k0n4kp" path="res://scripts/map_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/maps/training_grounds.tscn" id="2_scene"]
+[ext_resource type="Script" uid="uid://sh5u8wdrqnfm" path="res://scripts/spawn_entry.gd" id="pool_entry"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/goblin.tscn" id="pool_goblin"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/puffcap.tscn" id="pool_puffcap"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/slinger.tscn" id="pool_slinger"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/tusker.tscn" id="pool_tusker"]
+
+[sub_resource type="Resource" id="PoolGoblin"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_goblin")
+
+[sub_resource type="Resource" id="PoolSlinger"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_slinger")
+weight = 0.4
+from_wave = 2
+
+[sub_resource type="Resource" id="PoolTusker"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_tusker")
+weight = 0.3
+from_wave = 3
+
+[sub_resource type="Resource" id="PoolPuffcap"]
+script = ExtResource("pool_entry")
+enemy_scene = ExtResource("pool_puffcap")
+weight = 0.3
+from_wave = 2
 
 [resource]
 script = ExtResource("1_data")
 name_key = "MAP_GREYBOX"
 description_key = "MAP_GREYBOX_DESC"
+enemy_pool = Array[ExtResource("pool_entry")]([SubResource("PoolGoblin"), SubResource("PoolSlinger"), SubResource("PoolTusker"), SubResource("PoolPuffcap")])
 scene = ExtResource("2_scene")

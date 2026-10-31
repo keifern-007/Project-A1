@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/enemies/skitterling_frost.tres" id="6_frost"]
+[ext_resource type="Resource" path="res://resources/enemies/skitterling_dune.tres" id="7_dune"]
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.03
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_SKITTERLING"
+max_health = 8
+attack_power = 6
+move_speed = 5.2
+fire_multiplier = 1.5
+detection_range = 14.0
+attack_range = 1.6
+attack_windup = 0.35
+attack_recovery = 0.5
+xp_reward = 2
+is_arachnid = true
+drops = Array[ExtResource("2_drop")]([SubResource("DropHeal")])
+variants = Array[ExtResource("1_data")]([ExtResource("6_frost"), ExtResource("7_dune")])

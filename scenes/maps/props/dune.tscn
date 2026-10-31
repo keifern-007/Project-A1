@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="SandMat"]
+albedo_color = Color(0.88, 0.73, 0.5, 1)
+
+[sub_resource type="SphereMesh" id="DuneMesh"]
+material = SubResource("SandMat")
+radius = 3.0
+height = 2.4
+radial_segments = 10
+rings = 4
+
+[node name="Dune" type="Node3D"]
+
+[node name="Crest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.6, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("DuneMesh")
+
+[node name="Shoulder" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9, 0, 0, 0, 0.6, 0, 0, 0, 0.8, 3.2, -0.1, 1.0)
+mesh = SubResource("DuneMesh")

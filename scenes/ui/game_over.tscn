@@ -76,9 +76,16 @@ text = "UI_REWARDS"
 label_settings = SubResource("SubText")
 horizontal_alignment = 1
 
-[node name="RewardsList" type="VBoxContainer" parent="Center/VBox"]
+[node name="RewardsScroll" type="ScrollContainer" parent="Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="RewardsList" type="VBoxContainer" parent="Center/VBox/RewardsScroll"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
 [node name="Spacer" type="Control" parent="Center/VBox"]

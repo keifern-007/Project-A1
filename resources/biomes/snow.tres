@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="BiomeData" format=3]
 
 [ext_resource type="Script" path="res://scripts/biome_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/weather/blizzard.tscn" id="storm_weather"]
 
 [resource]
 script = ExtResource("1_data")
 id = &"snow"
 name_key = "BIOME_SNOW"
+storm_weather = ExtResource("storm_weather")
