@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c64t7v1rvqug4"]
 
 [ext_resource type="Script" uid="uid://cvuqdk67ocptm" path="res://scenes/main/retro_view.gd" id="1_script"]
-[ext_resource type="Resource" path="res://resources/objectives/boss_ogre.tres" id="2_fi8ww"]
+[ext_resource type="Resource" uid="uid://7koni3hrlyer" path="res://resources/objectives/boss_ogre.tres" id="2_fi8ww"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/game_over.tscn" id="4_gameover"]
 [ext_resource type="PackedScene" path="res://scenes/main/retro_screen.tscn" id="5_screen"]
