@@ -9,4 +9,6 @@ name_key = "SKILL_HAYMAKER"
 cooldown = 5.0
 damage_multiplier = 2.0
 cost = 20.0
+cast_time = 0.4
+commit_time = 0.3
 effect_scene = ExtResource("2_scene")

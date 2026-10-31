@@ -9,4 +9,6 @@ name_key = "SKILL_CLEAVE"
 cooldown = 7.0
 damage_multiplier = 2.5
 cost = 30.0
+cast_time = 0.35
+commit_time = 0.3
 effect_scene = ExtResource("2_scene")

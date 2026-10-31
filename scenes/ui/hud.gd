@@ -84,7 +84,7 @@ func _process(_delta: float) -> void:
 	if _skill_caster:
 		for i: int in _slots.size():
 			_slots[i].update_cooldown(_skill_caster.get_cooldown_left(i), _blocked_text(_skill_caster.skills[i]))
-		cast_bar.visible = _skill_caster.is_casting()
+		cast_bar.visible = _skill_caster.is_casting() and _skill_caster.casting_skill() != _skill_caster.basic_attack
 		if cast_bar.visible:
 			cast_bar.value = _skill_caster.cast_progress()
 			cast_label.text = tr("HUD_CASTING") % tr(_skill_caster.casting_skill().name_key)

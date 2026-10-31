@@ -10,4 +10,6 @@ cooldown = 5.0
 damage_multiplier = 1.8
 kind = 1
 cost = 20.0
+cast_time = 0.25
+commit_time = 0.25
 effect_scene = ExtResource("2_scene")

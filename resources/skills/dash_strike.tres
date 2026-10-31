@@ -11,4 +11,6 @@ damage_multiplier = 2.0
 kind = 1
 cost = 25.0
 element = 1
+cast_time = 0.2
+commit_time = 0.15
 effect_scene = ExtResource("2_scene")

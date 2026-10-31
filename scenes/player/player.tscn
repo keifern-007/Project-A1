@@ -119,6 +119,9 @@ health = NodePath("../HealthComponent")
 [node name="MeleeAttack" type="Node3D" parent="." node_paths=PackedStringArray("stats")]
 script = ExtResource("6_melee")
 stats = NodePath("../StatsComponent")
+cooldown = 0.2
+windup_time = 0.15
+commit_time = 0.2
 
 [node name="HitboxComponent" type="Area3D" parent="MeleeAttack"]
 collision_layer = 16

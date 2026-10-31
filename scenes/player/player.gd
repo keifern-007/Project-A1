@@ -2,6 +2,13 @@ class_name Player
 extends CharacterBody3D
 ## The chosen character (stats, speed, look, skills) + movement relative to the camera, a dodge roll with invulnerability frames (i-frames),
 ## a basic melee attack, skills and the loadout's consumable.
+## Every attack is wind-up (slow walk, keeps aiming, dodging cancels and refunds) -> fires ->
+## commit (locked in, no dodging), Dark Souls style. Taking a hit doesn't interrupt either.
+
+const LEAN_BACK: float = 0.436 ## ~25 degrees, in radians. The wind-up telegraph.
+const LEAN_FORWARD: float = -0.262 ## ~-15 degrees. The strike.
+const LEAN_STRIKE_TIME: float = 0.05
+const DODGE_BUFFER: float = 0.2 ## A dodge pressed this soon before the commit ends still happens.
 
 signal dodged
 signal collected(pickup: Pickup) ## Hook for pickup sounds.
@@ -9,7 +16,8 @@ signal collected(pickup: Pickup) ## Hook for pickup sounds.
 @export var move_speed: float = 6.0
 @export var acceleration: float = 60.0 ## How fast we reach move_speed. Higher = snappier.
 @export var turn_speed: float = 14.0
-@export var cast_move_factor: float = 0.4 ## Walking speed while casting a skill with a cast time.
+@export var cast_move_factor: float = 0.4 ## Walking speed during an attack's wind-up.
+@export var commit_move_factor: float = 0.15 ## Walking speed while committed to an attack.
 ## Off in the camp: you walk and interact, but don't swing at the campfire.
 @export var combat_enabled: bool = true
 ## False = an NPC body (the heroes you aren't playing in camp): no device input, not in "players".
@@ -30,6 +38,9 @@ var _dash_direction: Vector3 = Vector3.ZERO
 var _dash_speed: float = 0.0
 var _dash_invulnerable: bool = false
 var _dodge_cooldown_left: float = 0.0
+var _dodge_buffer_left: float = 0.0
+var _commit_left: float = 0.0
+var _lean_tween: Tween
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var input: PlayerInput = $PlayerInput
@@ -56,14 +67,28 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	hurtbox.hurt.connect(_on_hurt)
 	hurtbox.damage_taken_multiplier *= GameState.damage_taken_multiplier() # On top of passives (Bulwark).
+	melee.windup_started.connect(_lean_into_windup)
+	melee.windup_cancelled.connect(_animate_lean.bind(0.0, LEAN_STRIKE_TIME))
+	melee.attacked.connect(func() -> void: _commit(melee.commit_time))
+	skill_caster.cast_started.connect(func(_skill: SkillData, duration: float) -> void: _lean_into_windup(duration))
+	skill_caster.cast_ended.connect(func(completed: bool) -> void:
+		if not completed:
+			_animate_lean(0.0, LEAN_STRIKE_TIME))
+	skill_caster.skill_used.connect(func(_slot: int, skill: SkillData) -> void: _commit(skill.commit_time))
+	skill_caster.basic_attacked.connect(func() -> void: _commit(skill_caster.basic_attack.commit_time))
 
 
 func _physics_process(delta: float) -> void:
 	_dodge_cooldown_left = maxf(_dodge_cooldown_left - delta, 0.0)
+	_dodge_buffer_left = maxf(_dodge_buffer_left - delta, 0.0)
+	_commit_left = maxf(_commit_left - delta, 0.0)
 	var move_dir: Vector3 = input.get_move_direction()
 
-	if input.is_dodge_pressed() and _dodge_cooldown_left == 0.0 and _dash_time_left == 0.0:
-		skill_caster.cancel_cast() # Dodging out of a cast refunds it.
+	if input.is_dodge_pressed():
+		_dodge_buffer_left = DODGE_BUFFER
+	if _dodge_buffer_left > 0.0 and not is_committed() and _dodge_cooldown_left == 0.0 and _dash_time_left == 0.0:
+		_dodge_buffer_left = 0.0
+		_cancel_windup() # Dodging out of a wind-up refunds it.
 		_start_dodge(move_dir)
 
 	if combat_enabled and _dash_time_left == 0.0:
@@ -76,12 +101,11 @@ func _physics_process(delta: float) -> void:
 		if _dash_time_left == 0.0:
 			_end_dash()
 	else:
-		var speed: float = move_speed * (cast_move_factor if skill_caster.is_casting() else 1.0)
-		var target: Vector3 = move_dir * speed
+		var target: Vector3 = move_dir * move_speed * _attack_move_factor()
 		velocity.x = move_toward(velocity.x, target.x, acceleration * delta)
 		velocity.z = move_toward(velocity.z, target.z, acceleration * delta)
 		# While attacking, keep facing the attack instead of the walk direction.
-		if move_dir != Vector3.ZERO and melee.can_attack() and skill_caster.basic_ready():
+		if move_dir != Vector3.ZERO and not is_committed() and melee.can_attack() and skill_caster.basic_ready():
 			_face(move_dir, delta)
 
 	if not is_on_floor():
@@ -125,6 +149,15 @@ func face_toward(point: Vector3) -> void:
 
 func is_alive() -> bool:
 	return not health.is_dead
+
+
+## Locked into an attack that already fired: can't dodge or act until it ends.
+func is_committed() -> bool:
+	return _commit_left > 0.0
+
+
+func is_winding_up() -> bool:
+	return skill_caster.is_casting() or melee.is_winding_up()
 
 
 ## Called by a Pickup when it reaches us.
@@ -173,9 +206,12 @@ func blink(target: Vector3, invulnerable_time: float) -> void:
 
 
 func _handle_combat() -> void:
-	if skill_caster.is_casting(): # Keep aiming while casting; nothing else until it fires.
+	if is_committed():
+		return
+	if is_winding_up(): # Keep aiming during the wind-up; nothing else until it fires.
 		var aim: Vector3 = _aim_direction()
 		skill_caster.update_cast_direction(aim)
+		melee.update_windup_direction(aim)
 		visual.rotation.y = atan2(-aim.x, -aim.z)
 		return
 	if input.is_attack_pressed():
@@ -184,7 +220,7 @@ func _handle_combat() -> void:
 		if skill_caster.basic_attack: # Ranged characters (Mystic) cast their basic attack skill.
 			attacked = skill_caster.try_basic(self, dir, get_parent())
 		else:
-			attacked = melee.attack(dir)
+			attacked = melee.start_attack(dir)
 		if attacked:
 			visual.rotation.y = atan2(-dir.x, -dir.z)
 	for slot: int in range(1, 5):
@@ -203,6 +239,35 @@ func _aim_direction() -> Vector3:
 func _face(dir: Vector3, delta: float) -> void:
 	var target_yaw: float = atan2(-dir.x, -dir.z)
 	visual.rotation.y = lerp_angle(visual.rotation.y, target_yaw, turn_speed * delta)
+
+
+func _attack_move_factor() -> float:
+	if is_committed():
+		return commit_move_factor
+	return cast_move_factor if is_winding_up() else 1.0
+
+
+func _cancel_windup() -> void:
+	skill_caster.cancel_cast()
+	melee.cancel_windup()
+
+
+func _commit(duration: float) -> void:
+	_commit_left = duration
+	_animate_lean(LEAN_FORWARD, LEAN_STRIKE_TIME)
+	_lean_tween.tween_property(visual, "rotation:x", 0.0, maxf(duration, LEAN_STRIKE_TIME))
+
+
+func _lean_into_windup(duration: float) -> void:
+	_animate_lean(LEAN_BACK, duration)
+
+
+## Leaning is the telegraph: shape/motion, not color, so it reads for everyone.
+func _animate_lean(angle: float, duration: float) -> void:
+	if _lean_tween:
+		_lean_tween.kill()
+	_lean_tween = create_tween()
+	_lean_tween.tween_property(visual, "rotation:x", angle, duration)
 
 
 func _start_dodge(move_dir: Vector3) -> void:
@@ -241,6 +306,9 @@ func _on_hurt(_amount: int, hitbox: HitboxComponent) -> void:
 
 
 func _on_died() -> void:
+	_cancel_windup() # A dead hero doesn't finish the swing.
+	if _lean_tween:
+		_lean_tween.kill()
 	input.enabled = false
 	hurtbox.invulnerable = true
 	# Tip over forward: a shape change, readable without color.

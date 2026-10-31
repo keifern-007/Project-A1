@@ -2,8 +2,10 @@ class_name SkillCasterComponent
 extends Node
 ## Holds a loadout of skills (slot 0 = skill_1 action) and their cooldowns, plus an optional
 ## skill-based basic attack (e.g. the Mystic's Magic Bolt) with its own cooldown.
-## Skills cost stamina (physical) or mana (magic). Skills with a cast_time are channelled first:
-## paid when the cast starts, fired when it ends, refunded if cancelled (dodge).
+## Skills cost stamina (physical) or mana (magic). Skills with a cast_time wind up first:
+## paid when the wind-up starts, fired when it ends, refunded if cancelled (dodge).
+
+const BASIC_SLOT: int = -1
 
 signal skill_used(slot: int, skill: SkillData)
 signal basic_attacked ## Hook for the basic attack's sound.
@@ -27,7 +29,7 @@ var skill_cooldown_mods: Dictionary = {}
 
 var _cooldowns: Array[float] = []
 var _basic_left: float = 0.0
-var _cast: Dictionary = {} # While casting: slot, skill, caster, direction, world, left.
+var _cast: Dictionary = {} # While casting: slot (BASIC_SLOT = basic attack), skill, caster, direction, world, left.
 
 
 func _ready() -> void:
@@ -125,9 +127,12 @@ func cancel_cast() -> void:
 func try_basic(caster: Node3D, direction: Vector3, world: Node) -> bool:
 	if is_casting() or basic_attack == null or _basic_left > 0.0 or direction == Vector3.ZERO:
 		return false
-	_spawn(basic_attack, caster, direction, world)
-	_basic_left = cooldown_of(basic_attack)
-	basic_attacked.emit()
+	if basic_attack.cast_time > 0.0:
+		_cast = { "slot": BASIC_SLOT, "skill": basic_attack, "caster": caster, "direction": direction, "world": world,
+			"left": basic_attack.cast_time }
+		cast_started.emit(basic_attack, basic_attack.cast_time)
+		return true
+	_fire(BASIC_SLOT, basic_attack, caster, direction, world)
 	return true
 
 
@@ -146,6 +151,10 @@ func _finish_cast() -> void:
 
 func _fire(slot: int, skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -> void:
 	_spawn(skill, caster, direction, world)
+	if slot == BASIC_SLOT:
+		_basic_left = cooldown_of(skill)
+		basic_attacked.emit()
+		return
 	_cooldowns[slot] = cooldown_of(skill)
 	skill_used.emit(slot, skill)
 

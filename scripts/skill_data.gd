@@ -12,8 +12,10 @@ enum Kind { PHYSICAL, MAGIC }
 @export var kind: Kind = Kind.PHYSICAL
 @export var element: Element.Type = Element.Type.PHYSICAL ## Applies its status on hit; enemies can be weak to it.
 @export var cost: float = 0.0 ## Stamina (physical) or mana (magic) spent per cast.
-## Seconds of casting before it fires (big magic only). You move slowly; dodging cancels and refunds.
+## Wind-up seconds before it fires. You move slowly; dodging cancels and refunds.
 @export var cast_time: float = 0.0
+## Seconds locked in after it fires: no dodging, no other attacks, barely any walking.
+@export var commit_time: float = 0.0
 ## Spawned when the skill is cast. Its root script must extend SkillEffect.
 @export var effect_scene: PackedScene
 
