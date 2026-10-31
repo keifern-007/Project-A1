@@ -11,13 +11,13 @@ var _cooldown: float = 0.0
 @onready var cooldown_label: Label = %CooldownLabel
 
 
-## cost_text: e.g. "25 MP" shown next to the key ("" = free).
-func setup(title: String, action: StringName, cooldown: float, cost_text: String = "") -> void:
+## info_text: e.g. "25 MP  * Ice" shown next to the key ("" = free, no element).
+func setup(title: String, action: StringName, cooldown: float, info_text: String = "") -> void:
 	_cooldown = cooldown
 	set_title(title)
 	key_label.text = "[%s]" % InputHints.key_for(action)
-	if cost_text != "":
-		key_label.text += "  " + cost_text
+	if info_text != "":
+		key_label.text += "  " + info_text
 	update_cooldown(0.0)
 
 

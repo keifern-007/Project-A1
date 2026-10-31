@@ -9,4 +9,5 @@ name_key = "SKILL_DASH_STRIKE"
 cooldown = 6.0
 damage_multiplier = 2.0
 cost = 25.0
+element = 1
 effect_scene = ExtResource("2_scene")

@@ -9,4 +9,5 @@ name_key = "SKILL_MAGIC_BOLT"
 cooldown = 0.5
 damage_multiplier = 1.0
 kind = 1
+element = 2
 effect_scene = ExtResource("2_scene")

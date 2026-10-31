@@ -23,4 +23,5 @@ chance = 0.04
 [resource]
 script = ExtResource("1_data")
 name_key = "ENEMY_GOBLIN"
+fire_multiplier = 1.5
 drops = Array[ExtResource("2_drop")]([SubResource("DropEar"), SubResource("DropHeal"), SubResource("DropFury")])

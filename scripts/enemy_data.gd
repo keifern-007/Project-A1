@@ -11,6 +11,13 @@ extends Resource
 @export var move_speed: float = 3.5
 @export_range(0.0, 1.0) var knockback_resistance: float = 0.0 ## 1 = immovable (bosses).
 
+@export_group("Elements")
+## Damage scale per element: 1.5 = weak to it, 0.5 = resists it.
+@export var fire_multiplier: float = 1.0
+@export var ice_multiplier: float = 1.0
+@export var poison_multiplier: float = 1.0
+@export var can_be_frozen: bool = true
+
 @export_group("Behaviour")
 @export var detection_range: float = 10.0 ## Starts chasing when a player gets this close.
 @export var attack_range: float = 1.6
@@ -24,3 +31,14 @@ extends Resource
 @export_group("Accessibility")
 ## Spider-type enemies get an alternate look when arachnophobia mode is on (Phase 6).
 @export var is_arachnid: bool = false
+
+
+func element_multiplier(element: Element.Type) -> float:
+	match element:
+		Element.Type.FIRE:
+			return fire_multiplier
+		Element.Type.ICE:
+			return ice_multiplier
+		Element.Type.POISON:
+			return poison_multiplier
+	return 1.0

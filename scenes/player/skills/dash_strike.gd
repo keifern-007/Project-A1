@@ -9,6 +9,7 @@ extends SkillEffect
 
 func _ready() -> void:
 	hitbox.damage = damage
+	hitbox.element = element
 	(caster as Player).dash(direction, dash_speed, dash_time, false)
 	get_tree().create_timer(dash_time + 0.05, false, true).timeout.connect(queue_free)
 

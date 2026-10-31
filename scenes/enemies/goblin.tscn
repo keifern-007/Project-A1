@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://components/hurtbox_component.gd" id="5_hurtbox"]
 [ext_resource type="Script" path="res://components/melee_attack_component.gd" id="6_melee"]
 [ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="8_status"]
 
 [sub_resource type="CapsuleShape3D" id="BodyShape"]
 radius = 0.4
@@ -58,12 +59,17 @@ script = ExtResource("3_stats")
 script = ExtResource("4_health")
 stats = NodePath("../StatsComponent")
 
-[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats")]
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("8_status")
+health = NodePath("../HealthComponent")
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("5_hurtbox")
 health = NodePath("../HealthComponent")
 stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
 hit_cooldown = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]

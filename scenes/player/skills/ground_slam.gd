@@ -11,6 +11,7 @@ extends SkillEffect
 
 func _ready() -> void:
 	hitbox.damage = damage
+	hitbox.element = element
 	hitbox.active = true
 	GameFeel.shake(shake)
 	get_tree().create_timer(active_time, false, true).timeout.connect(_on_active_ended)

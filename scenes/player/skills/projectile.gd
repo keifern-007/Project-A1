@@ -15,6 +15,7 @@ var _stopped: bool = false
 
 func _ready() -> void:
 	hitbox.damage = damage
+	hitbox.element = element
 	direction.y = 0.0
 	direction = direction.normalized()
 	rotation.y = atan2(-direction.x, -direction.z)

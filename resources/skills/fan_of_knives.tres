@@ -9,4 +9,5 @@ name_key = "SKILL_FAN_OF_KNIVES"
 cooldown = 6.0
 damage_multiplier = 1.0
 cost = 25.0
+element = 3
 effect_scene = ExtResource("2_scene")

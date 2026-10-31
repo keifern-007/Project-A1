@@ -30,12 +30,14 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stats: StatsComponent = $StatsComponent
 @onready var health: HealthComponent = $HealthComponent
 @onready var hurtbox: HurtboxComponent = $HurtboxComponent
+@onready var status: StatusEffectComponent = $StatusEffectComponent
 @onready var melee: MeleeAttackComponent = $MeleeAttack
 @onready var visual: Node3D = $Visual
 @onready var body_shape: CollisionShape3D = $CollisionShape3D
 
 
 func _ready() -> void:
+	status.data = data
 	if data:
 		stats.max_health = data.max_health
 		stats.attack_power = data.attack_power
@@ -49,14 +51,18 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
-	_state_time += delta
-	match state:
-		State.IDLE:
-			_process_idle()
-		State.CHASE:
-			_process_chase()
-		State.ATTACK:
-			_process_attack()
+	if status.is_frozen():
+		velocity.x = 0.0
+		velocity.z = 0.0
+	else:
+		_state_time += delta
+		match state:
+			State.IDLE:
+				_process_idle()
+			State.CHASE:
+				_process_chase()
+			State.ATTACK:
+				_process_attack()
 	# Knockback overrides whatever the state wanted to do this frame.
 	if _knockback != Vector3.ZERO:
 		velocity.x = _knockback.x
@@ -95,8 +101,9 @@ func _process_chase() -> void:
 		_change_state(State.ATTACK)
 		return
 	var dir: Vector3 = _flat_direction_to(target)
-	velocity.x = dir.x * data.move_speed
-	velocity.z = dir.z * data.move_speed
+	var speed: float = data.move_speed * status.speed_multiplier()
+	velocity.x = dir.x * speed
+	velocity.z = dir.z * speed
 	visual.rotation.y = atan2(-dir.x, -dir.z)
 
 
@@ -164,6 +171,7 @@ func despawn() -> void:
 	if state == State.DEAD:
 		return
 	_change_state(State.DEAD)
+	status.clear()
 	body_shape.set_deferred("disabled", true)
 	hurtbox.set_deferred("monitoring", false)
 	melee.hitbox.active = false

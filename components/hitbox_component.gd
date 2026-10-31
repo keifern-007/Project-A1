@@ -6,6 +6,7 @@ extends Area3D
 @export var damage: int = 10
 ## How hard this pushes whatever it hits, away from the hitbox's origin.
 @export var knockback: float = 0.0
+@export var element: Element.Type = Element.Type.PHYSICAL
 ## Turn on only during an attack's active frames. Traps just leave it on.
 @export var active: bool = true:
 	set(value):

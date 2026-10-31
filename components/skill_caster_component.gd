@@ -154,6 +154,7 @@ func _spawn(skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -
 	var effect: SkillEffect = skill.effect_scene.instantiate()
 	var attack_power: int = stats.get_attack_power() if stats else 0
 	effect.damage = roundi(attack_power * skill.damage_multiplier * skill_damage_mods.get(skill, 1.0))
+	effect.element = skill.element
 	effect.direction = direction
 	effect.caster = caster
 	world.add_child(effect)

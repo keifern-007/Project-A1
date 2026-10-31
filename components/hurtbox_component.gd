@@ -8,6 +8,8 @@ signal hurt(amount: int, hitbox: HitboxComponent)
 @export var health: HealthComponent
 ## Optional. Defense reduces incoming damage.
 @export var stats: StatsComponent
+## Optional. Adds element weaknesses and receives element hits (enemies).
+@export var status: StatusEffectComponent
 ## Mercy time after being hit, so overlapping hitboxes don't shred you in one frame.
 @export var hit_cooldown: float = 0.5
 
@@ -37,7 +39,10 @@ func _physics_process(delta: float) -> void:
 
 func _take_hit(hitbox: HitboxComponent) -> void:
 	var defense: int = stats.defense if stats else 0
-	var amount: int = Combat.calculate_damage(roundi(hitbox.damage * damage_taken_multiplier), defense)
+	var element_scale: float = status.element_multiplier(hitbox.element) if status else 1.0
+	var amount: int = Combat.calculate_damage(roundi(hitbox.damage * damage_taken_multiplier * element_scale), defense)
 	_cooldown_left = hit_cooldown
 	health.take_damage(amount)
+	if status:
+		status.on_hit(hitbox.element, amount)
 	hurt.emit(amount, hitbox)

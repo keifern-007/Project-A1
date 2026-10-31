@@ -54,10 +54,10 @@ func show_character(character: CharacterData, on_right: bool, choosing: bool) ->
 	])
 	var skill_names: Array[String] = []
 	for skill: SkillData in character.signature_skills:
-		skill_names.append(tr(skill.name_key))
+		skill_names.append(skill.display_name())
 	var lines: Array[String] = [tr("UI_SKILLS_ROW") % ", ".join(skill_names)]
 	if character.basic_attack:
-		lines.append(tr("UI_BASIC_RANGED") % tr(character.basic_attack.name_key))
+		lines.append(tr("UI_BASIC_RANGED") % character.basic_attack.display_name())
 	if character.passive:
 		lines.append(tr("UI_PASSIVE_ROW") % [tr(character.passive.name_key), character.passive.describe()])
 	passive_label.text = "\n".join(lines)

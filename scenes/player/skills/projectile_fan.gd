@@ -15,6 +15,7 @@ func _fire() -> void:
 		var angle: float = deg_to_rad(spread_degrees * (i - (count - 1) / 2.0))
 		var projectile: Projectile = projectile_scene.instantiate()
 		projectile.damage = damage
+		projectile.element = element
 		projectile.direction = direction.rotated(Vector3.UP, angle)
 		projectile.caster = caster
 		get_parent().add_child(projectile)

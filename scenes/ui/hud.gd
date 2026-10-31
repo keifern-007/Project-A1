@@ -58,7 +58,7 @@ func bind_player(player: Player) -> void:
 		var slot: SkillSlot = SKILL_SLOT_SCENE.instantiate()
 		skill_row.add_child(slot)
 		var skill: SkillData = _skill_caster.skills[i]
-		slot.setup(tr(skill.name_key), "skill_%d" % (i + 1), _skill_caster.cooldown_of(skill), _cost_text(skill))
+		slot.setup(tr(skill.name_key), "skill_%d" % (i + 1), _skill_caster.cooldown_of(skill), _slot_info(skill))
 		_slots.append(slot)
 
 	_consumables = player.consumables
@@ -101,6 +101,16 @@ func _on_consumables_changed() -> void:
 
 
 ## "25 MP" / "30 ST"; "" for free skills.
+## Cost and element next to the skill's key, e.g. "25 MP  * Ice".
+func _slot_info(skill: SkillData) -> String:
+	var parts: Array[String] = []
+	if skill.cost > 0.0:
+		parts.append(_cost_text(skill))
+	if skill.element != Element.Type.PHYSICAL:
+		parts.append(tr(Element.name_key(skill.element)))
+	return "  ".join(parts)
+
+
 func _cost_text(skill: SkillData) -> String:
 	if skill.cost <= 0.0:
 		return ""

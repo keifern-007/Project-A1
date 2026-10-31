@@ -19,6 +19,7 @@ var _slab_start_z: float = 0.0
 func _ready() -> void:
 	rotation.y = atan2(-direction.x, -direction.z)
 	hitbox.damage = damage
+	hitbox.element = element
 	hitbox.active = false
 	_slab_start_z = slab.position.z
 	for i: int in hits:

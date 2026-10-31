@@ -52,5 +52,5 @@ func skills_text() -> String:
 		return ""
 	var names: Array[String] = []
 	for skill: SkillData in skills:
-		names.append(TranslationServer.translate(skill.name_key))
+		names.append(skill.display_name())
 	return TranslationServer.translate("UI_WEAPON_SKILLS") % ", ".join(names)

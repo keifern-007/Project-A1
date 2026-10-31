@@ -35,11 +35,13 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stats: StatsComponent = $StatsComponent
 @onready var health: HealthComponent = $HealthComponent
 @onready var hurtbox: HurtboxComponent = $HurtboxComponent
+@onready var status: StatusEffectComponent = $StatusEffectComponent
 @onready var animator: OgreAnimator = $OgreAnimator
 @onready var body_shape: CollisionShape3D = $CollisionShape3D
 
 
 func _ready() -> void:
+	status.data = data
 	if data:
 		stats.max_health = data.max_health
 		stats.defense = data.defense
@@ -102,7 +104,7 @@ func _process_chase(delta: float) -> void:
 		_start_attack(attack)
 		return
 	# Walks the way it faces, so its slow turning really matters.
-	var speed: float = data.move_speed * _speed if distance > STOP_DISTANCE else 0.0
+	var speed: float = data.move_speed * _speed * status.speed_multiplier() if distance > STOP_DISTANCE else 0.0
 	var forward: Vector3 = -global_basis.z
 	velocity.x = forward.x * speed
 	velocity.z = forward.z * speed

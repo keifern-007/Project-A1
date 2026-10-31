@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://components/hitbox_component.gd" id="6_hitbox"]
 [ext_resource type="Script" path="res://scenes/bosses/boss_attack.gd" id="7_attack"]
 [ext_resource type="Script" path="res://scenes/bosses/ogre_animator.gd" id="8_animator"]
+[ext_resource type="Script" path="res://components/status_effect_component.gd" id="9_status"]
 
 [sub_resource type="CapsuleShape3D" id="BodyShape"]
 radius = 1.2
@@ -97,12 +98,18 @@ script = ExtResource("3_stats")
 script = ExtResource("4_health")
 stats = NodePath("../StatsComponent")
 
-[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats")]
+[node name="StatusEffectComponent" type="Node3D" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("9_status")
+health = NodePath("../HealthComponent")
+label_height = 5.0
+
+[node name="HurtboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health", "stats", "status")]
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("5_hurtbox")
 health = NodePath("../HealthComponent")
 stats = NodePath("../StatsComponent")
+status = NodePath("../StatusEffectComponent")
 hit_cooldown = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtboxComponent"]

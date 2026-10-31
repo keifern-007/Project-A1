@@ -9,4 +9,5 @@ name_key = "SKILL_FLURRY"
 cooldown = 4.0
 damage_multiplier = 0.8
 cost = 20.0
+element = 3
 effect_scene = ExtResource("2_scene")

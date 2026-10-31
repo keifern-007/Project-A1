@@ -12,6 +12,7 @@ extends SkillEffect
 
 func _ready() -> void:
 	hitbox.damage = damage
+	hitbox.element = element
 	hitbox.active = false
 	for i: int in pulses:
 		get_tree().create_timer(i * pulse_interval + 0.01, false, true).timeout.connect(_pulse)

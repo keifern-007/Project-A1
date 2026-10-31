@@ -10,4 +10,6 @@ max_health = 700
 attack_power = 0
 move_speed = 2.2
 knockback_resistance = 1.0
+ice_multiplier = 0.5
+can_be_frozen = false
 xp_reward = 150
