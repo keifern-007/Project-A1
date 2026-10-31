@@ -98,8 +98,8 @@ func _update_details() -> void:
 		return
 	var locked_rank: int = maxi(maxi(_map.required_rank, _objective.required_rank), _challenge.required_rank)
 	start_button.disabled = locked_rank > SaveManager.get_rank()
-	details.text = "%s  —  %s  —  %s\n%s\n%s" % [tr(_map.name_key), tr(_objective.name_key), tr(_challenge.name_key),
-		tr(_objective.description_key), _challenge.describe()]
+	details.text = "%s  —  %s  —  %s\n%s\n%s\n%s" % [tr(_map.name_key), tr(_objective.name_key), tr(_challenge.name_key),
+		tr(_map.description_key), tr(_objective.description_key), _challenge.describe()]
 	if start_button.disabled:
 		details.text += "\n" + tr("UI_RANK_NEEDED") % [locked_rank, SaveManager.get_rank()]
 

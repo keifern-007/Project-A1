@@ -252,3 +252,19 @@ STATUS_FROZEN,# Frozen
 STATUS_POISON,~ Poison x%d
 POPUP_WEAK,Weak!
 POPUP_RESIST,Resist
+BIOME_SNOW,Snow
+BIOME_DESERT,Desert
+ENEMY_GOBLIN_FROST,Frost Goblin
+ENEMY_GOBLIN_MUMMY,Mummified Goblin
+ENEMY_OGRE_FROST,Frost Ogre
+ENEMY_OGRE_MUMMY,Mummified Ogre
+MAT_FROST_SHARD,Frost Shard
+MAT_BURIAL_WRAP,Burial Wrap
+MAP_FROST_PASS,Frost Pass
+MAP_FROST_PASS_DESC,"Snow biome. Foes melt fast to Fire, shrug off Ice and never freeze. Drops Frost Shards."
+MAP_SUNSCAR,Sunscar Dunes
+MAP_SUNSCAR_DESC,"Desert biome. Mummies crack under Ice, resist Fire and barely feel Poison. Drops Burial Wraps."
+ITEM_FROST_HEART,Frost Heart
+ITEM_FROST_HEART_DESC,Hits harder. Your own heart beats slower.
+ITEM_BURIAL_TALISMAN,Burial Talisman
+ITEM_BURIAL_TALISMAN_DESC,"Hard to kill. Hard to enjoy, too."

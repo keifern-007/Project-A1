@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/drop_entry.gd" id="2_drop"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="3_ear"]
+[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" path="res://resources/items/fury_tonic.tres" id="5_fury"]
+[ext_resource type="Resource" path="res://resources/materials/frost_shard.tres" id="6_mat"]
+[ext_resource type="Resource" path="res://resources/biomes/snow.tres" id="7_biome"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/variants/frost_spikes.tscn" id="8_look"]
+
+[sub_resource type="Resource" id="DropEar"]
+script = ExtResource("2_drop")
+material = ExtResource("3_ear")
+
+[sub_resource type="Resource" id="DropExclusive"]
+script = ExtResource("2_drop")
+material = ExtResource("6_mat")
+chance = 0.4
+
+[sub_resource type="Resource" id="DropHeal"]
+script = ExtResource("2_drop")
+booster = ExtResource("4_heal")
+chance = 0.08
+
+[sub_resource type="Resource" id="DropFury"]
+script = ExtResource("2_drop")
+booster = ExtResource("5_fury")
+chance = 0.04
+
+[resource]
+script = ExtResource("1_data")
+name_key = "ENEMY_GOBLIN_FROST"
+max_health = 40
+move_speed = 3.0
+fire_multiplier = 2.0
+ice_multiplier = 0.5
+can_be_frozen = false
+drops = Array[ExtResource("2_drop")]([SubResource("DropEar"), SubResource("DropExclusive"), SubResource("DropHeal"), SubResource("DropFury")])
+biome = ExtResource("7_biome")
+tint = Color(0.7, 0.9, 1.3, 1)
+accessory = ExtResource("8_look")

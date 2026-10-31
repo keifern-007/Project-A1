@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="SpikeMesh"]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.45
+radial_segments = 4
+
+[sub_resource type="StandardMaterial3D" id="IceMat"]
+albedo_color = Color(0.8, 0.95, 1, 1)
+
+[node name="FrostSpikes" type="Node3D"]
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("SpikeMesh")
+surface_material_override/0 = SubResource("IceMat")
+
+[node name="Left" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.825336, -0.564642, 0, 0.564642, 0.825336, 0, 0, 0, 1, -0.22, 1.38, 0)
+mesh = SubResource("SpikeMesh")
+surface_material_override/0 = SubResource("IceMat")
+
+[node name="Right" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.825336, 0.564642, 0, -0.564642, 0.825336, 0, 0, 0, 1, 0.22, 1.38, 0)
+mesh = SubResource("SpikeMesh")
+surface_material_override/0 = SubResource("IceMat")
+
+[node name="ShoulderLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.621610, -0.783327, 0, 0.783327, 0.621610, 0, 0, 0, 1, -0.4, 0.95, 0)
+mesh = SubResource("SpikeMesh")
+surface_material_override/0 = SubResource("IceMat")
+
+[node name="ShoulderRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.621610, 0.783327, 0, -0.783327, 0.621610, 0, 0, 0, 1, 0.4, 0.95, 0)
+mesh = SubResource("SpikeMesh")
+surface_material_override/0 = SubResource("IceMat")

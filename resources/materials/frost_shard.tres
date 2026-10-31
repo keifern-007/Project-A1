@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MaterialData" format=3]
+
+[ext_resource type="Script" path="res://scripts/material_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"frost_shard"
+name_key = "MAT_FROST_SHARD"
+color = Color(0.6, 0.85, 1, 1)

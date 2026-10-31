@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/burial_wrap.tres" id="3_mat"]
+
+[sub_resource type="Resource" id="Cost1"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 8
+
+[resource]
+script = ExtResource("1_item")
+id = &"burial_talisman"
+name_key = "ITEM_BURIAL_TALISMAN"
+description_key = "ITEM_BURIAL_TALISMAN_DESC"
+slot = 6
+tier = 2
+category = &"trinket"
+color = Color(0.8, 0.72, 0.55, 1)
+max_health = 40
+attack_power = -3
+defense = 2
+cost = Array[ExtResource("2_cost")]([SubResource("Cost1")])

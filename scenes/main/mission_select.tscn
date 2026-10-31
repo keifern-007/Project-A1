@@ -12,6 +12,8 @@
 [ext_resource type="Resource" path="res://resources/challenges/normal.tres" id="10_normal"]
 [ext_resource type="Resource" path="res://resources/challenges/hard.tres" id="11_hard"]
 [ext_resource type="Resource" path="res://resources/challenges/brutal.tres" id="12_brutal"]
+[ext_resource type="Resource" path="res://resources/maps/frost_pass.tres" id="13_frost"]
+[ext_resource type="Resource" path="res://resources/maps/sunscar_dunes.tres" id="14_sunscar"]
 
 [sub_resource type="LabelSettings" id="TitleText"]
 font_size = 64
@@ -33,7 +35,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_select")
-maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox")])
+maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox"), ExtResource("13_frost"), ExtResource("14_sunscar")])
 objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("8_sunbloom")])
 challenges = Array[ExtResource("9_chdata")]([ExtResource("10_normal"), ExtResource("11_hard"), ExtResource("12_brutal")])
 

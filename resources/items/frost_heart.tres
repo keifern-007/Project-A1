@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/frost_shard.tres" id="3_mat"]
+
+[sub_resource type="Resource" id="Cost1"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 8
+
+[resource]
+script = ExtResource("1_item")
+id = &"frost_heart"
+name_key = "ITEM_FROST_HEART"
+description_key = "ITEM_FROST_HEART_DESC"
+slot = 6
+tier = 2
+category = &"trinket"
+color = Color(0.6, 0.85, 1, 1)
+max_health = -30
+attack_power = 7
+cost = Array[ExtResource("2_cost")]([SubResource("Cost1")])

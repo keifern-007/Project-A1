@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="BandMesh"]
+top_radius = 0.43
+bottom_radius = 0.43
+height = 0.1
+radial_segments = 10
+
+[sub_resource type="StandardMaterial3D" id="ClothMat"]
+albedo_color = Color(0.86, 0.8, 0.65, 1)
+
+[node name="MummyWraps" type="Node3D"]
+
+[node name="Band1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.992809, -0.119712, 0, 0.119712, 0.992809, 0, 0.35, 0)
+mesh = SubResource("BandMesh")
+surface_material_override/0 = SubResource("ClothMat")
+
+[node name="Band2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.988771, 0.149438, 0, -0.149438, 0.988771, 0, 0.62, 0)
+mesh = SubResource("BandMesh")
+surface_material_override/0 = SubResource("ClothMat")
+
+[node name="Band3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.995004, -0.099833, 0, 0.099833, 0.995004, 0, 0.88, 0)
+mesh = SubResource("BandMesh")
+surface_material_override/0 = SubResource("ClothMat")
+
+[node name="Band4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.992809, 0.119712, 0, -0.119712, 0.992809, 0, 1.12, 0)
+mesh = SubResource("BandMesh")
+surface_material_override/0 = SubResource("ClothMat")

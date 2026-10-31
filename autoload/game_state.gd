@@ -44,6 +44,11 @@ func _process(delta: float) -> void:
 		run_time += delta
 
 
+## This run's biome (null = enemies stay their base type).
+func biome() -> BiomeData:
+	return (map as MapData).biome if map else null
+
+
 func enemy_health_multiplier() -> float:
 	return challenge.enemy_health_multiplier if challenge else 1.0
 

@@ -37,6 +37,9 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _ready() -> void:
+	if data:
+		data = data.variant_for(GameState.biome())
+		data.apply_look(visual)
 	status.data = data
 	if data:
 		stats.max_health = data.max_health

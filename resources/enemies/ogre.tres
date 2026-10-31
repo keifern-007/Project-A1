@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="1_5mrol"]
 [ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/enemies/ogre_frost.tres" id="2_frost"]
+[ext_resource type="Resource" path="res://resources/enemies/ogre_mummy.tres" id="3_mummy"]
 
 [resource]
 script = ExtResource("1_data")
@@ -13,3 +15,4 @@ knockback_resistance = 1.0
 ice_multiplier = 0.5
 can_be_frozen = false
 xp_reward = 150
+variants = Array[ExtResource("1_data")]([ExtResource("2_frost"), ExtResource("3_mummy")])

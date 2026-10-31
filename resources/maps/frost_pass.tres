@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/map_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/maps/greybox.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://resources/biomes/snow.tres" id="3_biome"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "MAP_FROST_PASS"
+description_key = "MAP_FROST_PASS_DESC"
+required_rank = 4
+biome = ExtResource("3_biome")
+scene = ExtResource("2_scene")
