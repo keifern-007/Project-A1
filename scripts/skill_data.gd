@@ -2,6 +2,7 @@ class_name SkillData
 extends Resource
 ## One skill, saved as a .tres in resources/skills/. New skill = new .tres + effect scene.
 ## Physical skills spend stamina, magic skills spend mana. Basic attacks (Magic Bolt) are free.
+## Hero signature skills (keys 1-2) are always MAGIC; weapon skills (keys 3-4) depend on the weapon.
 
 enum Kind { PHYSICAL, MAGIC }
 

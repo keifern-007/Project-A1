@@ -8,5 +8,6 @@ script = ExtResource("1_data")
 name_key = "SKILL_SHIELD_BASH"
 cooldown = 5.0
 damage_multiplier = 1.8
+kind = 1
 cost = 20.0
 effect_scene = ExtResource("2_scene")
