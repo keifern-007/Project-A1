@@ -1,0 +1,203 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Plaster"]
+albedo_color = Color(0.93, 0.87, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="Timber"]
+albedo_color = Color(0.36, 0.24, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Wood"]
+albedo_color = Color(0.56, 0.4, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Plank"]
+albedo_color = Color(0.66, 0.5, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofRed"]
+albedo_color = Color(0.72, 0.3, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofBlue"]
+albedo_color = Color(0.25, 0.42, 0.68, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofSlate"]
+albedo_color = Color(0.36, 0.4, 0.48, 1)
+
+[sub_resource type="StandardMaterial3D" id="Thatch"]
+albedo_color = Color(0.82, 0.68, 0.36, 1)
+
+[sub_resource type="StandardMaterial3D" id="Stone"]
+albedo_color = Color(0.68, 0.67, 0.66, 1)
+
+[sub_resource type="StandardMaterial3D" id="StoneDark"]
+albedo_color = Color(0.46, 0.46, 0.48, 1)
+
+[sub_resource type="StandardMaterial3D" id="Marble"]
+albedo_color = Color(0.9, 0.89, 0.84, 1)
+
+[sub_resource type="StandardMaterial3D" id="Iron"]
+albedo_color = Color(0.27, 0.28, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.92, 0.72, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Window"]
+shading_mode = 0
+albedo_color = Color(1, 0.85, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="Ember"]
+shading_mode = 0
+albedo_color = Color(1, 0.42, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Glow"]
+shading_mode = 0
+albedo_color = Color(0.55, 0.8, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Rune"]
+shading_mode = 0
+albedo_color = Color(0.72, 0.5, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerRed"]
+albedo_color = Color(0.78, 0.2, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerBlue"]
+albedo_color = Color(0.2, 0.38, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerPurple"]
+albedo_color = Color(0.5, 0.26, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="Canvas"]
+albedo_color = Color(0.92, 0.88, 0.74, 1)
+
+[sub_resource type="StandardMaterial3D" id="CanvasRed"]
+albedo_color = Color(0.8, 0.3, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Water"]
+albedo_color = Color(0.28, 0.58, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="Reed"]
+albedo_color = Color(0.34, 0.56, 0.26, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leaf"]
+albedo_color = Color(0.3, 0.62, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="Soil"]
+albedo_color = Color(0.42, 0.3, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Hay"]
+albedo_color = Color(0.88, 0.76, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="White"]
+albedo_color = Color(0.96, 0.96, 0.92, 1)
+
+[sub_resource type="StandardMaterial3D" id="Orange"]
+albedo_color = Color(0.95, 0.6, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Crop"]
+albedo_color = Color(0.9, 0.5, 0.15, 1)
+
+[sub_resource type="BoxShape3D" id="S1"]
+size = Vector3(1.4, 1.2, 2.4)
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(1.4, 0.2, 2.4)
+material = SubResource("Wood")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.1, 0.5, 2.4)
+material = SubResource("Plank")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.1, 0.5, 2.4)
+material = SubResource("Plank")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(1.4, 0.5, 0.1)
+material = SubResource("Plank")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(1.25, 0.5, 2.2)
+material = SubResource("Hay")
+
+[sub_resource type="CylinderMesh" id="M7"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.1
+radial_segments = 10
+rings = 1
+material = SubResource("Timber")
+
+[sub_resource type="CylinderMesh" id="M8"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.1
+radial_segments = 10
+rings = 1
+material = SubResource("Timber")
+
+[sub_resource type="CylinderMesh" id="M9"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.1
+radial_segments = 10
+rings = 1
+material = SubResource("Timber")
+
+[sub_resource type="CylinderMesh" id="M10"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.1
+radial_segments = 10
+rings = 1
+material = SubResource("Timber")
+
+[sub_resource type="BoxMesh" id="M11"]
+size = Vector3(0.1, 0.1, 1.8)
+material = SubResource("Timber")
+
+[node name="Cart" type="Node3D"]
+
+[node name="Body" type="StaticBody3D" parent="."]
+
+[node name="Shape1" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("S1")
+
+[node name="Bed" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.85, 0)
+mesh = SubResource("M2")
+
+[node name="SideL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -0.7, 1.15, 0)
+mesh = SubResource("M3")
+
+[node name="SideR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0.7, 1.15, 0)
+mesh = SubResource("M4")
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.15, 1.2)
+mesh = SubResource("M5")
+
+[node name="Hay1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.25, 0)
+mesh = SubResource("M6")
+
+[node name="WheelL-0_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, -0.78, 0.5, -0.8)
+mesh = SubResource("M7")
+
+[node name="WheelR-0_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0.78, 0.5, -0.8)
+mesh = SubResource("M8")
+
+[node name="WheelL0_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, -0.78, 0.5, 0.8)
+mesh = SubResource("M9")
+
+[node name="WheelR0_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0.78, 0.5, 0.8)
+mesh = SubResource("M10")
+
+[node name="Shaft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.75, -1.8)
+mesh = SubResource("M11")
+

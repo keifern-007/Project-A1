@@ -53,7 +53,7 @@ UI_BACK,Back
 UI_RETURN_TO_CAMP,Return to Camp
 UI_STASH_EMPTY,Nothing stored yet. Go earn something!
 UI_STASH_STATS,Runs %d  |  Wins %d
-UI_HUB_HINT,WASD: move   %s: interact
+UI_HUB_HINT,WASD: move   %s: interact   %s: camera   %s: menu
 SLOT_WEAPON,Weapon
 SLOT_ARMOR,Armor
 SLOT_TRINKET,Trinket
@@ -291,7 +291,6 @@ ITEM_HOARFROST_MANTLE,Hoarfrost Mantle
 ITEM_HOARFROST_MANTLE_DESC,"Still smells of yeti. Warm, heavy and slightly judgemental."
 ENEMY_SUN_EATEN_KING,The Sun-Eaten King
 STATUS_SEALED,= Sealed: break the jars
-HINT_BREAK_JAR,Break me!
 OBJ_BREAK_JARS,Break the canopic jars
 MAT_CROWN_SHARD,Sun-Eaten Crown Shard
 OBJ_BOSS_KING,Defeat the Sun-Eaten King
@@ -348,3 +347,74 @@ UI_FILTER_ALL_MATERIALS,All materials
 UI_FILTER_ALL_STYLES,Mage + Physical
 UI_FILTER_MATERIAL_ROW,%s (%d owned)
 UI_FORGE_NO_MATCH,No recipes match these filters.
+ITEM_OGREHIDE_CAP,Ogrehide Cap
+ITEM_OGREHIDE_CAP_DESC,Fits any head if you stuff it with enough goblin ear.
+ITEM_OGREHIDE_GIRDLE,Ogrehide Girdle
+ITEM_OGREHIDE_GIRDLE_DESC,Built to hold up an Ogre. Holds up you with room to spare.
+ITEM_OGREHIDE_BOOTS,Ogrehide Boots
+ITEM_OGREHIDE_BOOTS_DESC,The toes were somebody else's idea of armor.
+ITEM_TUSKGUARD,Tuskguard
+ITEM_TUSKGUARD_DESC,"Three tusks and a lot of rope. Heavy on the arm, heavier on whoever hits it."
+ITEM_TUSK_SHIV,Tusk Shiv
+ITEM_TUSK_SHIV_DESC,"A sliver of Ogre, sharpened. Quick, mean and no use for parrying."
+ITEM_HOARFROST_HELM,Hoarfrost Helm
+ITEM_HOARFROST_HELM_DESC,The horns are real. The yeti has stopped asking for them back.
+ITEM_HOARFROST_GIRDLE,Hoarfrost Girdle
+ITEM_HOARFROST_GIRDLE_DESC,"Warm enough for a blizzard, tight enough to slow your swing."
+ITEM_HOARFROST_BOOTS,Hoarfrost Boots
+ITEM_HOARFROST_BOOTS_DESC,Nothing gets through them. Not even a sense of the ground.
+ITEM_HOARFROST_MAUL,Hoarfrost Maul
+ITEM_HOARFROST_MAUL_DESC,"A frozen slab on a pole. Slow to rise, and shields do not survive it landing."
+ITEM_SUN_EATEN_CROWN,Sun-Eaten Crown
+ITEM_SUN_EATEN_CROWN_DESC,It remembers being worn. It would like to be worn by someone more important.
+ITEM_SUN_EATEN_SHROUD,Sun-Eaten Shroud
+ITEM_SUN_EATEN_SHROUD_DESC,"Burial linen stitched with gold. Stops blades. Smells like a very long nap."
+ITEM_SUN_EATEN_SASH,Sun-Eaten Sash
+ITEM_SUN_EATEN_SASH_DESC,"Tightens when you cast. Loosens when you bleed. Nobody asked it to."
+ITEM_SUN_EATEN_SANDALS,Sun-Eaten Sandals
+ITEM_SUN_EATEN_SANDALS_DESC,Walked out of a sealed tomb once already. They know the way.
+ITEM_SUN_EATEN_SCEPTER,Sun-Eaten Scepter
+ITEM_SUN_EATEN_SCEPTER_DESC,"Still giving orders. Pays you in power, and collects in blood."
+ITEM_OGRE_BLOOD,Ogre Blood
+ITEM_OGRE_BLOOD_DESC,Do not ask how it was bottled. Do not smell it first.
+ITEM_FROSTMIND_ELIXIR,Frostmind Elixir
+ITEM_FROSTMIND_ELIXIR_DESC,"Your thoughts go very clear, and your teeth go very cold."
+ITEM_KINGS_WRATH,King's Wrath
+ITEM_KINGS_WRATH_DESC,"One sip of an old grudge. It is not yours, but you may borrow it."
+KEY_MOUSE_LEFT,Left Click
+KEY_MOUSE_RIGHT,Right Click
+KEY_MOUSE_MIDDLE,Middle Click
+KEY_MOUSE_OTHER,Mouse %d
+OBJ_TUTORIAL,Tutorial
+UI_FIELD_GUIDE,Field Guide
+UI_TUTORIAL_ASK,"Want to play the tutorial? It teaches moving, fighting, dodging, skills and gathering, then explains the camp. Practice only: nothing is saved, spent or lost."
+UI_TUTORIAL_PLAY,Play Tutorial
+UI_TUTORIAL_NOT_NOW,Not Now
+UI_HUB_HINT_NEW,New here? Read the Field Guide beside the Mission Board.
+UI_LEAVE_TUTORIAL,Leave? Press again to return to camp
+TUT_STEP,Lesson %d of %d
+TUT_WALK_HERE,Walk here
+TUT_MOVE,[%s]  Walk into the yellow ring.
+TUT_MOVE_TIP,You can't die in this tutorial. Take your time.
+TUT_ATTACK,Aim with the mouse and hold [%s] to attack the goblin.
+TUT_ATTACK_TIP,"Every attack winds up, then commits. Attacks and dodges use stamina, the green bar."
+TUT_DODGE,"Press [%s] to roll out of the ring before the disc fills it.  Dodged %d of %d"
+TUT_DODGE_TIP,"A ring on the ground means an attack is coming, and you can't be hit while rolling. Bosses warn you the same way."
+TUT_DODGE_NICE,Nice dodge! Here comes another.
+TUT_DODGE_MISS,Not quite. Roll just before the disc fills the ring.
+TUT_SKILL,Press one of [%s] to use a skill.
+TUT_SKILL_TIP,"Keys 1 and 2 come from your hero, 3 and 4 from your weapon. Each box shows its cost in mana or stamina."
+TUT_GATHER,Walk to the plant and hold [%s] until it's picked.
+TUT_GATHER_TIP,Materials are what you craft gear from at the Forge.
+TUT_FIGHT,Last lesson: put it all together and beat these goblins!
+TUT_FIGHT_TIP,"Watch them lean back before they swing, then roll or step away. Kills drop XP gems: walk near them to collect."
+TUT_GUIDE_TITLE,You're ready!
+TUT_GUIDE_INTRO,"Back in camp, walk up to a station and press the key shown above it."
+TUT_GUIDE_MISSIONS,Mission Board: choose a map and objective and start a run.
+TUT_GUIDE_FORGE,"Forge: craft weapons, armor and potions from your materials."
+TUT_GUIDE_GEAR,Gear Rack: equip what you've crafted. Your weapon sets skills 3 and 4.
+TUT_GUIDE_SHRINE,Skill Shrine: spend skill points to level up and buy hero talents.
+TUT_GUIDE_STASH,Stash: see everything you own.
+TUT_GUIDE_HEROES,Other heroes: walk up to one to see their card and switch.
+UI_OPT_CAMERA,Over-the-shoulder camera (off = isometric)
+HUD_CAMERA_HINT,[%s] Switch camera

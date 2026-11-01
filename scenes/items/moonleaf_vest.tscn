@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Leaf"]
+albedo_color = Color(0.32, 0.72, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="LeafDark"]
+albedo_color = Color(0.2, 0.48, 0.33, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.54, 0.46, 0.33)
+material = SubResource("Leaf")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.12, 0.46, 0.02)
+material = SubResource("LeafDark")
+
+[sub_resource type="PrismMesh" id="M3"]
+size = Vector3(0.16, 0.26, 0.02)
+material = SubResource("LeafDark")
+
+[sub_resource type="PrismMesh" id="M4"]
+size = Vector3(0.16, 0.26, 0.02)
+material = SubResource("LeafDark")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.14, 0.12, 0.28)
+material = SubResource("LeafDark")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(0.14, 0.12, 0.28)
+material = SubResource("LeafDark")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, -0.17)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.36, -0.175)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.36, -0.175)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.56, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.56, 0)
+mesh = SubResource("M6")
+

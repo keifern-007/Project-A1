@@ -1,0 +1,439 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/player/models/hero_rig.gd" id="1_rig"]
+
+[sub_resource type="StandardMaterial3D" id="Purple"]
+albedo_color = Color(0.42, 0.22, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="SkinPale"]
+albedo_color = Color(0.92, 0.78, 0.68, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.93, 0.73, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Eye"]
+albedo_color = Color(0.08, 0.08, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Lilac"]
+albedo_color = Color(0.68, 0.5, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="LeatherDark"]
+albedo_color = Color(0.27, 0.17, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="HairSilver"]
+albedo_color = Color(0.82, 0.84, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="Rune"]
+shading_mode = 0
+albedo_color = Color(0.78, 0.55, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="PurpleDark"]
+albedo_color = Color(0.25, 0.13, 0.42, 1)
+
+[sub_resource type="CylinderMesh" id="M1"]
+top_radius = 0.24
+bottom_radius = 0.56
+height = 1.02
+radial_segments = 8
+rings = 1
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M2"]
+top_radius = 0.56
+bottom_radius = 0.59
+height = 0.1
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.1, 0.96, 0.04)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.36, 0.09, 0.26)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.38, 0.52, 0.24)
+material = SubResource("Purple")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(0.14, 0.42, 0.03)
+material = SubResource("Lilac")
+
+[sub_resource type="BoxMesh" id="M7"]
+size = Vector3(0.46, 0.09, 0.3)
+material = SubResource("PurpleDark")
+
+[sub_resource type="SphereMesh" id="M8"]
+radius = 0.05
+height = 0.09
+radial_segments = 8
+rings = 4
+material = SubResource("Rune")
+
+[sub_resource type="SphereMesh" id="M9"]
+radius = 0.22
+height = 0.46
+radial_segments = 8
+rings = 4
+material = SubResource("SkinPale")
+
+[sub_resource type="BoxMesh" id="M10"]
+size = Vector3(0.06, 0.08, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M11"]
+size = Vector3(0.06, 0.08, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M12"]
+size = Vector3(0.44, 0.5, 0.14)
+material = SubResource("HairSilver")
+
+[sub_resource type="BoxMesh" id="M13"]
+size = Vector3(0.07, 0.42, 0.26)
+material = SubResource("HairSilver")
+
+[sub_resource type="BoxMesh" id="M14"]
+size = Vector3(0.07, 0.42, 0.26)
+material = SubResource("HairSilver")
+
+[sub_resource type="CylinderMesh" id="M15"]
+top_radius = 0.46
+bottom_radius = 0.46
+height = 0.03
+radial_segments = 8
+rings = 1
+material = SubResource("PurpleDark")
+
+[sub_resource type="CylinderMesh" id="M16"]
+top_radius = 0.25
+bottom_radius = 0.26
+height = 0.07
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M17"]
+top_radius = 0.12
+bottom_radius = 0.25
+height = 0.62
+radial_segments = 8
+rings = 1
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M18"]
+top_radius = 0.0
+bottom_radius = 0.12
+height = 0.46
+radial_segments = 8
+rings = 1
+material = SubResource("Purple")
+
+[sub_resource type="SphereMesh" id="M19"]
+radius = 0.05
+height = 0.1
+radial_segments = 8
+rings = 4
+material = SubResource("Rune")
+
+[sub_resource type="BoxMesh" id="M20"]
+size = Vector3(0.13, 0.36, 0.14)
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M21"]
+top_radius = 0.08
+bottom_radius = 0.17
+height = 0.3
+radial_segments = 8
+rings = 1
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M22"]
+top_radius = 0.17
+bottom_radius = 0.18
+height = 0.04
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M23"]
+radius = 0.07
+height = 0.14
+radial_segments = 8
+rings = 4
+material = SubResource("SkinPale")
+
+[sub_resource type="BoxMesh" id="M24"]
+size = Vector3(0.13, 0.36, 0.14)
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M25"]
+top_radius = 0.08
+bottom_radius = 0.17
+height = 0.3
+radial_segments = 8
+rings = 1
+material = SubResource("Purple")
+
+[sub_resource type="CylinderMesh" id="M26"]
+top_radius = 0.17
+bottom_radius = 0.18
+height = 0.04
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M27"]
+radius = 0.07
+height = 0.14
+radial_segments = 8
+rings = 4
+material = SubResource("SkinPale")
+
+[sub_resource type="BoxMesh" id="M28"]
+size = Vector3(0.14, 0.08, 0.26)
+material = SubResource("LeatherDark")
+
+[sub_resource type="BoxMesh" id="M29"]
+size = Vector3(0.14, 0.08, 0.26)
+material = SubResource("LeatherDark")
+
+[sub_resource type="SphereMesh" id="M30"]
+radius = 0.12
+height = 0.24
+radial_segments = 8
+rings = 4
+material = SubResource("Rune")
+
+[sub_resource type="BoxMesh" id="SB31"]
+material = SubResource("Rune")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="Mystic" type="Node3D"]
+script = ExtResource("1_rig")
+style = 2
+
+[node name="Hips" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02, 0)
+
+[node name="WaistSlot" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+
+[node name="Torso" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+
+[node name="ChestSlot" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(0.8600, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 0.9000, 0, 0, 0)
+
+[node name="NeckSlot" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.14)
+
+[node name="Head" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.56, 0)
+
+[node name="HeadSlot" type="Node3D" parent="Hips/Torso/Head"]
+unique_name_in_owner = true
+transform = Transform3D(0.9500, 0.0000, 0.0000, 0.0000, 0.9500, 0.0000, 0.0000, 0.0000, 0.9500, 0, 0.2, 0)
+
+[node name="HatGroup" type="Node3D" parent="Hips/Torso/Head"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="ArmR" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 0.5, 0)
+
+[node name="ForeR" type="Node3D" parent="Hips/Torso/ArmR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
+
+[node name="HandR" type="Node3D" parent="Hips/Torso/ArmR/ForeR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.0000, 1.0000, 0, -1.0000, 0.0000, 0, -0.34, 0)
+
+[node name="ArmL" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, 0.5, 0)
+
+[node name="ForeL" type="Node3D" parent="Hips/Torso/ArmL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
+
+[node name="HandL" type="Node3D" parent="Hips/Torso/ArmL/ForeL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.0000, 1.0000, 0, -1.0000, 0.0000, 0, -0.34, 0)
+
+[node name="ThighR" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0)
+
+[node name="ShinR" type="Node3D" parent="Hips/ThighR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48, 0)
+
+[node name="FootR" type="Node3D" parent="Hips/ThighR/ShinR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44, 0)
+
+[node name="ThighL" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0)
+
+[node name="ShinL" type="Node3D" parent="Hips/ThighL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48, 0)
+
+[node name="FootL" type="Node3D" parent="Hips/ThighL/ShinL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44, 0)
+
+[node name="Robe" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48, 0)
+
+[node name="OrbSpin" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+
+[node name="P1" type="MeshInstance3D" parent="Hips/Robe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="Hips/Robe"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.46, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="Hips/Robe"]
+transform = Transform3D(1, 0, 0, 0, 0.9613, 0.2756, 0, -0.2756, 0.9613, 0, 0, -0.32)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, -0.13)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54, 0)
+mesh = SubResource("M7")
+
+[node name="P8" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.17)
+mesh = SubResource("M8")
+
+[node name="P9" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("M9")
+
+[node name="P10" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.22, -0.2)
+mesh = SubResource("M10")
+
+[node name="P11" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 0.22, -0.2)
+mesh = SubResource("M11")
+
+[node name="P12" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0.14)
+mesh = SubResource("M12")
+
+[node name="P13" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21, 0.05, -0.02)
+mesh = SubResource("M13")
+
+[node name="P14" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21, 0.05, -0.02)
+mesh = SubResource("M14")
+
+[node name="P15" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.03)
+mesh = SubResource("M15")
+
+[node name="P16" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0.03)
+mesh = SubResource("M16")
+
+[node name="P17" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0.05)
+mesh = SubResource("M17")
+
+[node name="P18" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 0.9272, -0.3746, 0, 0.3746, 0.9272, 0, 1.2, 0.15)
+mesh = SubResource("M18")
+
+[node name="P19" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.22)
+mesh = SubResource("M19")
+
+[node name="P20" type="MeshInstance3D" parent="Hips/Torso/ArmR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0)
+mesh = SubResource("M20")
+
+[node name="P21" type="MeshInstance3D" parent="Hips/Torso/ArmR/ForeR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13, 0)
+mesh = SubResource("M21")
+
+[node name="P22" type="MeshInstance3D" parent="Hips/Torso/ArmR/ForeR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+mesh = SubResource("M22")
+
+[node name="P23" type="MeshInstance3D" parent="Hips/Torso/ArmR/ForeR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33, 0)
+mesh = SubResource("M23")
+
+[node name="P24" type="MeshInstance3D" parent="Hips/Torso/ArmL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0)
+mesh = SubResource("M24")
+
+[node name="P25" type="MeshInstance3D" parent="Hips/Torso/ArmL/ForeL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13, 0)
+mesh = SubResource("M25")
+
+[node name="P26" type="MeshInstance3D" parent="Hips/Torso/ArmL/ForeL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+mesh = SubResource("M26")
+
+[node name="P27" type="MeshInstance3D" parent="Hips/Torso/ArmL/ForeL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33, 0)
+mesh = SubResource("M27")
+
+[node name="P28" type="MeshInstance3D" parent="Hips/ThighR/ShinR/FootR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, -0.05)
+mesh = SubResource("M28")
+
+[node name="P29" type="MeshInstance3D" parent="Hips/ThighL/ShinL/FootL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, -0.05)
+mesh = SubResource("M29")
+
+[node name="P30" type="MeshInstance3D" parent="OrbSpin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 0.18, 0)
+mesh = SubResource("M30")
+
+[node name="Sparks31" type="CPUParticles3D" parent="OrbSpin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 0.18, 0)
+amount = 4
+lifetime = 0.8
+mesh = SubResource("SB31")
+emission_shape = 1
+emission_sphere_radius = 0.1
+direction = Vector3(0, 1, 0)
+spread = 25.0
+gravity = Vector3(0, 0.5, 0)
+initial_velocity_min = 0.2
+initial_velocity_max = 0.5
+

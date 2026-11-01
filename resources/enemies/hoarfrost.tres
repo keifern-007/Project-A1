@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "ENEMY_HOARFROST"
-max_health = 900
+max_health = 1800
 attack_power = 0
 defense = 2
 move_speed = 2.4

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://components/player_input.gd" id="2_input"]
@@ -22,17 +22,6 @@
 [ext_resource type="Script" path="res://components/status_effect_component.gd" id="20_status"]
 
 [sub_resource type="CapsuleShape3D" id="BodyShape"]
-
-[sub_resource type="CapsuleMesh" id="BodyMesh"]
-
-[sub_resource type="StandardMaterial3D" id="BodyMat"]
-albedo_color = Color(0.85, 0.45, 0.2, 1)
-
-[sub_resource type="BoxMesh" id="NoseMesh"]
-size = Vector3(0.25, 0.25, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="NoseMat"]
-albedo_color = Color(0.2, 0.2, 0.25, 1)
 
 [sub_resource type="BoxShape3D" id="SwingShape"]
 size = Vector3(1.8, 1.5, 1.4)
@@ -162,12 +151,3 @@ talents = NodePath("../TalentComponent")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="Body" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("BodyMesh")
-surface_material_override/0 = SubResource("BodyMat")
-
-[node name="Nose" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -0.5)
-mesh = SubResource("NoseMesh")
-surface_material_override/0 = SubResource("NoseMat")

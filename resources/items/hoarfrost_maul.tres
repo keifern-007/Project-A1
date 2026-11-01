@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/hoarfrost_pelt.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/frost_shard.tres" id="4_mat"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="20_skill"]
+[ext_resource type="Resource" path="res://resources/skills/frost_cleave.tres" id="21_skill"]
+[ext_resource type="Resource" path="res://resources/skills/ground_slam.tres" id="22_skill"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 3
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 6
+
+[resource]
+script = ExtResource("1_data")
+id = &"hoarfrost_maul"
+name_key = "ITEM_HOARFROST_MAUL"
+description_key = "ITEM_HOARFROST_MAUL_DESC"
+slot = 0
+two_handed = true
+windup_multiplier = 1.5
+tier = 3
+category = &"axe"
+style = 1
+color = Color(0.88, 0.92, 1, 1)
+attack_power = 13
+defense = -2
+skills = Array[ExtResource("20_skill")]([ExtResource("21_skill"), ExtResource("22_skill")])
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

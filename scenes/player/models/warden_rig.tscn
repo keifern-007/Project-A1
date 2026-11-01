@@ -1,0 +1,443 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/player/models/hero_rig.gd" id="1_rig"]
+
+[sub_resource type="StandardMaterial3D" id="Leather"]
+albedo_color = Color(0.42, 0.27, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="SteelDark"]
+albedo_color = Color(0.34, 0.37, 0.43, 1)
+
+[sub_resource type="StandardMaterial3D" id="Blue"]
+albedo_color = Color(0.2, 0.38, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="Red"]
+albedo_color = Color(0.82, 0.22, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.93, 0.73, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Eye"]
+albedo_color = Color(0.08, 0.08, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="SkinDark"]
+albedo_color = Color(0.55, 0.36, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Steel"]
+albedo_color = Color(0.62, 0.66, 0.72, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.66, 0.26, 0.4)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.7, 0.1, 0.44)
+material = SubResource("Leather")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.24, 0.28, 0.05)
+material = SubResource("Blue")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.24, 0.28, 0.05)
+material = SubResource("Blue")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.62, 0.3, 0.4)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(0.8, 0.44, 0.48)
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M7"]
+size = Vector3(0.5, 0.34, 0.04)
+material = SubResource("Blue")
+
+[sub_resource type="BoxMesh" id="M8"]
+size = Vector3(0.09, 0.36, 0.03)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M9"]
+size = Vector3(0.36, 0.09, 0.03)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M10"]
+size = Vector3(0.32, 0.1, 0.3)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M11"]
+size = Vector3(0.72, 1.15, 0.05)
+material = SubResource("Blue")
+
+[sub_resource type="BoxMesh" id="M12"]
+size = Vector3(0.72, 0.08, 0.06)
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M13"]
+radius = 0.27
+height = 0.54
+radial_segments = 8
+rings = 4
+material = SubResource("SkinDark")
+
+[sub_resource type="BoxMesh" id="M14"]
+size = Vector3(0.08, 0.05, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M15"]
+size = Vector3(0.08, 0.05, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M16"]
+size = Vector3(0.58, 0.56, 0.58)
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M17"]
+size = Vector3(0.42, 0.08, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M18"]
+size = Vector3(0.5, 0.06, 0.03)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M19"]
+size = Vector3(0.08, 0.2, 0.03)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M20"]
+size = Vector3(0.09, 0.34, 0.56)
+material = SubResource("Red")
+
+[sub_resource type="BoxMesh" id="M21"]
+size = Vector3(0.09, 0.34, 0.14)
+material = SubResource("Red")
+
+[sub_resource type="SphereMesh" id="M22"]
+radius = 0.31
+height = 0.46
+radial_segments = 8
+rings = 4
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M23"]
+size = Vector3(0.5, 0.06, 0.5)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M24"]
+size = Vector3(0.22, 0.36, 0.24)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M25"]
+size = Vector3(0.2, 0.3, 0.22)
+material = SubResource("Steel")
+
+[sub_resource type="SphereMesh" id="M26"]
+radius = 0.14
+height = 0.24
+radial_segments = 8
+rings = 4
+material = SubResource("SteelDark")
+
+[sub_resource type="SphereMesh" id="M27"]
+radius = 0.31
+height = 0.46
+radial_segments = 8
+rings = 4
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M28"]
+size = Vector3(0.5, 0.06, 0.5)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M29"]
+size = Vector3(0.22, 0.36, 0.24)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M30"]
+size = Vector3(0.2, 0.3, 0.22)
+material = SubResource("Steel")
+
+[sub_resource type="SphereMesh" id="M31"]
+radius = 0.14
+height = 0.24
+radial_segments = 8
+rings = 4
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M32"]
+size = Vector3(0.26, 0.4, 0.3)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M33"]
+size = Vector3(0.24, 0.38, 0.27)
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M34"]
+size = Vector3(0.18, 0.14, 0.05)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M35"]
+size = Vector3(0.25, 0.13, 0.4)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M36"]
+size = Vector3(0.26, 0.4, 0.3)
+material = SubResource("SteelDark")
+
+[sub_resource type="BoxMesh" id="M37"]
+size = Vector3(0.24, 0.38, 0.27)
+material = SubResource("Steel")
+
+[sub_resource type="BoxMesh" id="M38"]
+size = Vector3(0.18, 0.14, 0.05)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M39"]
+size = Vector3(0.25, 0.13, 0.4)
+material = SubResource("SteelDark")
+
+[node name="Warden" type="Node3D"]
+script = ExtResource("1_rig")
+style = 1
+
+[node name="Hips" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+
+[node name="WaistSlot" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+
+[node name="Torso" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="ChestSlot" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1.5000, 0.0000, 0.0000, 0.0000, 1.2000, 0.0000, 0.0000, 0.0000, 1.5000, 0, 0, 0)
+
+[node name="NeckSlot" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, -0.25)
+
+[node name="Head" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66, 0)
+
+[node name="HeadSlot" type="Node3D" parent="Hips/Torso/Head"]
+unique_name_in_owner = true
+transform = Transform3D(1.2000, 0.0000, 0.0000, 0.0000, 1.2000, 0.0000, 0.0000, 0.0000, 1.2000, 0, 0.2, 0)
+
+[node name="HatGroup" type="Node3D" parent="Hips/Torso/Head"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="ArmR" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.54, 0.56, 0)
+
+[node name="ForeR" type="Node3D" parent="Hips/Torso/ArmR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, 0)
+
+[node name="HandR" type="Node3D" parent="Hips/Torso/ArmR/ForeR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.0000, 1.0000, 0, -1.0000, 0.0000, 0, -0.32, 0)
+
+[node name="ArmL" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.54, 0.56, 0)
+
+[node name="ForeL" type="Node3D" parent="Hips/Torso/ArmL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, 0)
+
+[node name="HandL" type="Node3D" parent="Hips/Torso/ArmL/ForeL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.0000, 1.0000, 0, -1.0000, 0.0000, 0, -0.32, 0)
+
+[node name="ThighR" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
+
+[node name="ShinR" type="Node3D" parent="Hips/ThighR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+
+[node name="FootR" type="Node3D" parent="Hips/ThighR/ShinR"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
+
+[node name="ThighL" type="Node3D" parent="Hips"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0)
+
+[node name="ShinL" type="Node3D" parent="Hips/ThighL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+
+[node name="FootL" type="Node3D" parent="Hips/ThighL/ShinL"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0)
+
+[node name="Cape" type="Node3D" parent="Hips/Torso"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0.24)
+
+[node name="P1" type="MeshInstance3D" parent="Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.17)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.17)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -0.25)
+mesh = SubResource("M7")
+
+[node name="P8" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -0.28)
+mesh = SubResource("M8")
+
+[node name="P9" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, -0.28)
+mesh = SubResource("M9")
+
+[node name="P10" type="MeshInstance3D" parent="Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64, 0)
+mesh = SubResource("M10")
+
+[node name="P11" type="MeshInstance3D" parent="Hips/Torso/Cape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0.02)
+mesh = SubResource("M11")
+
+[node name="P12" type="MeshInstance3D" parent="Hips/Torso/Cape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09, 0.02)
+mesh = SubResource("M12")
+
+[node name="P13" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("M13")
+
+[node name="P14" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.22, -0.25)
+mesh = SubResource("M14")
+
+[node name="P15" type="MeshInstance3D" parent="Hips/Torso/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.22, -0.25)
+mesh = SubResource("M15")
+
+[node name="P16" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24, 0)
+mesh = SubResource("M16")
+
+[node name="P17" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.3)
+mesh = SubResource("M17")
+
+[node name="P18" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, -0.3)
+mesh = SubResource("M18")
+
+[node name="P19" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.3)
+mesh = SubResource("M19")
+
+[node name="P20" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.02)
+mesh = SubResource("M20")
+
+[node name="P21" type="MeshInstance3D" parent="Hips/Torso/Head/HatGroup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0.34)
+mesh = SubResource("M21")
+
+[node name="P22" type="MeshInstance3D" parent="Hips/Torso/ArmR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 0.03, 0)
+mesh = SubResource("M22")
+
+[node name="P23" type="MeshInstance3D" parent="Hips/Torso/ArmR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 0.03, 0)
+mesh = SubResource("M23")
+
+[node name="P24" type="MeshInstance3D" parent="Hips/Torso/ArmR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("M24")
+
+[node name="P25" type="MeshInstance3D" parent="Hips/Torso/ArmR/ForeR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("M25")
+
+[node name="P26" type="MeshInstance3D" parent="Hips/Torso/ArmR/ForeR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33, 0)
+mesh = SubResource("M26")
+
+[node name="P27" type="MeshInstance3D" parent="Hips/Torso/ArmL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0.03, 0)
+mesh = SubResource("M27")
+
+[node name="P28" type="MeshInstance3D" parent="Hips/Torso/ArmL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0.03, 0)
+mesh = SubResource("M28")
+
+[node name="P29" type="MeshInstance3D" parent="Hips/Torso/ArmL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("M29")
+
+[node name="P30" type="MeshInstance3D" parent="Hips/Torso/ArmL/ForeL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("M30")
+
+[node name="P31" type="MeshInstance3D" parent="Hips/Torso/ArmL/ForeL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33, 0)
+mesh = SubResource("M31")
+
+[node name="P32" type="MeshInstance3D" parent="Hips/ThighR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("M32")
+
+[node name="P33" type="MeshInstance3D" parent="Hips/ThighR/ShinR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0)
+mesh = SubResource("M33")
+
+[node name="P34" type="MeshInstance3D" parent="Hips/ThighR/ShinR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.14)
+mesh = SubResource("M34")
+
+[node name="P35" type="MeshInstance3D" parent="Hips/ThighR/ShinR/FootR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, -0.08)
+mesh = SubResource("M35")
+
+[node name="P36" type="MeshInstance3D" parent="Hips/ThighL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("M36")
+
+[node name="P37" type="MeshInstance3D" parent="Hips/ThighL/ShinL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0)
+mesh = SubResource("M37")
+
+[node name="P38" type="MeshInstance3D" parent="Hips/ThighL/ShinL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.14)
+mesh = SubResource("M38")
+
+[node name="P39" type="MeshInstance3D" parent="Hips/ThighL/ShinL/FootL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, -0.08)
+mesh = SubResource("M39")
+

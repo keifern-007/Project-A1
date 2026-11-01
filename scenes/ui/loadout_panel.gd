@@ -20,6 +20,7 @@ const BAD_COLOR: String = "#f08a7a"
 var _slot: ItemData.Slot = ItemData.Slot.MAIN_HAND
 var _slot_buttons: Dictionary = {} # Slot -> Button
 
+@onready var hero_preview: ModelPreview = %HeroPreview
 @onready var doll_grid: GridContainer = %DollGrid
 @onready var title_label: Label = %Title
 @onready var items_header: Label = %ItemsHeader
@@ -76,6 +77,7 @@ func _toggle_item(item: ItemData) -> void:
 
 
 func _refresh() -> void:
+	hero_preview.show_hero(SaveManager.get_character())
 	_refresh_doll()
 	_refresh_item_list()
 	_refresh_totals()

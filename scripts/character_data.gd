@@ -30,6 +30,7 @@ extends Resource
 @export var mana_regen: float = 2.0 ## Per second: slow on purpose, kills are the main source.
 @export var mana_per_kill: float = 6.0
 
-@export_group("Look") ## Placeholder until real models: a tint plus a different silhouette.
+@export_group("Look")
+@export var rig: PackedScene ## Their 3D model (a HeroRig). Worn gear appears on it.
 @export var color: Color = Color(0.85, 0.45, 0.2)
-@export var body_scale: Vector3 = Vector3.ONE
+@export var body_scale: Vector3 = Vector3.ONE ## Leave at 1 unless a hero should be scaled as a whole.

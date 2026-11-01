@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_FROST_HATCHET"
+anim = &"overhead"
 cooldown = 5.0
 damage_multiplier = 2.0
 kind = 0

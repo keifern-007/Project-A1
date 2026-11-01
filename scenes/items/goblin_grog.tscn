@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Ale"]
+shading_mode = 0
+albedo_color = Color(0.86, 0.6, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Cork"]
+albedo_color = Color(0.62, 0.45, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="Green"]
+albedo_color = Color(0.42, 0.62, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="Glass"]
+albedo_color = Color(0.72, 0.86, 0.9, 1)
+
+[sub_resource type="SphereMesh" id="M1"]
+radius = 0.09
+height = 0.18
+radial_segments = 8
+rings = 4
+material = SubResource("Glass")
+
+[sub_resource type="SphereMesh" id="M2"]
+radius = 0.075
+height = 0.12
+radial_segments = 8
+rings = 4
+material = SubResource("Ale")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.05, 0.08, 0.05)
+material = SubResource("Glass")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.06, 0.04, 0.06)
+material = SubResource("Cork")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.08, 0.06, 0.01)
+material = SubResource("Green")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.1, -0.04)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.11, -0.04)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.01, -0.04)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.07, -0.04)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.11, -0.13)
+mesh = SubResource("M5")
+

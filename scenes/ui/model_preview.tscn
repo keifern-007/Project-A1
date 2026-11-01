@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/model_preview.gd" id="1_preview"]
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 0
+ambient_light_source = 2
+ambient_light_color = Color(0.86, 0.88, 0.92, 1)
+ambient_light_energy = 0.6
+tonemap_mode = 2
+
+[node name="ModelPreview" type="SubViewportContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(180, 180)
+stretch = true
+stretch_shrink = 2
+mouse_filter = 2
+script = ExtResource("1_preview")
+
+[node name="Viewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+msaa_3d = 0
+size = Vector2i(90, 90)
+render_target_update_mode = 4
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Viewport"]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="Viewport"]
+transform = Transform3D(0.394, -0.618, 0.724, 0, 0.787, 0.672, -0.919, -0.265, 0.31, 0, 3, 0)
+light_energy = 1.0
+
+[node name="Pivot" type="Node3D" parent="Viewport"]
+unique_name_in_owner = true
+
+[node name="PreviewCamera" type="Camera3D" parent="Viewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, 0, 3.4, 9.4)
+projection = 1
+size = 2.0
+current = true

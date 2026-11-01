@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Bone"]
+albedo_color = Color(0.93, 0.89, 0.76, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leather"]
+albedo_color = Color(0.42, 0.27, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="Iron"]
+albedo_color = Color(0.3, 0.31, 0.36, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.08, 1.05, 0.08)
+material = SubResource("Leather")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.1, 0.08, 0.1)
+material = SubResource("Iron")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.46, 0.54, 0.06)
+material = SubResource("Bone")
+
+[sub_resource type="PrismMesh" id="M4"]
+size = Vector3(0.1, 0.54, 0.05)
+material = SubResource("Bone")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.14, 0.16, 0.09)
+material = SubResource("Leather")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(0.14, 0.1, 0.09)
+material = SubResource("Leather")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.8, 0)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0000, 1.0000, 0, -1.0000, 0.0000, 0, 0, 0, 1, 0.48, 0.8, 0)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.92, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.68, 0)
+mesh = SubResource("M6")
+

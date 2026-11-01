@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Bone"]
+albedo_color = Color(0.93, 0.89, 0.76, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leather"]
+albedo_color = Color(0.42, 0.27, 0.16, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.5, 0.09, 0.33)
+material = SubResource("Leather")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.12, 0.11, 0.03)
+material = SubResource("Bone")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.2, 0.16, 0.03)
+material = SubResource("Bone")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.175)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
+mesh = SubResource("M3")
+

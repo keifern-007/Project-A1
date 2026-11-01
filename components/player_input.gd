@@ -34,6 +34,9 @@ func get_move_direction() -> Vector3:
 func get_aim_direction(origin: Vector3) -> Vector3:
 	if not enabled:
 		return Vector3.ZERO
+	var follow_camera: CameraFollow = get_viewport().get_camera_3d() as CameraFollow
+	if follow_camera and follow_camera.is_third_person():
+		return follow_camera.aim_direction(origin) # Over the shoulder: you aim where you look.
 	var stick: Vector2 = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 	if stick.length() > STICK_AIM_DEADZONE:
 		_mouse_aiming = false

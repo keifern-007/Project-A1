@@ -12,3 +12,4 @@ cost = 35.0
 cast_time = 0.45
 commit_time = 0.35
 effect_scene = ExtResource("2_scene")
+anim = &"slam"

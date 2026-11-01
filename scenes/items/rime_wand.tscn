@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="IceDark"]
+albedo_color = Color(0.32, 0.56, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="Frost"]
+shading_mode = 0
+albedo_color = Color(0.8, 0.95, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Ice"]
+albedo_color = Color(0.62, 0.88, 1, 1)
+
+[sub_resource type="CylinderMesh" id="M1"]
+top_radius = 0.03
+bottom_radius = 0.05
+height = 0.72
+radial_segments = 8
+rings = 1
+material = SubResource("IceDark")
+
+[sub_resource type="CylinderMesh" id="M2"]
+top_radius = 0.05
+bottom_radius = 0.03
+height = 0.06
+radial_segments = 8
+rings = 1
+material = SubResource("IceDark")
+
+[sub_resource type="SphereMesh" id="M3"]
+radius = 0.09
+height = 0.18
+radial_segments = 8
+rings = 4
+material = SubResource("Frost")
+
+[sub_resource type="PrismMesh" id="M4"]
+size = Vector3(0.07, 0.26, 0.04)
+material = SubResource("Ice")
+
+[sub_resource type="PrismMesh" id="M5"]
+size = Vector3(0.07, 0.26, 0.04)
+material = SubResource("Ice")
+
+[sub_resource type="BoxMesh" id="SB6"]
+material = SubResource("Frost")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 0)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9272, 0.3746, 0, -0.3746, 0.9272, 0, 0, 0, 1, 0.08, 0.58, 0)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9272, -0.3746, 0, 0.3746, 0.9272, 0, 0, 0, 1, -0.08, 0.58, 0)
+mesh = SubResource("M5")
+
+[node name="Sparks6" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+amount = 5
+lifetime = 0.8
+mesh = SubResource("SB6")
+emission_shape = 1
+emission_sphere_radius = 0.1
+direction = Vector3(0, 1, 0)
+spread = 25.0
+gravity = Vector3(0, 0.5, 0)
+initial_velocity_min = 0.2
+initial_velocity_max = 0.5
+

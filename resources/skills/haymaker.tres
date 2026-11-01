@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://bg80x6do74bb4"]
 
-[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://c68bjhy7q3r2u" path="res://scripts/skill_data.gd" id="1_data"]
 [ext_resource type="PackedScene" path="res://scenes/player/skills/haymaker.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_HAYMAKER"
-cooldown = 5.0
 damage_multiplier = 2.0
 cost = 20.0
 cast_time = 0.4
 commit_time = 0.3
 effect_scene = ExtResource("2_scene")
+anim = &"punch"

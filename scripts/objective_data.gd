@@ -2,7 +2,7 @@ class_name ObjectiveData
 extends Resource
 ## One mission objective, saved as a .tres in resources/objectives/.
 
-enum Type { HORDE, BOSS, GATHER }
+enum Type { HORDE, BOSS, GATHER, TUTORIAL }
 
 @export var name_key: String = "" ## Translation key shown on the HUD, e.g. "OBJ_HORDE".
 @export var description_key: String = "" ## Shown on mission select.

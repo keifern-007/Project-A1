@@ -17,6 +17,8 @@ static func create(objective_data: ObjectiveData) -> Objective:
 			objective = BossObjective.new()
 		ObjectiveData.Type.GATHER:
 			objective = GatherObjective.new()
+		ObjectiveData.Type.TUTORIAL:
+			objective = TutorialObjective.new()
 		_:
 			push_error("Objective type not built yet: %s" % ObjectiveData.Type.keys()[objective_data.type])
 			return null

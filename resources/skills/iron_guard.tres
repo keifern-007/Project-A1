@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_IRON_GUARD"
+anim = &"guard"
 cooldown = 12.0
 damage_multiplier = 0.0
 kind = 1

@@ -4,6 +4,7 @@ extends Control
 
 const CAMP_SCENE: String = "res://scenes/main/hub.tscn"
 const GAME_OVER_DELAY: float = 1.2 ## Seconds to watch the death before the screen appears.
+const TUTORIAL_BOX: PackedScene = preload("res://scenes/ui/tutorial_box.tscn")
 
 ## Fallbacks for running this scene directly (F6) without going through mission select.
 @export var default_map: MapData = preload("res://resources/maps/greybox.tres")
@@ -52,7 +53,19 @@ func _start_objective() -> void:
 	var objective: Objective = Objective.create(GameState.objective)
 	if objective:
 		objective.completed.connect(_end_run.bind(true))
+		if objective is TutorialObjective:
+			_add_tutorial_box(objective)
 		add_child(objective)
+
+
+## The tutorial teaches through its own box. Connected before the objective starts, so its first lesson shows.
+func _add_tutorial_box(tutorial: TutorialObjective) -> void:
+	var box: TutorialBox = TUTORIAL_BOX.instantiate()
+	$UI.add_child(box)
+	$UI.move_child(box, hud.get_index() + 1) # Below the pause menu.
+	tutorial.step_shown.connect(box.show_step)
+	tutorial.guide_requested.connect(box.show_guide)
+	box.guide_closed.connect(tutorial.finish)
 
 
 # Co-op ready: the run only ends when nobody is left standing.
@@ -71,6 +84,9 @@ func _end_run(victory: bool) -> void:
 	if not GameState.run_active:
 		return
 	GameState.end_run(victory)
+	if _is_tutorial():
+		_leave_tutorial()
+		return
 	if victory:
 		# Deferred so it runs after the killing blow's loot is spawned (also deferred).
 		_vacuum_loot.call_deferred()
@@ -81,7 +97,22 @@ func _end_run(victory: bool) -> void:
 ## Pause menu: the run ends now, under the same rules as a defeat (the game is already paused).
 func _leave_mission() -> void:
 	GameState.end_run(false)
+	if _is_tutorial():
+		_leave_tutorial()
+		return
 	_show_results(false, true)
+
+
+func _is_tutorial() -> bool:
+	return (GameState.objective as ObjectiveData).type == ObjectiveData.Type.TUTORIAL
+
+
+## Practice only: no results and nothing saved, straight back to camp. The Mission Board
+## starts from its defaults instead of looking for the tutorial among its missions.
+func _leave_tutorial() -> void:
+	GameState.map = null
+	GameState.objective = null
+	_go_to_camp()
 
 
 func _show_results(victory: bool, left_mission: bool = false) -> void:

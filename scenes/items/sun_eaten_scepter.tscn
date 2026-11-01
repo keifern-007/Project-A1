@@ -1,0 +1,118 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Curse"]
+shading_mode = 0
+albedo_color = Color(0.4, 1, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.93, 0.73, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="M1"]
+top_radius = 0.04
+bottom_radius = 0.06
+height = 0.92
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M2"]
+radius = 0.06
+height = 0.11
+radial_segments = 8
+rings = 4
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.3, 0.05, 0.3)
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M4"]
+top_radius = 0.0
+bottom_radius = 0.04
+height = 0.18
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.0
+bottom_radius = 0.04
+height = 0.18
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M6"]
+top_radius = 0.0
+bottom_radius = 0.04
+height = 0.18
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M7"]
+top_radius = 0.0
+bottom_radius = 0.04
+height = 0.18
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M8"]
+radius = 0.1
+height = 0.2
+radial_segments = 8
+rings = 4
+material = SubResource("Curse")
+
+[sub_resource type="BoxMesh" id="SB9"]
+material = SubResource("Curse")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0.93, 0.13)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13, 0.93, 0.13)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0.93, -0.13)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13, 0.93, -0.13)
+mesh = SubResource("M7")
+
+[node name="P8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94, 0)
+mesh = SubResource("M8")
+
+[node name="Sparks9" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+amount = 6
+lifetime = 0.8
+mesh = SubResource("SB9")
+emission_shape = 1
+emission_sphere_radius = 0.1
+direction = Vector3(0, 1, 0)
+spread = 25.0
+gravity = Vector3(0, 0.5, 0)
+initial_velocity_min = 0.2
+initial_velocity_max = 0.5
+

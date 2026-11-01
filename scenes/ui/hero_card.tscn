@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3]
 
+[ext_resource type="PackedScene" path="res://scenes/ui/model_preview.tscn" id="p_preview"]
 [ext_resource type="Script" path="res://scenes/ui/hero_card.gd" id="1_card"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
@@ -64,12 +65,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 5
 
-[node name="Silhouette" type="ColorRect" parent="Card/VBox/Scroll/Content"]
+[node name="Silhouette" parent="Card/VBox/Scroll/Content" instance=ExtResource("p_preview")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(27, 56)
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 size_flags_horizontal = 4
-mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="Card/VBox/Scroll/Content"]
 unique_name_in_owner = true

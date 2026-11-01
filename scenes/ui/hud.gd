@@ -15,6 +15,8 @@ var _consumable_slot: SkillSlot
 var _stamina: MeterComponent
 var _stamina_warning_left: float = 0.0
 
+@onready var crosshair: Label = %Crosshair
+@onready var camera_hint: Label = %CameraHint
 @onready var hp_bar: ProgressBar = %HpBar
 @onready var hp_label: Label = %HpLabel
 @onready var stamina_bar: ProgressBar = %StaminaBar
@@ -35,6 +37,7 @@ var _stamina_warning_left: float = 0.0
 
 func _ready() -> void:
 	objective_label.text = ""
+	camera_hint.text = tr("HUD_CAMERA_HINT") % InputHints.key_for("camera_toggle")
 	EventBus.objective_progress.connect(_on_objective_progress)
 
 
@@ -79,6 +82,7 @@ func bind_player(player: Player) -> void:
 # Timer, kills and cooldowns change every frame anyway, so just read them.
 func _process(delta: float) -> void:
 	_update_stamina_warning(delta)
+	crosshair.visible = Settings.camera_mode == Settings.CameraMode.OVER_THE_SHOULDER
 	timer_label.text = format_time(GameState.run_time)
 	kills_label.text = tr("HUD_KILLS") % GameState.kills
 	var lines: Array[String] = []

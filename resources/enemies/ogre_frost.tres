@@ -1,13 +1,14 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://c6wap41q0gqvb"]
 
-[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/biomes/snow.tres" id="2_biome"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/variants/frost_spikes.tscn" id="3_look"]
+[ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="3_xgwhg"]
 
 [resource]
 script = ExtResource("1_data")
 name_key = "ENEMY_OGRE_FROST"
-max_health = 700
+max_health = 850
 attack_power = 0
 move_speed = 2.2
 knockback_resistance = 1.0

@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterData" load_steps=14 format=3]
 
+[ext_resource type="PackedScene" path="res://scenes/player/models/mystic_rig.tscn" id="rig_scene"]
 [ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/passives/attunement.tres" id="2_passive"]
 [ext_resource type="Script" path="res://scripts/skill_data.gd" id="3_skill"]
@@ -34,7 +35,7 @@ max_mana = 100.0
 mana_regen = 2.5
 mana_per_kill = 8.0
 color = Color(0.65, 0.4, 0.85, 1)
-body_scale = Vector3(0.8, 1.2, 0.8)
+rig = ExtResource("rig_scene")
 passive = ExtResource("2_passive")
 signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_arcane_barrage"), ExtResource("5_blink")])
 basic_attack = ExtResource("6_magic_bolt")

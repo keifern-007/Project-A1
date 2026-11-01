@@ -15,6 +15,7 @@ var _recipe_group: ButtonGroup = ButtonGroup.new()
 @onready var filters: ForgeFilters = %Filters
 @onready var empty_label: Label = %EmptyLabel
 @onready var recipe_list: VBoxContainer = %RecipeList
+@onready var item_preview: ModelPreview = %ItemPreview
 @onready var name_label: Label = %NameLabel
 @onready var slot_label: Label = %SlotLabel
 @onready var stats_label: RichTextLabel = %StatsLabel
@@ -115,6 +116,7 @@ func _refresh_buttons() -> void:
 
 func _refresh_details() -> void:
 	var item: ItemData = _selected
+	item_preview.show_item(item)
 	for child: Node in cost_list.get_children():
 		child.queue_free()
 	craft_button.disabled = item == null

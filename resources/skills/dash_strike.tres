@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_DASH_STRIKE"
+anim = &"lunge"
 cooldown = 6.0
 damage_multiplier = 2.0
 kind = 1

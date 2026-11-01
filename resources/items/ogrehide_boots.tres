@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="4_mat"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 2
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 2
+
+[resource]
+script = ExtResource("1_data")
+id = &"ogrehide_boots"
+name_key = "ITEM_OGREHIDE_BOOTS"
+description_key = "ITEM_OGREHIDE_BOOTS_DESC"
+slot = 5
+tier = 2
+category = &"leather_armor"
+style = 1
+color = Color(0.72, 0.62, 0.45, 1)
+max_health = 8
+defense = 2
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

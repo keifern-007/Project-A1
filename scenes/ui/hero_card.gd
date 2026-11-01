@@ -11,14 +11,13 @@ signal browse(step: int) ## -1 = previous hero, +1 = next (choosing mode only).
 const MARGIN: int = 24
 const TOP_MARGIN: int = 60 ## Stays below the camp's Quit button.
 const BOTTOM_MARGIN: int = 16
-const SILHOUETTE_SIZE: Vector2 = Vector2(27, 56) ## At body_scale 1.
 
 var _character: CharacterData
 var _choosing: bool = false
 
 @onready var card: PanelContainer = %Card
 @onready var header_label: Label = %HeaderLabel
-@onready var silhouette: ColorRect = %Silhouette
+@onready var silhouette: ModelPreview = %Silhouette
 @onready var name_label: Label = %NameLabel
 @onready var role_label: Label = %RoleLabel
 @onready var stats_label: Label = %StatsLabel
@@ -47,9 +46,7 @@ func show_character(character: CharacterData, on_right: bool, choosing: bool) ->
 	header_label.text = tr("UI_CHOOSE_HERO_HINT")
 	header_label.visible = choosing
 	back_button.visible = not choosing
-	# Placeholder portrait: the hero's proportions, so cards differ by shape, not just color.
-	silhouette.custom_minimum_size = SILHOUETTE_SIZE * Vector2(character.body_scale.x, character.body_scale.y)
-	silhouette.color = character.color
+	silhouette.show_hero(character)
 	name_label.text = tr(character.name_key)
 	role_label.text = tr(character.role_key)
 	stats_label.text = "\n".join([

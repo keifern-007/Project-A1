@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_HATCHET_THROW"
+anim = &"overhead"
 cooldown = 5.0
 damage_multiplier = 2.0
 cost = 20.0

@@ -1,0 +1,282 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Plaster"]
+albedo_color = Color(0.93, 0.87, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="Timber"]
+albedo_color = Color(0.36, 0.24, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Wood"]
+albedo_color = Color(0.56, 0.4, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Plank"]
+albedo_color = Color(0.66, 0.5, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofRed"]
+albedo_color = Color(0.72, 0.3, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofBlue"]
+albedo_color = Color(0.25, 0.42, 0.68, 1)
+
+[sub_resource type="StandardMaterial3D" id="RoofSlate"]
+albedo_color = Color(0.36, 0.4, 0.48, 1)
+
+[sub_resource type="StandardMaterial3D" id="Thatch"]
+albedo_color = Color(0.82, 0.68, 0.36, 1)
+
+[sub_resource type="StandardMaterial3D" id="Stone"]
+albedo_color = Color(0.68, 0.67, 0.66, 1)
+
+[sub_resource type="StandardMaterial3D" id="StoneDark"]
+albedo_color = Color(0.46, 0.46, 0.48, 1)
+
+[sub_resource type="StandardMaterial3D" id="Marble"]
+albedo_color = Color(0.9, 0.89, 0.84, 1)
+
+[sub_resource type="StandardMaterial3D" id="Iron"]
+albedo_color = Color(0.27, 0.28, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.92, 0.72, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Window"]
+shading_mode = 0
+albedo_color = Color(1, 0.85, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="Ember"]
+shading_mode = 0
+albedo_color = Color(1, 0.42, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Glow"]
+shading_mode = 0
+albedo_color = Color(0.55, 0.8, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Rune"]
+shading_mode = 0
+albedo_color = Color(0.72, 0.5, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerRed"]
+albedo_color = Color(0.78, 0.2, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerBlue"]
+albedo_color = Color(0.2, 0.38, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="BannerPurple"]
+albedo_color = Color(0.5, 0.26, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="Canvas"]
+albedo_color = Color(0.92, 0.88, 0.74, 1)
+
+[sub_resource type="StandardMaterial3D" id="CanvasRed"]
+albedo_color = Color(0.8, 0.3, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Water"]
+albedo_color = Color(0.28, 0.58, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="Reed"]
+albedo_color = Color(0.34, 0.56, 0.26, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leaf"]
+albedo_color = Color(0.3, 0.62, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="Soil"]
+albedo_color = Color(0.42, 0.3, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Hay"]
+albedo_color = Color(0.88, 0.76, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="White"]
+albedo_color = Color(0.96, 0.96, 0.92, 1)
+
+[sub_resource type="StandardMaterial3D" id="Orange"]
+albedo_color = Color(0.95, 0.6, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="Crop"]
+albedo_color = Color(0.9, 0.5, 0.15, 1)
+
+[sub_resource type="BoxShape3D" id="S1"]
+size = Vector3(6.4, 3, 3.2)
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(7.4, 0.24, 7.4)
+material = SubResource("Stone")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(6.6, 0.24, 6.6)
+material = SubResource("Marble")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(6, 3.4, 0.3)
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M6"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M7"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M8"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M9"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M10"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M11"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="CylinderMesh" id="M12"]
+top_radius = 0.3
+bottom_radius = 0.34
+height = 3.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="BoxMesh" id="M13"]
+size = Vector3(6.8, 0.4, 6.8)
+material = SubResource("Marble")
+
+[sub_resource type="PrismMesh" id="M14"]
+size = Vector3(7, 1.7, 7)
+material = SubResource("RoofBlue")
+
+[sub_resource type="BoxMesh" id="M15"]
+size = Vector3(6.8, 0.14, 0.1)
+material = SubResource("Gold")
+
+[sub_resource type="BoxMesh" id="M16"]
+size = Vector3(1.6, 1.1, 1.6)
+material = SubResource("Stone")
+
+[sub_resource type="CylinderMesh" id="M17"]
+top_radius = 0.16
+bottom_radius = 0.34
+height = 1.4
+radial_segments = 8
+rings = 1
+material = SubResource("Marble")
+
+[sub_resource type="SphereMesh" id="M18"]
+radius = 0.3
+height = 0.6
+radial_segments = 8
+rings = 4
+material = SubResource("Glow")
+
+[node name="Temple" type="Node3D"]
+
+[node name="Body" type="StaticBody3D" parent="."]
+
+[node name="Shape1" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.4)
+shape = SubResource("S1")
+
+[node name="Step1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.12, 0)
+mesh = SubResource("M2")
+
+[node name="Step2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.36, 0)
+mesh = SubResource("M3")
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.2, -3.1)
+mesh = SubResource("M4")
+
+[node name="ColA-2_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -2.8, 2.2, -2.8)
+mesh = SubResource("M5")
+
+[node name="ColB-2_8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 2.8, 2.2, -2.8)
+mesh = SubResource("M6")
+
+[node name="ColA-1_05" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -2.8, 2.2, -1.05)
+mesh = SubResource("M7")
+
+[node name="ColB-1_05" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 2.8, 2.2, -1.05)
+mesh = SubResource("M8")
+
+[node name="ColA0_7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -2.8, 2.2, 0.7)
+mesh = SubResource("M9")
+
+[node name="ColB0_7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 2.8, 2.2, 0.7)
+mesh = SubResource("M10")
+
+[node name="ColA2_45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -2.8, 2.2, 2.45)
+mesh = SubResource("M11")
+
+[node name="ColB2_45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 2.8, 2.2, 2.45)
+mesh = SubResource("M12")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 4.1, -0.15)
+mesh = SubResource("M13")
+
+[node name="Pediment" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 5.15, -0.15)
+mesh = SubResource("M14")
+
+[node name="Frieze" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.84, 3.05)
+mesh = SubResource("M15")
+
+[node name="Altar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.05, -1.4)
+mesh = SubResource("M16")
+
+[node name="Statue" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.25, -1.4)
+mesh = SubResource("M17")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.2, -1.4)
+mesh = SubResource("M18")
+

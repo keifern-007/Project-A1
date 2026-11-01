@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="IceDark"]
+albedo_color = Color(0.32, 0.56, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="Fur"]
+albedo_color = Color(0.92, 0.94, 1, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.56, 0.46, 0.34)
+material = SubResource("IceDark")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.8, 0.2, 0.46)
+material = SubResource("Fur")
+
+[sub_resource type="SphereMesh" id="M3"]
+radius = 0.16
+height = 0.26
+radial_segments = 8
+rings = 4
+material = SubResource("Fur")
+
+[sub_resource type="SphereMesh" id="M4"]
+radius = 0.16
+height = 0.26
+radial_segments = 8
+rings = 4
+material = SubResource("Fur")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.62, 0.6, 0.05)
+material = SubResource("Fur")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.02)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34, 0.6, 0.02)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34, 0.6, 0.02)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.2)
+mesh = SubResource("M5")
+

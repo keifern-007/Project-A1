@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_FROST_CLEAVE"
+anim = &"slash"
 cooldown = 7.0
 damage_multiplier = 2.5
 kind = 0

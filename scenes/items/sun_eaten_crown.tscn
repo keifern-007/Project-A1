@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Linen"]
+albedo_color = Color(0.85, 0.78, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="Curse"]
+shading_mode = 0
+albedo_color = Color(0.4, 1, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.93, 0.73, 0.25, 1)
+
+[sub_resource type="CylinderMesh" id="M1"]
+top_radius = 0.3
+bottom_radius = 0.26
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M2"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M3"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M4"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M6"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M7"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M8"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="CylinderMesh" id="M9"]
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.2
+radial_segments = 8
+rings = 1
+material = SubResource("Gold")
+
+[sub_resource type="SphereMesh" id="M10"]
+radius = 0.06
+height = 0.1
+radial_segments = 8
+rings = 4
+material = SubResource("Curse")
+
+[sub_resource type="BoxMesh" id="M11"]
+size = Vector3(0.06, 0.3, 0.34)
+material = SubResource("Linen")
+
+[sub_resource type="BoxMesh" id="M12"]
+size = Vector3(0.06, 0.3, 0.34)
+material = SubResource("Linen")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.41, 0)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.41, 0)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 0.25)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, -0.25)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.41, 0.18)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.41, 0.18)
+mesh = SubResource("M7")
+
+[node name="P8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.41, -0.18)
+mesh = SubResource("M8")
+
+[node name="P9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.41, -0.18)
+mesh = SubResource("M9")
+
+[node name="P10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24, -0.28)
+mesh = SubResource("M10")
+
+[node name="P11" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, 0.0, 0)
+mesh = SubResource("M11")
+
+[node name="P12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0.0, 0)
+mesh = SubResource("M12")
+

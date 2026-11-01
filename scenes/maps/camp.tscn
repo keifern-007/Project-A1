@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/maps/hero_area.gd" id="1_area"]
 [ext_resource type="Resource" path="res://resources/characters/brawler.tres" id="4_brawler"]
@@ -6,11 +6,30 @@
 [ext_resource type="Resource" path="res://resources/characters/mystic.tres" id="6_mystic"]
 [ext_resource type="Script" path="res://components/camera_follow.gd" id="2_cam"]
 [ext_resource type="PackedScene" path="res://scenes/maps/interactable.tscn" id="3_interact"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_guild_hall.tscn" id="p_camp_guild_hall"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_armory.tscn" id="p_camp_armory"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_smithy.tscn" id="p_camp_smithy"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_mage_tower.tscn" id="p_camp_mage_tower"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_temple.tscn" id="p_camp_temple"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_storehouse.tscn" id="p_camp_storehouse"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_windmill.tscn" id="p_camp_windmill"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_gate.tscn" id="p_camp_gate"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_well.tscn" id="p_camp_well"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_signpost.tscn" id="p_camp_signpost"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_market_stall.tscn" id="p_camp_market_stall"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_cart.tscn" id="p_camp_cart"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_tent.tscn" id="p_camp_tent"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_tent_red.tscn" id="p_camp_tent_red"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_pond.tscn" id="p_camp_pond"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_garden.tscn" id="p_camp_garden"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_hay.tscn" id="p_camp_hay"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_lamp.tscn" id="p_camp_lamp"]
+[ext_resource type="Script" path="res://scenes/maps/camp_forest.gd" id="f_forest"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
-sky_top_color = Color(0.35, 0.6, 0.9, 1)
-sky_horizon_color = Color(0.85, 0.85, 0.75, 1)
-ground_horizon_color = Color(0.85, 0.85, 0.75, 1)
+sky_top_color = Color(0.3, 0.58, 0.95, 1)
+sky_horizon_color = Color(0.72, 0.86, 0.98, 1)
+ground_horizon_color = Color(0.72, 0.86, 0.98, 1)
 
 [sub_resource type="Sky" id="Sky"]
 sky_material = SubResource("SkyMat")
@@ -18,15 +37,18 @@ sky_material = SubResource("SkyMat")
 [sub_resource type="Environment" id="Env"]
 background_mode = 2
 sky = SubResource("Sky")
-ambient_light_source = 3
-ambient_light_energy = 0.7
+ambient_light_source = 2
+ambient_light_color = Color(0.86, 0.88, 0.9, 1)
+ambient_light_energy = 0.5
 tonemap_mode = 2
+adjustment_enabled = true
+adjustment_saturation = 1.05
 
 [sub_resource type="StandardMaterial3D" id="GrassMat"]
-albedo_color = Color(0.42, 0.58, 0.3, 1)
+albedo_color = Color(0.4, 0.6, 0.26, 1)
 
 [sub_resource type="StandardMaterial3D" id="DirtMat"]
-albedo_color = Color(0.5, 0.4, 0.28, 1)
+albedo_color = Color(0.56, 0.45, 0.3, 1)
 
 [sub_resource type="StandardMaterial3D" id="WoodMat"]
 albedo_color = Color(0.48, 0.33, 0.2, 1)
@@ -85,67 +107,297 @@ albedo_color = Color(0.95, 0.92, 0.8, 1)
 [sub_resource type="StandardMaterial3D" id="BookMat"]
 albedo_color = Color(0.45, 0.2, 0.55, 1)
 
-[sub_resource type="PrismMesh" id="TentMesh"]
-size = Vector3(3, 2.2, 3.5)
-
-[sub_resource type="BoxShape3D" id="TentShape"]
-size = Vector3(2.6, 2, 3.4)
-
 [sub_resource type="SphereMesh" id="OrbMesh"]
 radius = 0.35
 height = 0.7
 
+[sub_resource type="PlaneMesh" id="GrassPlane"]
+material = SubResource("GrassMat")
+size = Vector2(220, 220)
+
+[sub_resource type="BoxShape3D" id="FloorShape"]
+size = Vector3(220, 1, 220)
+
+[sub_resource type="BoxShape3D" id="WallNS"]
+size = Vector3(44, 6, 1)
+
+[sub_resource type="BoxShape3D" id="WallEW"]
+size = Vector3(1, 6, 44)
+
+[sub_resource type="CylinderMesh" id="PlazaMesh"]
+material = SubResource("DirtMat")
+top_radius = 7.5
+bottom_radius = 7.5
+height = 0.02
+radial_segments = 24
+rings = 1
+
+[sub_resource type="CylinderMesh" id="HearthMesh"]
+material = SubResource("StoneMat")
+top_radius = 3.0
+bottom_radius = 3.0
+height = 0.02
+radial_segments = 16
+rings = 1
+
+[sub_resource type="BoxMesh" id="LogMesh"]
+material = SubResource("WoodMat")
+size = Vector3(1.8, 0.38, 0.42)
+
+[sub_resource type="BoxMesh" id="RailMeshNS"]
+material = SubResource("DarkWoodMat")
+size = Vector3(41.2, 0.14, 0.14)
+
+[sub_resource type="BoxMesh" id="RailMeshEW"]
+material = SubResource("DarkWoodMat")
+size = Vector3(0.14, 0.14, 41.2)
+
+[sub_resource type="BoxMesh" id="RailMeshEast"]
+material = SubResource("DarkWoodMat")
+size = Vector3(0.14, 0.14, 19.3)
+
+[sub_resource type="BoxMesh" id="Path101"]
+material = SubResource("DirtMat")
+size = Vector3(3, 0.02, 4.000)
+
+[sub_resource type="BoxMesh" id="Path102"]
+material = SubResource("DirtMat")
+size = Vector3(3, 0.02, 26.500)
+
+[sub_resource type="BoxMesh" id="Path103"]
+material = SubResource("DirtMat")
+size = Vector3(3, 0.02, 5.000)
+
+[sub_resource type="BoxMesh" id="Path104"]
+material = SubResource("DirtMat")
+size = Vector3(3, 0.02, 14.600)
+
+[sub_resource type="BoxMesh" id="Path105"]
+material = SubResource("DirtMat")
+size = Vector3(2.4, 0.02, 9.330)
+
+[sub_resource type="BoxMesh" id="Path106"]
+material = SubResource("DirtMat")
+size = Vector3(2.4, 0.02, 8.021)
+
+[sub_resource type="BoxMesh" id="Path107"]
+material = SubResource("DirtMat")
+size = Vector3(2.4, 0.02, 8.780)
+
+[sub_resource type="BoxMesh" id="Path108"]
+material = SubResource("DirtMat")
+size = Vector3(3.6, 0.02, 56.000)
+
 [node name="Camp" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("GrassPlane")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Shape" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("FloorShape")
+
+[node name="Bounds" type="StaticBody3D" parent="."]
+
+[node name="North" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -21)
+shape = SubResource("WallNS")
+
+[node name="South" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 21)
+shape = SubResource("WallNS")
+
+[node name="West" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3, 0)
+shape = SubResource("WallEW")
+
+[node name="East" type="CollisionShape3D" parent="Bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 0)
+shape = SubResource("WallEW")
+
+[node name="Plaza" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+mesh = SubResource("PlazaMesh")
+
+[node name="Hearth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("HearthMesh")
+
+[node name="Seat1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, 0.6, 0, 1, 0, -0.6, 0, 0.8, 2.2, 0.2, 1.8)
+mesh = SubResource("LogMesh")
+
+[node name="Seat2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, -0.6, 0, 1, 0, 0.6, 0, 0.8, -2.2, 0.2, 1.8)
+mesh = SubResource("LogMesh")
+
+[node name="Seat3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -2.8)
+mesh = SubResource("LogMesh")
+
+[node name="RailNorth0.45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -20.6)
+mesh = SubResource("RailMeshNS")
+
+[node name="RailNorth0.85" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -20.6)
+mesh = SubResource("RailMeshNS")
+
+[node name="RailSouth0.45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 20.6)
+mesh = SubResource("RailMeshNS")
+
+[node name="RailSouth0.85" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 20.6)
+mesh = SubResource("RailMeshNS")
+
+[node name="RailWest0.45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.6, 0.45, 0)
+mesh = SubResource("RailMeshEW")
+
+[node name="RailWest0.85" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.6, 0.85, 0)
+mesh = SubResource("RailMeshEW")
+
+[node name="RailEastA0.45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6, 0.45, -10.95)
+mesh = SubResource("RailMeshEast")
+
+[node name="RailEastA0.85" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6, 0.85, -10.95)
+mesh = SubResource("RailMeshEast")
+
+[node name="RailEastB0.45" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6, 0.45, 11.95)
+mesh = SubResource("RailMeshEast")
+
+[node name="RailEastB0.85" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6, 0.85, 11.95)
+mesh = SubResource("RailMeshEast")
+
+[node name="RoadNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, -1.00000, 0.000, 0.015, -8.000)
+mesh = SubResource("Path101")
+
+[node name="RoadCross" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, -1.250, 0.015, -10.000)
+mesh = SubResource("Path102")
+
+[node name="RoadWestLink" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00000, 0, -1.00000, 0, 1, 0, 1.00000, 0, 0.00000, -8.500, 0.015, -1.000)
+mesh = SubResource("Path103")
+
+[node name="RoadWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -11.000, 0.015, -1.300)
+mesh = SubResource("Path104")
+
+[node name="RoadMystic" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.51450, 0, 0.85749, 0, 1, 0, -0.85749, 0, -0.51450, 9.000, 0.015, -5.900)
+mesh = SubResource("Path105")
+
+[node name="RoadWarden" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.81035, 0, 0.58595, 0, 1, 0, -0.58595, 0, 0.81035, 5.850, 0.015, 8.750)
+mesh = SubResource("Path106")
+
+[node name="RoadBrawler" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.60364, 0, -0.79726, 0, 1, 0, 0.79726, 0, 0.60364, -8.500, 0.015, 6.650)
+mesh = SubResource("Path107")
+
+[node name="RoadOut" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, 34.000, 0.015, 1.000)
+mesh = SubResource("Path108")
+
+[node name="GuildHall" parent="." instance=ExtResource("p_camp_guild_hall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -16.2)
+
+[node name="Armory" parent="." instance=ExtResource("p_camp_armory")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -16.6)
+
+[node name="Smithy" parent="." instance=ExtResource("p_camp_smithy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -15.7)
+
+[node name="MageTower" parent="." instance=ExtResource("p_camp_mage_tower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0, -15.5)
+
+[node name="Temple" parent="." instance=ExtResource("p_camp_temple")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -17, 0, -5)
+
+[node name="Storehouse" parent="." instance=ExtResource("p_camp_storehouse")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -16.8, 0, 4)
+
+[node name="Windmill" parent="." instance=ExtResource("p_camp_windmill")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -26)
+
+[node name="Gate" parent="." instance=ExtResource("p_camp_gate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.6, 0, 1)
+
+[node name="Well" parent="." instance=ExtResource("p_camp_well")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -5.5)
+
+[node name="Signpost" parent="." instance=ExtResource("p_camp_signpost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, -6.4)
+
+[node name="MarketStall" parent="." instance=ExtResource("p_camp_market_stall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, -3)
+
+[node name="Cart" parent="." instance=ExtResource("p_camp_cart")]
+transform = Transform3D(0.8, 0, 0.6, 0, 1, 0, -0.6, 0, 0.8, 15.5, 0, 5.5)
+
+[node name="Tent1" parent="." instance=ExtResource("p_camp_tent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 0, -3)
+
+[node name="Tent2" parent="." instance=ExtResource("p_camp_tent_red")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 0, 9)
+
+[node name="Pond" parent="." instance=ExtResource("p_camp_pond")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 14.5)
+
+[node name="Garden" parent="." instance=ExtResource("p_camp_garden")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 16.5)
+
+[node name="Hay" parent="." instance=ExtResource("p_camp_hay")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 15)
+
+[node name="Lamp1" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 0, -7.6)
+
+[node name="Lamp2" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, -8.2)
+
+[node name="Lamp3" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2, 0, -8)
+
+[node name="Lamp4" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6, 0, 2)
+
+[node name="Lamp5" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.2, 0, 3.2)
+
+[node name="Lamp6" parent="." instance=ExtResource("p_camp_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -8)
+
+[node name="Forest" type="Node3D" parent="."]
+script = ExtResource("f_forest")
+clearings = Array[Vector3]([Vector3(-26, -26, 6.5)])
+roads = Array[Rect2]([Rect2(4, -1.5, 62, 5), Rect2(-15, -12, 30, 4), Rect2(-13, -9, 4, 16), Rect2(-1.8, -11, 3.6, 6)])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Env")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 8, 0)
-light_color = Color(1, 0.95, 0.85, 1)
+transform = Transform3D(0.394, -0.618, 0.724, 0, 0.787, 0.672, -0.919, -0.265, 0.31, 0, 8, 0)
+light_color = Color(1, 0.96, 0.86, 1)
+light_energy = 1.0
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 11.547, 11.547, 11.547)
+transform = Transform3D(0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 40, 40, 40)
 projection = 1
 size = 14.0
 current = true
 script = ExtResource("2_cam")
-
-[node name="Ground" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-use_collision = true
-size = Vector3(32, 1, 32)
-material = SubResource("GrassMat")
-
-[node name="Clearing" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
-size = Vector3(9, 0.02, 9)
-material = SubResource("DirtMat")
-
-[node name="FenceNorth" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -15)
-use_collision = true
-size = Vector3(30.6, 0.8, 0.6)
-material = SubResource("DarkWoodMat")
-
-[node name="FenceSouth" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 15)
-use_collision = true
-size = Vector3(30.6, 0.8, 0.6)
-material = SubResource("DarkWoodMat")
-
-[node name="FenceWest" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.4, 0)
-use_collision = true
-size = Vector3(0.6, 0.8, 30.6)
-material = SubResource("DarkWoodMat")
-
-[node name="FenceEast" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.4, 0)
-use_collision = true
-size = Vector3(0.6, 0.8, 30.6)
-material = SubResource("DarkWoodMat")
 
 [node name="Campfire" type="Node3D" parent="."]
 
@@ -182,35 +434,11 @@ material = SubResource("StoneMat")
 [node name="FireLight" type="OmniLight3D" parent="Campfire"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 light_color = Color(1, 0.6, 0.3, 1)
-light_energy = 1.5
+light_energy = 0.7
 omni_range = 6.0
 
-[node name="Tent1" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.1, -8)
-mesh = SubResource("TentMesh")
-surface_material_override/0 = SubResource("TentMat")
-
-[node name="TentBody1" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -8)
-
-[node name="Shape" type="CollisionShape3D" parent="TentBody1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("TentShape")
-
-[node name="Tent2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.1, -8.3)
-mesh = SubResource("TentMesh")
-surface_material_override/0 = SubResource("TentMat2")
-
-[node name="TentBody2" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -8.3)
-
-[node name="Shape" type="CollisionShape3D" parent="TentBody2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("TentShape")
-
 [node name="MissionBoard" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -11.7)
 
 [node name="PostL" type="CSGBox3D" parent="MissionBoard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.9, 0)
@@ -244,8 +472,47 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
 action = &"missions"
 prompt_key = "UI_MISSION_BOARD"
 
+[node name="BookStand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, -11.7)
+
+[node name="Post" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+use_collision = true
+size = Vector3(0.2, 1, 0.2)
+material = SubResource("DarkWoodMat")
+
+[node name="Foot" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+size = Vector3(0.7, 0.1, 0.7)
+material = SubResource("DarkWoodMat")
+
+[node name="Top" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.34, 0, 0.34, 0.94, 0, 1.05, 0)
+size = Vector3(0.9, 0.08, 0.65)
+material = SubResource("WoodMat")
+
+[node name="Cover" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.34, 0, 0.34, 0.94, 0, 1.12, 0.02)
+size = Vector3(0.74, 0.05, 0.54)
+material = SubResource("BookMat")
+
+[node name="PageL" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.34, 0, 0.34, 0.94, -0.18, 1.16, 0.03)
+size = Vector3(0.32, 0.03, 0.48)
+material = SubResource("PaperMat")
+
+[node name="PageR" type="CSGBox3D" parent="BookStand"]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.34, 0, 0.34, 0.94, 0.18, 1.16, 0.03)
+size = Vector3(0.32, 0.03, 0.48)
+material = SubResource("PaperMat")
+
+[node name="Interact" parent="BookStand" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+action = &"tutorial"
+prompt_key = "UI_FIELD_GUIDE"
+
 [node name="Forge" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -10.8)
 
 [node name="Furnace" type="CSGBox3D" parent="Forge"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.8, -0.4)
@@ -275,7 +542,7 @@ action = &"crafting"
 prompt_key = "UI_FORGE"
 
 [node name="SkillShrine" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4, 0, -5)
 
 [node name="Pillar" type="CSGCylinder3D" parent="SkillShrine"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -296,7 +563,7 @@ action = &"skills"
 prompt_key = "UI_SKILL_SHRINE"
 
 [node name="Stash" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 0, 4)
 
 [node name="Chest" type="CSGBox3D" parent="Stash"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
@@ -320,7 +587,7 @@ action = &"stash"
 prompt_key = "UI_STASH"
 
 [node name="GearRack" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -12.2)
 
 [node name="RackPostL" type="CSGBox3D" parent="GearRack"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.8, 0)
@@ -362,7 +629,7 @@ action = &"loadout"
 prompt_key = "UI_LOADOUT"
 
 [node name="BrawlerArea" type="Node3D" parent="."]
-transform = Transform3D(0.447214, 0, -0.894427, 0, 1, 0, 0.894427, 0, 0.447214, -12, 0, 6)
+transform = Transform3D(0.61, 0, -0.793, 0, 1, 0, 0.793, 0, 0.61, -13, 0, 10)
 script = ExtResource("1_area")
 character = ExtResource("4_brawler")
 side = 0
@@ -408,7 +675,7 @@ sides = 8
 material = SubResource("SackMat")
 
 [node name="WardenArea" type="Node3D" parent="."]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 9, 0, 9)
+transform = Transform3D(0.822, 0, 0.569, 0, 1, 0, -0.569, 0, 0.822, 9, 0, 13)
 script = ExtResource("1_area")
 character = ExtResource("5_warden")
 side = 1
@@ -456,7 +723,7 @@ size = Vector3(0.7, 1, 0.04)
 material = SubResource("BannerMat")
 
 [node name="MysticArea" type="Node3D" parent="."]
-transform = Transform3D(-0.894427, 0, 0.447214, 0, 1, 0, -0.447214, 0, -0.894427, 6, 0, -12)
+transform = Transform3D(-0.541, 0, 0.841, 0, 1, 0, -0.841, 0, -0.541, 14, 0, -9)
 script = ExtResource("1_area")
 character = ExtResource("6_mystic")
 side = 2

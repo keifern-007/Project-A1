@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterData" load_steps=13 format=3]
 
+[ext_resource type="PackedScene" path="res://scenes/player/models/brawler_rig.tscn" id="rig_scene"]
 [ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/passives/bloodrush.tres" id="2_passive"]
 [ext_resource type="Script" path="res://scripts/skill_data.gd" id="3_skill"]
@@ -33,7 +34,7 @@ max_mana = 70.0
 mana_regen = 3.0
 mana_per_kill = 5.0
 color = Color(0.9, 0.35, 0.2, 1)
-body_scale = Vector3(0.9, 0.95, 0.9)
+rig = ExtResource("rig_scene")
 passive = ExtResource("2_passive")
 signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_dash_strike"), ExtResource("5_whirlwind")])
 talents = Array[ExtResource("30_talent")]([ExtResource("31_quick_feet"), ExtResource("32_hot_blood"), ExtResource("33_frenzy"), ExtResource("34_cyclone"), ExtResource("35_glass_cannon"), ExtResource("36_iron_skin")])

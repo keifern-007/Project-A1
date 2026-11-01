@@ -1,5 +1,6 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene format=3]
 
+[ext_resource type="Script" path="res://scenes/maps/camp_forest.gd" id="s_scenery"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://components/camera_follow.gd" id="2_cam"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/goblin.tscn" id="3_goblin"]
@@ -52,6 +53,10 @@ size = Vector3(27, 4, 1)
 
 [sub_resource type="BoxShape3D" id="WallEW"]
 size = Vector3(1, 4, 27)
+
+[sub_resource type="PlaneMesh" id="FarGroundMesh"]
+material = SubResource("SandMat")
+size = Vector2(220, 220)
 
 [node name="SunscarDunes" type="Node3D"]
 
@@ -387,3 +392,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 3)
 
 [node name="BossSpawn" type="Marker3D" parent="." groups=["boss_spawns"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="FarGround" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0)
+mesh = SubResource("FarGroundMesh")
+
+[node name="Scenery" type="Node3D" parent="."]
+script = ExtResource("s_scenery")
+palette = 2
+flowers = false
+camp_half_size = 14.0

@@ -14,6 +14,7 @@ const LOADOUT_PANEL: PackedScene = preload("res://scenes/ui/loadout_panel.tscn")
 const SHRINE_PANEL: PackedScene = preload("res://scenes/ui/shrine_panel.tscn")
 const HERO_CARD: PackedScene = preload("res://scenes/ui/hero_card.tscn")
 const OPTIONS_PANEL: PackedScene = preload("res://scenes/ui/options_panel.tscn")
+const TUTORIAL_PROMPT: PackedScene = preload("res://scenes/ui/tutorial_prompt.tscn")
 const TOAST_TIME: float = 2.0
 const CHOOSE_ZOOM: float = 16.0 ## A bit wider than play zoom while picking a hero.
 ## While choosing, the browsed hero sits this far (world units) from screen center, away from their card.
@@ -81,7 +82,9 @@ func _play_as(character: CharacterData, snap: bool) -> void:
 		_choosing = false
 		create_tween().tween_property(_camera, "size", _play_zoom, ZOOM_TIME) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	hint_label.text = tr("UI_HUB_HINT") % InputHints.key_for("interact")
+	hint_label.text = tr("UI_HUB_HINT") % [InputHints.key_for("interact"), InputHints.key_for("camera_toggle"), InputHints.key_for("pause")]
+	if SaveManager.profile["stats"]["runs_played"] == 0: # Point new players to the tutorial.
+		hint_label.text += "\n" + tr("UI_HUB_HINT_NEW")
 
 
 ## Opens (or updates) the hero card, on the side away from the hero's area.
@@ -147,6 +150,8 @@ func _on_station_interacted(_by: Player, station: Interactable) -> void:
 			_open(LOADOUT_PANEL.instantiate())
 		&"skills":
 			_open(SHRINE_PANEL.instantiate())
+		&"tutorial":
+			_open(TUTORIAL_PROMPT.instantiate())
 		_:
 			_show_toast(tr("UI_COMING_SOON") % tr(station.prompt_key))
 

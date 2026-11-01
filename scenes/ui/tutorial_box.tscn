@@ -1,0 +1,171 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/tutorial_box.gd" id="1_box"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+bg_color = Color(0.08, 0.08, 0.1, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.85, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="GuideStyle"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+bg_color = Color(0.08, 0.08, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.85, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="SmallText"]
+font_size = 16
+font_color = Color(0.75, 0.75, 0.75, 1)
+
+[sub_resource type="LabelSettings" id="MainText"]
+font_size = 22
+
+[sub_resource type="LabelSettings" id="TitleText"]
+font_size = 34
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="TutorialBox" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_box")
+
+[node name="LessonPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -305.0
+offset_top = 92.0
+offset_right = 305.0
+offset_bottom = 200.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="VBox" type="VBoxContainer" parent="LessonPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="StepLabel" type="Label" parent="LessonPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+
+[node name="TextLabel" type="Label" parent="LessonPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="TipLabel" type="Label" parent="LessonPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+label_settings = SubResource("SmallText")
+autowrap_mode = 3
+
+[node name="GuidePanel" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="GuidePanel"]
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("GuideStyle")
+
+[node name="VBox" type="VBoxContainer" parent="GuidePanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_TITLE"
+label_settings = SubResource("TitleText")
+horizontal_alignment = 1
+
+[node name="Intro" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_INTRO"
+label_settings = SubResource("SmallText")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="MissionBoard" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_MISSIONS"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="Forge" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_FORGE"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="GearRack" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_GEAR"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="SkillShrine" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_SHRINE"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="Stash" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_STASH"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="Heroes" type="Label" parent="GuidePanel/Panel/VBox"]
+layout_mode = 2
+text = "TUT_GUIDE_HEROES"
+label_settings = SubResource("MainText")
+autowrap_mode = 3
+
+[node name="CampButton" type="Button" parent="GuidePanel/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "UI_RETURN_TO_CAMP"

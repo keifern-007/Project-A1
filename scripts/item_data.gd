@@ -81,3 +81,9 @@ func skills_text() -> String:
 	for skill: SkillData in skills:
 		names.append(skill.display_name())
 	return TranslationServer.translate("UI_WEAPON_SKILLS") % ", ".join(names)
+
+
+## This item's 3D look: scenes/items/<id>.tscn. null = it has none yet (the game still works).
+func model() -> PackedScene:
+	var path: String = "res://scenes/items/%s.tscn" % id
+	return load(path) if ResourceLoader.exists(path) else null

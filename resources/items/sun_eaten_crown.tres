@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/crown_shard.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/burial_wrap.tres" id="4_mat"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 2
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 4
+
+[resource]
+script = ExtResource("1_data")
+id = &"sun_eaten_crown"
+name_key = "ITEM_SUN_EATEN_CROWN"
+description_key = "ITEM_SUN_EATEN_CROWN_DESC"
+slot = 2
+tier = 3
+category = &"leaf_armor"
+style = 2
+color = Color(0.95, 0.75, 0.25, 1)
+max_health = -10
+attack_power = 4
+defense = 2
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

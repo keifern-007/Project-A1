@@ -68,7 +68,8 @@ func _on_leave_pressed() -> void:
 		leave_requested.emit()
 		return
 	_leave_armed = true
-	leave_button.text = "UI_LEAVE_CONFIRM"
+	var tutorial: bool = (GameState.objective as ObjectiveData).type == ObjectiveData.Type.TUTORIAL
+	leave_button.text = "UI_LEAVE_TUTORIAL" if tutorial else "UI_LEAVE_CONFIRM"
 
 
 func _disarm_leave() -> void:

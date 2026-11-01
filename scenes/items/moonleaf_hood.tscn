@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Skin"]
+albedo_color = Color(0.87, 0.64, 0.47, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leaf"]
+albedo_color = Color(0.32, 0.72, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="Eye"]
+albedo_color = Color(0.08, 0.08, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="LeafDark"]
+albedo_color = Color(0.2, 0.48, 0.33, 1)
+
+[sub_resource type="SphereMesh" id="M1"]
+radius = 0.3
+height = 0.6
+radial_segments = 8
+rings = 4
+material = SubResource("Leaf")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.34, 0.3, 0.05)
+material = SubResource("Skin")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.06, 0.08, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.06, 0.08, 0.03)
+material = SubResource("Eye")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.0
+bottom_radius = 0.14
+height = 0.34
+radial_segments = 8
+rings = 1
+material = SubResource("Leaf")
+
+[sub_resource type="PrismMesh" id="M6"]
+size = Vector3(0.1, 0.16, 0.02)
+material = SubResource("LeafDark")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0.02)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, -0.28)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0, -0.3)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 0, -0.3)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9397, 0.3420, 0, -0.3420, 0.9397, 0, 0.34, 0.12)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.32, -0.12)
+mesh = SubResource("M6")
+

@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="IceDark"]
+albedo_color = Color(0.32, 0.56, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="Frost"]
+shading_mode = 0
+albedo_color = Color(0.8, 0.95, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Fur"]
+albedo_color = Color(0.92, 0.94, 1, 1)
+
+[sub_resource type="SphereMesh" id="M1"]
+radius = 0.31
+height = 0.62
+radial_segments = 8
+rings = 4
+material = SubResource("Fur")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.38, 0.2, 0.08)
+material = SubResource("IceDark")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.08, 0.05, 0.03)
+material = SubResource("Frost")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.08, 0.05, 0.03)
+material = SubResource("Frost")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.46
+radial_segments = 8
+rings = 1
+material = SubResource("IceDark")
+
+[sub_resource type="CylinderMesh" id="M6"]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.46
+radial_segments = 8
+rings = 1
+material = SubResource("IceDark")
+
+[sub_resource type="PrismMesh" id="M7"]
+size = Vector3(0.06, 0.2, 0.04)
+material = SubResource("Frost")
+
+[sub_resource type="PrismMesh" id="M8"]
+size = Vector3(0.06, 0.2, 0.04)
+material = SubResource("Frost")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, -0.26)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, -0.01, -0.31)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, -0.01, -0.31)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7660, 0.6428, 0, -0.6428, 0.7660, 0, 0, 0, 1, 0.34, 0.28, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7660, -0.6428, 0, 0.6428, 0.7660, 0, 0, 0, 1, -0.34, 0.28, 0)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1.0000, -0.0000, 0, 0.0000, -1.0000, -0.1, -0.2, -0.26)
+mesh = SubResource("M7")
+
+[node name="P8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1.0000, -0.0000, 0, 0.0000, -1.0000, 0.1, -0.2, -0.26)
+mesh = SubResource("M8")
+

@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="SunDark"]
+albedo_color = Color(0.88, 0.52, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="Flame"]
+shading_mode = 0
+albedo_color = Color(1, 0.5, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Sun"]
+albedo_color = Color(1, 0.8, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.55, 0.56, 0.34)
+material = SubResource("Sun")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.16, 0.56, 0.02)
+material = SubResource("SunDark")
+
+[sub_resource type="SphereMesh" id="M3"]
+radius = 0.07
+height = 0.1
+radial_segments = 8
+rings = 4
+material = SubResource("Flame")
+
+[sub_resource type="BoxMesh" id="M4"]
+size = Vector3(0.16, 0.14, 0.3)
+material = SubResource("SunDark")
+
+[sub_resource type="BoxMesh" id="M5"]
+size = Vector3(0.16, 0.14, 0.3)
+material = SubResource("SunDark")
+
+[sub_resource type="BoxMesh" id="M6"]
+size = Vector3(0.52, 0.28, 0.32)
+material = SubResource("Sun")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.175)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, -0.19)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31, 0.55, 0)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31, 0.55, 0)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("M6")
+

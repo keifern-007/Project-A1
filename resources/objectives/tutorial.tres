@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ObjectiveData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/materials/moonleaf.tres" id="2_moonleaf"]
+[ext_resource type="PackedScene" path="res://scenes/maps/gather_node.tscn" id="3_node"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_TUTORIAL"
+description_key = "UI_TUTORIAL_ASK"
+type = 3
+gather_material = ExtResource("2_moonleaf")
+gather_node_scene = ExtResource("3_node")

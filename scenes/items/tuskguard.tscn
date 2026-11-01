@@ -1,0 +1,87 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Bone"]
+albedo_color = Color(0.93, 0.89, 0.76, 1)
+
+[sub_resource type="StandardMaterial3D" id="Leather"]
+albedo_color = Color(0.42, 0.27, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="Iron"]
+albedo_color = Color(0.3, 0.31, 0.36, 1)
+
+[sub_resource type="StandardMaterial3D" id="Wood"]
+albedo_color = Color(0.5, 0.34, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.7, 0.82, 0.07)
+material = SubResource("Wood")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.74, 0.07, 0.1)
+material = SubResource("Leather")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.74, 0.07, 0.1)
+material = SubResource("Leather")
+
+[sub_resource type="CylinderMesh" id="M4"]
+top_radius = 0.0
+bottom_radius = 0.06
+height = 0.32
+radial_segments = 8
+rings = 1
+material = SubResource("Bone")
+
+[sub_resource type="CylinderMesh" id="M5"]
+top_radius = 0.0
+bottom_radius = 0.06
+height = 0.32
+radial_segments = 8
+rings = 1
+material = SubResource("Bone")
+
+[sub_resource type="CylinderMesh" id="M6"]
+top_radius = 0.0
+bottom_radius = 0.07
+height = 0.42
+radial_segments = 8
+rings = 1
+material = SubResource("Bone")
+
+[sub_resource type="SphereMesh" id="M7"]
+radius = 0.11
+height = 0.14
+radial_segments = 8
+rings = 4
+material = SubResource("Iron")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.13)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -0.13)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, -0.13)
+mesh = SubResource("M3")
+
+[node name="P4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.0000, -0.0000, 0, 0.0000, 1.0000, -0.2, 0.58, -0.17)
+mesh = SubResource("M4")
+
+[node name="P5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.0000, -0.0000, 0, 0.0000, 1.0000, 0.2, 0.58, -0.17)
+mesh = SubResource("M5")
+
+[node name="P6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.0000, -0.0000, 0, 0.0000, 1.0000, 0, 0.64, -0.17)
+mesh = SubResource("M6")
+
+[node name="P7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.2)
+mesh = SubResource("M7")
+

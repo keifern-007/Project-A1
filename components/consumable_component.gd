@@ -12,6 +12,7 @@ signal changed ## Count or item changed; the HUD redraws.
 
 var item: ItemData = null
 var cooldown_left: float = 0.0
+var locked: bool = false ## The tutorial sets this, so practice can't spend a real potion.
 
 
 func _ready() -> void:
@@ -29,7 +30,7 @@ func get_count() -> int:
 ## Returns true if one was used. A heal at full HP (or mana potion at full mana) is refused,
 ## so a misclick doesn't waste it.
 func try_use() -> bool:
-	if item == null or item.use_effect == null or cooldown_left > 0.0 or get_count() <= 0:
+	if locked or item == null or item.use_effect == null or cooldown_left > 0.0 or get_count() <= 0:
 		return false
 	if item.use_effect.effect == BoosterData.Effect.HEAL and health.current >= health.max_health:
 		return false

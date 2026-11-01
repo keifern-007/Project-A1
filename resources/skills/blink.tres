@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_BLINK"
+anim = &"raise"
 cooldown = 6.0
 damage_multiplier = 0.0
 kind = 1

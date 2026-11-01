@@ -47,6 +47,7 @@ var _attack_stamina_cost: float = 0.0
 var _speed_modifiers: Dictionary = {} # source -> walk speed multiplier (quicksand...).
 var _dodge_stamina_cost: float = 0.0
 var _lean_tween: Tween
+var rig: HeroRig ## The hero's model. Built in _ready from CharacterData.rig.
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var input: PlayerInput = $PlayerInput
@@ -145,12 +146,23 @@ func _apply_character(data: CharacterData) -> void:
 	_dodge_stamina_cost = data.dodge_stamina_cost
 	stamina.configure(data.max_stamina, data.stamina_regen)
 	mana.configure(data.max_mana, data.mana_regen, data.mana_per_kill)
-	# Placeholder look: tint + silhouette (shape, so it never relies on color alone).
 	visual.scale = data.body_scale
-	var body: MeshInstance3D = visual.get_node("Body")
-	var material: StandardMaterial3D = body.get_surface_override_material(0).duplicate()
-	material.albedo_color = data.color
-	body.set_surface_override_material(0, material)
+	_build_model(data)
+
+
+## The hero's 3D model, wearing their saved gear, and what animates it. Purely visual.
+func _build_model(data: CharacterData) -> void:
+	rig = data.rig.instantiate()
+	visual.add_child(rig)
+	rig.wear_loadout(str(data.id))
+	var animator: HeroAnimator = HeroAnimator.new()
+	animator.name = "HeroAnimator"
+	rig.add_child(animator)
+	animator.setup(rig, self)
+	var trail: MeshInstance3D = melee.swing_visual
+	trail.mesh = SwingArc.make_mesh()
+	trail.set_surface_override_material(0, SwingArc.make_material(rig.trail_color))
+	trail.position = Vector3(0.0, 1.0, 0.0)
 
 
 ## Hands this body to the local player, or makes it an NPC. Only controlled bodies are
@@ -350,9 +362,7 @@ func _end_dash() -> void:
 
 ## Half-transparent while invulnerable (shape change, not color, so it reads for everyone).
 func _set_ghosted(on: bool) -> void:
-	for child: Node in visual.get_children():
-		if child is GeometryInstance3D:
-			(child as GeometryInstance3D).transparency = 0.5 if on else 0.0
+	rig.set_ghosted(on)
 
 
 func _on_hurt(_amount: int, hitbox: HitboxComponent) -> void:

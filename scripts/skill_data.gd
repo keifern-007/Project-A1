@@ -19,6 +19,9 @@ enum Kind { PHYSICAL, MAGIC }
 @export var commit_time: float = 0.0
 ## Spawned when the skill is cast. Its root script must extend SkillEffect.
 @export var effect_scene: PackedScene
+## How the hero moves when using it: slash, overhead, slam, punch, stab, lunge, cast, raise, guard, spin.
+## Empty = decided by the weapon (physical) or a casting pose (magic).
+@export var anim: StringName = &""
 
 
 ## "Whirlwind (^ Fire)" for menus; physical skills show just their name.

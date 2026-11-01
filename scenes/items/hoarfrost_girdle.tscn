@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="IceDark"]
+albedo_color = Color(0.32, 0.56, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="Frost"]
+shading_mode = 0
+albedo_color = Color(0.8, 0.95, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Fur"]
+albedo_color = Color(0.92, 0.94, 1, 1)
+
+[sub_resource type="BoxMesh" id="M1"]
+size = Vector3(0.5, 0.09, 0.33)
+material = SubResource("IceDark")
+
+[sub_resource type="BoxMesh" id="M2"]
+size = Vector3(0.12, 0.11, 0.03)
+material = SubResource("Frost")
+
+[sub_resource type="BoxMesh" id="M3"]
+size = Vector3(0.54, 0.1, 0.38)
+material = SubResource("Fur")
+
+[node name="ItemModel" type="Node3D"]
+
+[node name="P1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("M1")
+
+[node name="P2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.175)
+mesh = SubResource("M2")
+
+[node name="P3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0.05)
+mesh = SubResource("M3")
+

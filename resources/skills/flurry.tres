@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_FLURRY"
+anim = &"stab"
 cooldown = 4.0
 damage_multiplier = 0.8
 cost = 20.0

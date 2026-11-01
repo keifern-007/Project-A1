@@ -46,6 +46,13 @@ func _input(event: InputEvent) -> void:
 		game_viewport.push_input(local_event, true)
 
 
+# The camera lives inside the SubViewport, where key presses don't reach, so its switch is caught here.
+# Skipped while paused: this node pauses with the game. Menus take the key first if they use it.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("camera_toggle"):
+		Settings.toggle_camera_mode()
+
+
 ## Window pixels (local to this control) -> low-res game pixels, e.g. for clicking on 3D things.
 func to_game_position(screen_pos: Vector2) -> Vector2:
 	var render: Vector2 = Vector2(render_size)

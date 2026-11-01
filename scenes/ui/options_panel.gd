@@ -11,6 +11,7 @@ signal closed
 @onready var shake_slider: HSlider = %ShakeSlider
 @onready var arachnophobia_check: CheckButton = %ArachnophobiaCheck
 @onready var fullscreen_check: CheckButton = %FullscreenCheck
+@onready var camera_check: CheckButton = %CameraCheck
 @onready var back_button: Button = %BackButton
 
 
@@ -20,7 +21,9 @@ func _ready() -> void:
 	shake_slider.value = Settings.screen_shake
 	arachnophobia_check.button_pressed = Settings.arachnophobia_mode
 	fullscreen_check.button_pressed = Settings.fullscreen
+	camera_check.button_pressed = Settings.camera_mode == Settings.CameraMode.OVER_THE_SHOULDER
 	_update_shake_label()
+	camera_check.toggled.connect(func(_on: bool) -> void: Settings.toggle_camera_mode())
 	flashing_check.toggled.connect(_on_flashing_toggled)
 	shake_slider.value_changed.connect(_on_shake_changed)
 	arachnophobia_check.toggled.connect(_on_arachnophobia_toggled)

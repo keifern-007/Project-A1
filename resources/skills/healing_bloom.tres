@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_data")
 name_key = "SKILL_HEALING_BLOOM"
+anim = &"raise"
 cooldown = 14.0
 damage_multiplier = 0.0
 kind = 1
