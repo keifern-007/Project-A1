@@ -23,6 +23,7 @@ description_key = "ITEM_GOBLIN_BUCKLER_DESC"
 slot = 1
 tier = 1
 category = &"shield"
+style = 1
 color = Color(0.5, 0.38, 0.25, 1)
 defense = 2
 max_health = 5

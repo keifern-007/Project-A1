@@ -9,12 +9,17 @@ const BAD_COLOR: String = "#f08a7a"
 
 var _selected: ItemData
 var _buttons: Dictionary = {} # ItemData -> Button
+var _headers: Dictionary = {} # ItemData.Slot -> Label, the name above that set in the 'All' list
+var _recipe_group: ButtonGroup = ButtonGroup.new()
 
+@onready var filters: ForgeFilters = %Filters
+@onready var empty_label: Label = %EmptyLabel
 @onready var recipe_list: VBoxContainer = %RecipeList
 @onready var name_label: Label = %NameLabel
 @onready var slot_label: Label = %SlotLabel
 @onready var stats_label: RichTextLabel = %StatsLabel
 @onready var description_label: Label = %DescriptionLabel
+@onready var cost_header: Label = %CostHeader
 @onready var cost_list: VBoxContainer = %CostList
 @onready var craft_button: Button = %CraftButton
 @onready var message_label: Label = %MessageLabel
@@ -22,27 +27,58 @@ var _buttons: Dictionary = {} # ItemData -> Button
 
 
 func _ready() -> void:
-	var group: ButtonGroup = ButtonGroup.new()
+	_build_recipe_list()
+	filters.changed.connect(_apply_filters)
+	craft_button.pressed.connect(_craft)
+	back_button.pressed.connect(closed.emit)
+	message_label.text = ""
+	_refresh_buttons()
+	_apply_filters()
+	if _selected:
+		_buttons[_selected].grab_focus()
+
+
+func _build_recipe_list() -> void:
+	var last_slot: int = ItemFilter.ALL_SETS
 	for item: ItemData in ItemRegistry.all():
+		if item.slot != last_slot:
+			last_slot = item.slot
+			var header: Label = Label.new()
+			header.text = ItemData.set_key(item.slot)
+			header.add_theme_font_size_override("font_size", 17)
+			header.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
+			recipe_list.add_child(header)
+			_headers[item.slot] = header
 		var button: Button = Button.new()
 		button.toggle_mode = true
-		button.button_group = group
+		button.button_group = _recipe_group
 		button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-		button.custom_minimum_size = Vector2(260, 44)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.custom_minimum_size = Vector2(290, 40)
 		button.add_theme_font_size_override("font_size", 18)
 		button.pressed.connect(_select.bind(item))
 		button.toggled.connect(func(_on: bool) -> void: _refresh_buttons())
 		recipe_list.add_child(button)
 		_buttons[item] = button
-	craft_button.pressed.connect(_craft)
-	back_button.pressed.connect(closed.emit)
-	message_label.text = ""
-	_refresh_buttons()
-	if not _buttons.is_empty():
-		var first: Button = _buttons.values()[0]
-		first.button_pressed = true
-		first.grab_focus()
-		_select(_buttons.keys()[0])
+
+
+## Shows only what passes the filter, and moves the selection if it just got hidden.
+func _apply_filters() -> void:
+	var first_visible: ItemData = null
+	for slot: int in _headers:
+		_headers[slot].visible = false
+	for item: ItemData in _buttons:
+		var shown: bool = filters.filter.matches(item)
+		_buttons[item].visible = shown
+		if shown:
+			_headers[item.slot].visible = filters.filter.set_slot == ItemFilter.ALL_SETS
+			if first_visible == null:
+				first_visible = item
+	empty_label.visible = first_visible == null
+	if _selected == null or not filters.filter.matches(_selected):
+		if first_visible:
+			_buttons[first_visible].button_pressed = true
+		_select(first_visible)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -60,6 +96,7 @@ func _select(item: ItemData) -> void:
 func _craft() -> void:
 	if SaveManager.craft(_selected):
 		message_label.text = tr("UI_CRAFTED") % tr(_selected.name_key)
+		filters.refresh_materials() # Owned counts changed.
 		_refresh_buttons()
 		_refresh_details()
 
@@ -78,15 +115,23 @@ func _refresh_buttons() -> void:
 
 func _refresh_details() -> void:
 	var item: ItemData = _selected
+	for child: Node in cost_list.get_children():
+		child.queue_free()
+	craft_button.disabled = item == null
+	cost_header.visible = item != null
+	if item == null: # The filters hide every recipe.
+		name_label.text = ""
+		slot_label.text = ""
+		stats_label.text = ""
+		description_label.text = ""
+		return
 	name_label.text = tr(item.name_key)
 	var slot_text: String = "%s  |  %s" % [tr("UI_TIER") % item.tier, tr(ItemData.slot_key(item.slot))]
 	if item.two_handed:
 		slot_text += "  |  " + tr("ITEM_TWO_HANDED")
-	slot_label.text = slot_text
+	slot_label.text = slot_text + "  |  " + tr(ItemData.style_key(item.style))
 	stats_label.text = "\n".join(_stat_lines(item))
 	description_label.text = tr(item.description_key)
-	for child: Node in cost_list.get_children():
-		child.queue_free()
 	for cost: MaterialCost in item.cost:
 		cost_list.add_child(_make_cost_row(cost))
 	if not SaveManager.can_craft_tier(item):

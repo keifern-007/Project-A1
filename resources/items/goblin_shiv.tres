@@ -21,6 +21,7 @@ slot = 0
 windup_multiplier = 0.7
 tier = 1
 category = &"dagger"
+style = 1
 color = Color(0.6, 0.6, 0.65, 1)
 attack_power = 3
 skills = Array[ExtResource("20_skill")]([ExtResource("21_flurry"), ExtResource("22_fan_of_knives")])

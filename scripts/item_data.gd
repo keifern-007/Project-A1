@@ -7,6 +7,7 @@ extends Resource
 ## Albion-style loadout. Hands: two-handed weapons take both; off-hand items (shields, books)
 ## only go off-hand; one-handed main-hand weapons may also go off-hand (dual-wield).
 enum Slot { MAIN_HAND, OFF_HAND, HELMET, CHEST, WAIST, BOOTS, TRINKET, CONSUMABLE }
+enum Style { ANY, PHYSICAL, MAGIC }
 
 @export var id: StringName = &"" ## Save-file key. Never change it once players have saves.
 @export var name_key: String = ""
@@ -16,6 +17,8 @@ enum Slot { MAIN_HAND, OFF_HAND, HELMET, CHEST, WAIST, BOOTS, TRINKET, CONSUMABL
 @export var tier: int = 1 ## T1, T2... Higher tiers will need higher crafting / mastery levels.
 ## Which crafting and mastery track this belongs to, e.g. &"axe", &"shield", &"leaf_armor".
 @export var category: StringName = &""
+## Forge filter: who this is meant for. Only a recommendation, every hero can still use it.
+@export var style: Style = Style.ANY
 @export var color: Color = Color.WHITE ## Placeholder look until real art exists.
 ## Main-hand weapons: the skills it grants on keys 3-4 (up to 2). Empty = the unarmed default.
 @export var skills: Array[SkillData] = []
@@ -39,6 +42,16 @@ enum Slot { MAIN_HAND, OFF_HAND, HELMET, CHEST, WAIST, BOOTS, TRINKET, CONSUMABL
 ## Translation key for a slot's name, e.g. "SLOT_MAIN_HAND".
 static func slot_key(for_slot: Slot) -> String:
 	return "SLOT_" + Slot.keys()[for_slot]
+
+
+## Translation key for a Forge set's name (all the items of one slot), e.g. "UI_SET_MAIN_HAND".
+static func set_key(for_slot: Slot) -> String:
+	return "UI_SET_" + Slot.keys()[for_slot]
+
+
+## Translation key for a style's name, e.g. "UI_STYLE_MAGIC".
+static func style_key(for_style: Style) -> String:
+	return "UI_STYLE_" + Style.keys()[for_style]
 
 
 func can_go_in(target: Slot) -> bool:

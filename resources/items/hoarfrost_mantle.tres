@@ -23,6 +23,7 @@ description_key = "ITEM_HOARFROST_MANTLE_DESC"
 slot = 3
 tier = 2
 category = &"leather_armor"
+style = 1
 color = Color(0.9, 0.93, 1, 1)
 max_health = 35
 attack_power = -2

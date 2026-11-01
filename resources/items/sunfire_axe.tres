@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="3_mat"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="4_mat"]
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="20_skill"]
+[ext_resource type="Resource" path="res://resources/skills/flame_cleave.tres" id="21_skill"]
+[ext_resource type="Resource" path="res://resources/skills/ember_hatchet.tres" id="22_skill"]
+
+[sub_resource type="Resource" id="Cost3"]
+script = ExtResource("2_cost")
+material = ExtResource("3_mat")
+amount = 4
+
+[sub_resource type="Resource" id="Cost4"]
+script = ExtResource("2_cost")
+material = ExtResource("4_mat")
+amount = 4
+
+[resource]
+script = ExtResource("1_data")
+id = &"sunfire_axe"
+name_key = "ITEM_SUNFIRE_AXE"
+description_key = "ITEM_SUNFIRE_AXE_DESC"
+slot = 0
+windup_multiplier = 1.0
+tier = 2
+category = &"axe"
+style = 1
+color = Color(1, 0.45, 0.15, 1)
+attack_power = 6
+max_health = 0
+defense = -1
+skills = Array[ExtResource("20_skill")]([ExtResource("21_skill"), ExtResource("22_skill")])
+cost = Array[ExtResource("2_cost")]([SubResource("Cost3"), SubResource("Cost4")])

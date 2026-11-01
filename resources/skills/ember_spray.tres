@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/ember_spray.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "SKILL_EMBER_SPRAY"
+cooldown = 6.0
+damage_multiplier = 1.0
+kind = 1
+cost = 25.0
+element = 1
+cast_time = 0.3
+commit_time = 0.2
+effect_scene = ExtResource("2_scene")

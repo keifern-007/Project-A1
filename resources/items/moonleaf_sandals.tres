@@ -17,6 +17,7 @@ description_key = "ITEM_MOONLEAF_SANDALS_DESC"
 slot = 5
 tier = 1
 category = &"leaf_armor"
+style = 2
 color = Color(0.45, 0.85, 0.8, 1)
 defense = 1
 cost = Array[ExtResource("2_cost")]([SubResource("Cost3")])

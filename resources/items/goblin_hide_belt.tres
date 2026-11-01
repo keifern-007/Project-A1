@@ -17,6 +17,7 @@ description_key = "ITEM_GOBLIN_HIDE_BELT_DESC"
 slot = 4
 tier = 1
 category = &"leather_armor"
+style = 1
 color = Color(0.4, 0.6, 0.3, 1)
 max_health = 8
 cost = Array[ExtResource("2_cost")]([SubResource("Cost3")])

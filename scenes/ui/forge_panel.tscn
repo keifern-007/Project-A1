@@ -1,6 +1,7 @@
 [gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/ui/forge_panel.gd" id="1_forge"]
+[ext_resource type="Script" path="res://scenes/ui/forge_filters.gd" id="2_filters"]
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 content_margin_left = 28.0
@@ -48,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(820, 470)
+custom_minimum_size = Vector2(920, 470)
 layout_mode = 2
 theme_override_styles/panel = SubResource("PanelStyle")
 
@@ -62,13 +63,45 @@ text = "UI_FORGE"
 label_settings = SubResource("TitleText")
 horizontal_alignment = 1
 
+[node name="Filters" type="VBoxContainer" parent="Center/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("2_filters")
+
+[node name="SetTabs" type="HFlowContainer" parent="Center/Panel/VBox/Filters"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+alignment = 1
+
+[node name="Dropdowns" type="HBoxContainer" parent="Center/Panel/VBox/Filters"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="MaterialFilter" type="OptionButton" parent="Center/Panel/VBox/Filters/Dropdowns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 38)
+layout_mode = 2
+auto_translate_mode = 2
+theme_override_font_sizes/font_size = 17
+
+[node name="StyleFilter" type="OptionButton" parent="Center/Panel/VBox/Filters/Dropdowns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 38)
+layout_mode = 2
+auto_translate_mode = 2
+theme_override_font_sizes/font_size = 17
+
 [node name="Columns" type="HBoxContainer" parent="Center/Panel/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="RecipeScroll" type="ScrollContainer" parent="Center/Panel/VBox/Columns"]
-custom_minimum_size = Vector2(290, 400)
+custom_minimum_size = Vector2(320, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
@@ -78,24 +111,43 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
+[node name="EmptyLabel" type="Label" parent="Center/Panel/VBox/Columns/RecipeScroll/RecipeList"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(290, 0)
+layout_mode = 2
+text = "UI_FORGE_NO_MATCH"
+label_settings = SubResource("SubText")
+autowrap_mode = 3
+
 [node name="Details" type="VBoxContainer" parent="Center/Panel/VBox/Columns"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="NameLabel" type="Label" parent="Center/Panel/VBox/Columns/Details"]
+[node name="DetailsScroll" type="ScrollContainer" parent="Center/Panel/VBox/Columns/Details"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="DetailsBody" type="VBoxContainer" parent="Center/Panel/VBox/Columns/Details/DetailsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
 label_settings = SubResource("NameText")
 
-[node name="SlotLabel" type="Label" parent="Center/Panel/VBox/Columns/Details"]
+[node name="SlotLabel" type="Label" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
 label_settings = SubResource("SubText")
 
-[node name="StatsLabel" type="RichTextLabel" parent="Center/Panel/VBox/Columns/Details"]
+[node name="StatsLabel" type="RichTextLabel" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
@@ -104,7 +156,7 @@ bbcode_enabled = true
 fit_content = true
 scroll_active = false
 
-[node name="DescriptionLabel" type="Label" parent="Center/Panel/VBox/Columns/Details"]
+[node name="DescriptionLabel" type="Label" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -112,16 +164,21 @@ auto_translate_mode = 2
 label_settings = SubResource("SubText")
 autowrap_mode = 3
 
-[node name="CostHeader" type="Label" parent="Center/Panel/VBox/Columns/Details"]
+[node name="CostHeader" type="Label" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "UI_COST"
 label_settings = SubResource("SubText")
 
-[node name="CostList" type="VBoxContainer" parent="Center/Panel/VBox/Columns/Details"]
+[node name="CostList" type="VBoxContainer" parent="Center/Panel/VBox/Columns/Details/DetailsScroll/DetailsBody"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CraftButton" type="Button" parent="Center/Panel/VBox/Columns/Details"]
+[node name="CraftRow" type="HBoxContainer" parent="Center/Panel/VBox/Columns/Details"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="CraftButton" type="Button" parent="Center/Panel/VBox/Columns/Details/CraftRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 48)
 layout_mode = 2
@@ -130,7 +187,7 @@ auto_translate_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Craft"
 
-[node name="MessageLabel" type="Label" parent="Center/Panel/VBox/Columns/Details"]
+[node name="MessageLabel" type="Label" parent="Center/Panel/VBox/Columns/Details/CraftRow"]
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2

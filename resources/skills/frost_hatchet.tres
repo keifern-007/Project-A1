@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/frost_hatchet.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "SKILL_FROST_HATCHET"
+cooldown = 5.0
+damage_multiplier = 2.0
+kind = 0
+cost = 20.0
+element = 2
+cast_time = 0.25
+commit_time = 0.2
+effect_scene = ExtResource("2_scene")

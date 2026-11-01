@@ -28,6 +28,7 @@ two_handed = true
 windup_multiplier = 1.6
 tier = 2
 category = &"axe"
+style = 1
 color = Color(0.95, 0.92, 0.8, 1)
 attack_power = 8
 defense = -2

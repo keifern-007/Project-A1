@@ -6,3 +6,5 @@
 [node name="ArcaneBarrage" type="Node3D"]
 script = ExtResource("1_script")
 projectile_scene = ExtResource("2_bolt")
+spread_degrees = 4.0
+fire_interval = 0.25

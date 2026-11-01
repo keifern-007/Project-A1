@@ -23,6 +23,7 @@ description_key = "ITEM_SUNBLOOM_ROBE_DESC"
 slot = 3
 tier = 2
 category = &"leaf_armor"
+style = 2
 color = Color(1, 0.8, 0.3, 1)
 max_health = 20
 defense = 5

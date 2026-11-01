@@ -316,3 +316,35 @@ UI_LEAVE_MISSION,Leave Mission
 UI_LEAVE_CONFIRM,Leave? Press again (you keep what you collected)
 UI_LEFT_MISSION,Mission Abandoned
 UI_LEFT_MISSION_SUB,You keep what you collected.
+ITEM_SUNFIRE_AXE,Sunfire Axe
+ITEM_SUNFIRE_AXE_DESC,"Forged with Sunbloom. Burns the cold out of anything, and runs a little hot on you."
+ITEM_RIME_AXE,Rime Axe
+ITEM_RIME_AXE_DESC,"Frost Shards in the edge. Bites the desert dead, and numbs the hand holding it."
+ITEM_SUNFIRE_WAND,Sunfire Wand
+ITEM_SUNFIRE_WAND_DESC,"A sliver of summer. Melts what the snow keeps, at the cost of a little of you."
+ITEM_RIME_WAND,Rime Wand
+ITEM_RIME_WAND_DESC,"Never stops being cold. The mummies hate it. So do your fingers."
+SKILL_FLAME_CLEAVE,Flame Cleave
+SKILL_FROST_CLEAVE,Frost Cleave
+SKILL_EMBER_HATCHET,Ember Hatchet
+SKILL_FROST_HATCHET,Frost Hatchet
+SKILL_FIRE_BOLT,Fire Bolt
+SKILL_ICE_LANCE,Ice Lance
+SKILL_EMBER_SPRAY,Ember Spray
+SKILL_ICE_SHARDS,Ice Shards
+UI_SET_ALL,All
+UI_SET_MAIN_HAND,Weapons
+UI_SET_OFF_HAND,Off Hand
+UI_SET_HELMET,Helmets
+UI_SET_CHEST,Vests
+UI_SET_WAIST,Belts
+UI_SET_BOOTS,Boots
+UI_SET_TRINKET,Trinkets
+UI_SET_CONSUMABLE,Potions
+UI_STYLE_ANY,Any build
+UI_STYLE_PHYSICAL,Physical
+UI_STYLE_MAGIC,Mage
+UI_FILTER_ALL_MATERIALS,All materials
+UI_FILTER_ALL_STYLES,Mage + Physical
+UI_FILTER_MATERIAL_ROW,%s (%d owned)
+UI_FORGE_NO_MATCH,No recipes match these filters.

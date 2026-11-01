@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/skills/projectile_fan.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/ice_lance.tscn" id="2_proj"]
+
+[node name="IceShards" type="Node3D"]
+script = ExtResource("1_script")
+projectile_scene = ExtResource("2_proj")
+count = 5
+spread_degrees = 15.0
