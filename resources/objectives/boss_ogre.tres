@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/bosses/ogre.tscn" id="2_boss"]
 [ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_drop"]
 [ext_resource type="Resource" uid="uid://hfpnvup0y56r" path="res://resources/moods/storm.tres" id="mood_storm"]
+[ext_resource type="Resource" uid="uid://c5itfihxjbc5g" path="res://resources/maps/greybox.tres" id="5_map"]
 
 [resource]
 script = ExtResource("1_data")
@@ -12,6 +13,7 @@ description_key = "OBJ_BOSS_OGRE_DESC"
 type = 1
 required_rank = 3
 mood = ExtResource("mood_storm")
+only_on_map = ExtResource("5_map")
 health_growth_per_wave = 0.1
 boss_scene = ExtResource("2_boss")
 boss_drop = ExtResource("3_drop")

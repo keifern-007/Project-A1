@@ -140,7 +140,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 auto_translate_mode = 2
-text = "Lv 1"
+text = "Run Level 1"
 label_settings = SubResource("Text")
 
 [node name="XpBar" type="ProgressBar" parent="LevelRow"]

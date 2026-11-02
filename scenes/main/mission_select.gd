@@ -17,6 +17,7 @@ const BUTTON_SIZE: Vector2 = Vector2(280, 44)
 var _map: MapData
 var _objective: ObjectiveData
 var _challenge: ChallengeData
+var _objective_buttons: Array[Button] = []
 
 @onready var map_list: VBoxContainer = %MapList
 @onready var objective_list: VBoxContainer = %ObjectiveList
@@ -28,15 +29,16 @@ var _challenge: ChallengeData
 
 func _ready() -> void:
 	var map_buttons: Array[Button] = _fill_list(map_list, maps, _select_map)
-	var objective_buttons: Array[Button] = _fill_list(objective_list, objectives, _select_objective)
+	_objective_buttons = _fill_list(objective_list, objectives, _select_objective)
 	var challenge_buttons: Array[Button] = _fill_list(challenge_list, challenges, _select_challenge)
 	start_button.pressed.connect(_start)
 	back_button.pressed.connect(closed.emit)
 	_preselect(map_buttons, maps, GameState.map, _select_map)
-	_preselect(objective_buttons, objectives, GameState.objective, _select_objective)
+	_preselect(_objective_buttons, objectives, GameState.objective, _select_objective)
 	_preselect(challenge_buttons, challenges, GameState.challenge, _select_challenge)
-	if not objective_buttons.is_empty():
-		objective_buttons[0].grab_focus()
+	_refresh_objectives()
+	if not _objective_buttons.is_empty():
+		_objective_buttons[0].grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -79,7 +81,22 @@ func _preselect(buttons: Array[Button], entries: Array, previous: Resource, on_s
 
 func _select_map(map: MapData) -> void:
 	_map = map
+	_refresh_objectives()
 	_update_details()
+
+
+## Shows only the objectives this map offers. If the selected one just disappeared
+## (a boss from another map), selects the first one still listed.
+func _refresh_objectives() -> void:
+	var first_available: int = -1
+	for i: int in objectives.size():
+		var available: bool = objectives[i].available_on(_map)
+		_objective_buttons[i].visible = available
+		if available and first_available < 0:
+			first_available = i
+	if _objective != null and not _objective.available_on(_map) and first_available >= 0:
+		_objective_buttons[first_available].button_pressed = true
+		_select_objective(objectives[first_available])
 
 
 func _select_objective(objective: ObjectiveData) -> void:

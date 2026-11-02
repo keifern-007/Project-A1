@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/bosses/hoarfrost.tscn" id="2_boss"]
 [ext_resource type="Resource" path="res://resources/materials/hoarfrost_pelt.tres" id="3_drop"]
 [ext_resource type="Resource" path="res://resources/moods/storm.tres" id="4_mood"]
+[ext_resource type="Resource" path="res://resources/maps/frost_pass.tres" id="5_map"]
 
 [resource]
 script = ExtResource("1_data")
@@ -15,3 +16,4 @@ health_growth_per_wave = 0.1
 boss_scene = ExtResource("2_boss")
 boss_drop = ExtResource("3_drop")
 mood = ExtResource("4_mood")
+only_on_map = ExtResource("5_map")

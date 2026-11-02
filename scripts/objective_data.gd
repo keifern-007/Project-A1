@@ -10,6 +10,8 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL }
 @export var required_rank: int = 1 ## Locked on the Mission Board until this Rank.
 ## Re-lights the map: storm for bosses, bright for gathering. Empty = the map as it is.
 @export var mood: MoodData
+## Set = the Mission Board only lists this objective on that map. Empty = every map.
+@export var only_on_map: MapData
 
 @export_group("Horde")
 @export var waves_to_survive: int = 5
@@ -30,3 +32,7 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL }
 @export var kills_before_boss: int = 8 ## 0 = boss appears immediately.
 @export var boss_drop: MaterialData ## Boss-exclusive reward.
 @export var boss_drop_amount: int = 1
+
+
+func available_on(map: MapData) -> bool:
+	return only_on_map == null or only_on_map == map

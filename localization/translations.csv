@@ -11,7 +11,7 @@ HUD_WAVE,Wave %d
 HUD_READY,Ready
 UI_GAME_OVER,You Died
 UI_GAME_OVER_SUB,Get good.
-UI_RUN_STATS,Time %s  |  Kills %d  |  Level %d
+UI_RUN_STATS,Time %s  |  Kills %d  |  Run Level %d
 UI_RESTART,Restart
 OBJ_HORDE,Survive the Horde
 UI_VICTORY,Mission Complete
@@ -35,8 +35,8 @@ OBJ_BOSS_OGRE_DESC,Thin out the goblins to lure the Ogre. Then face it alone for
 MAT_GOBLIN_EAR,Goblin Ear
 ITEM_HEAL_POTION,Healing Draught
 ITEM_FURY_TONIC,Fury Tonic
-HUD_LEVEL,Lv %d
-HUD_LEVEL_UP,Level Up!
+HUD_LEVEL,Run Level %d
+HUD_LEVEL_UP,Run Level Up!
 HUD_BOOST,%s  %ds
 UI_REWARDS,Earned this run
 UI_NO_REWARDS,Nothing this time.
