@@ -292,6 +292,7 @@ ITEM_HOARFROST_MANTLE_DESC,"Still smells of yeti. Warm, heavy and slightly judge
 ENEMY_SUN_EATEN_KING,The Sun-Eaten King
 STATUS_SEALED,= Sealed: break the jars
 OBJ_BREAK_JARS,Break the canopic jars
+HINT_BREAK_JAR,Break me!
 MAT_CROWN_SHARD,Sun-Eaten Crown Shard
 OBJ_BOSS_KING,Defeat the Sun-Eaten King
 OBJ_BOSS_KING_DESC,Thin out the horde until the old king wakes. He hides in his sarcophagus when hurt: smash his jars.
@@ -346,7 +347,7 @@ UI_STYLE_MAGIC,Mage
 UI_FILTER_ALL_MATERIALS,All materials
 UI_FILTER_ALL_STYLES,Mage + Physical
 UI_FILTER_MATERIAL_ROW,%s (%d owned)
-UI_FORGE_NO_MATCH,No recipes match these filters.
+UI_FORGE_NO_MATCH,No discovered recipes here. New materials from missions reveal new recipes.
 ITEM_OGREHIDE_CAP,Ogrehide Cap
 ITEM_OGREHIDE_CAP_DESC,Fits any head if you stuff it with enough goblin ear.
 ITEM_OGREHIDE_GIRDLE,Ogrehide Girdle
@@ -411,10 +412,12 @@ TUT_FIGHT_TIP,"Watch them lean back before they swing, then roll or step away. K
 TUT_GUIDE_TITLE,You're ready!
 TUT_GUIDE_INTRO,"Back in camp, walk up to a station and press the key shown above it."
 TUT_GUIDE_MISSIONS,Mission Board: choose a map and objective and start a run.
-TUT_GUIDE_FORGE,"Forge: craft weapons, armor and potions from your materials."
+TUT_GUIDE_FORGE,"Forge: craft weapons, armor and potions. New recipes appear as you find their materials."
 TUT_GUIDE_GEAR,Gear Rack: equip what you've crafted. Your weapon sets skills 3 and 4.
 TUT_GUIDE_SHRINE,Skill Shrine: spend skill points to level up and buy hero talents.
 TUT_GUIDE_STASH,Stash: see everything you own.
 TUT_GUIDE_HEROES,Other heroes: walk up to one to see their card and switch.
 UI_OPT_CAMERA,Over-the-shoulder camera (off = isometric)
 HUD_CAMERA_HINT,[%s] Switch camera
+HUD_LOCK_ON,[%s] Lock onto boss
+HUD_LOCK_RELEASE,[%s] Release boss lock

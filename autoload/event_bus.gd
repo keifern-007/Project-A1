@@ -15,6 +15,8 @@ signal boss_spawned(boss: Node)
 signal boss_defeated(boss: Node)
 signal objective_progress(name_key: String, current: int, target: int)
 signal settings_changed
+signal loadout_changed ## A hero's worn gear changed (Gear Rack, or the last potion was used).
 signal screen_shake_requested(trauma: float) ## Use GameFeel.shake(), not this directly.
+signal camera_lock_changed(available: bool, locked: bool) ## A boss can be locked onto / the camera is on it.
 
 @warning_ignore_restore("unused_signal")

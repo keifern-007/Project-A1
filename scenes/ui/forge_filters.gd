@@ -31,7 +31,7 @@ func refresh_materials() -> void:
 	material_filter.add_item(tr("UI_FILTER_ALL_MATERIALS"))
 	material_filter.set_item_metadata(0, &"")
 	var chosen: int = 0
-	for material: MaterialData in filter.materials_in_set(ItemRegistry.all()):
+	for material: MaterialData in filter.materials_in_set(SaveManager.known_recipes()):
 		material_filter.add_item(tr("UI_FILTER_MATERIAL_ROW") % [tr(material.name_key), SaveManager.get_material_count(str(material.id))])
 		var index: int = material_filter.item_count - 1
 		material_filter.set_item_metadata(index, material.id)

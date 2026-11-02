@@ -41,7 +41,7 @@ func _ready() -> void:
 
 func _build_recipe_list() -> void:
 	var last_slot: int = ItemFilter.ALL_SETS
-	for item: ItemData in ItemRegistry.all():
+	for item: ItemData in SaveManager.known_recipes(): # Hidden recipes get no button at all.
 		if item.slot != last_slot:
 			last_slot = item.slot
 			var header: Label = Label.new()

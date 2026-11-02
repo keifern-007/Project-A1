@@ -6,8 +6,8 @@ extends Node
 
 const SAVE_PATH: String = "user://save.json"
 const TEMP_PATH: String = "user://save.json.tmp"
-const SAVE_VERSION: int = 6 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
-## v5: characters, one loadout each. v6: talent trees per character.
+const SAVE_VERSION: int = 7 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
+## v5: characters, one loadout each. v6: talent trees per character. v7: discovered materials (hidden recipes).
 ## v3 tracks levelled from their own XP with this curve; only used to migrate old saves.
 const V3_TRACK_CURVE: Vector2i = Vector2i(30, 20)
 ## Share of a run's rewards kept when the run is LOST. Design decision: keep everything (1.0).
@@ -26,6 +26,7 @@ func new_profile() -> Dictionary:
 		"version": SAVE_VERSION,
 		"currency": 0,
 		"materials": {},
+		"discovered_materials": [], # Every material id ever obtained, even if all of it was spent since.
 		"items": {},
 		"character": "", # Chosen character id; "" = not chosen yet (the first one is used).
 		"loadouts": {}, # character id -> { slot key: item id or "" }
@@ -92,10 +93,16 @@ func add_material(id: String, amount: int) -> void:
 	if amount <= 0:
 		return
 	profile["materials"][id] = get_material_count(id) + amount
+	if not has_discovered_material(id):
+		profile["discovered_materials"].append(id)
 
 
 func get_material_count(id: String) -> int:
 	return int(profile["materials"].get(id, 0))
+
+
+func has_discovered_material(id: String) -> bool:
+	return profile["discovered_materials"].has(id)
 
 
 # --- Crafting --------------------------------------------------------------------------------
@@ -106,6 +113,17 @@ func get_item_count(id: String) -> int:
 
 func has_item(id: String) -> bool:
 	return get_item_count(id) > 0
+
+
+## A recipe stays hidden until all its materials have been obtained at least once. Items you own always show.
+func is_recipe_known(item: ItemData) -> bool:
+	if has_item(str(item.id)):
+		return true
+	return item.cost.all(func(cost: MaterialCost) -> bool: return has_discovered_material(str(cost.material.id)))
+
+
+func known_recipes() -> Array[ItemData]:
+	return ItemRegistry.all().filter(is_recipe_known)
 
 
 ## True if the track for `kind` is high enough for this tier (see Progression.TIER_LEVELS).
@@ -289,12 +307,14 @@ func equip(item: ItemData, slot: int = -1) -> bool:
 		equipped[_slot_key(ItemData.Slot.MAIN_HAND)] = ""
 	equipped[_slot_key(target)] = str(item.id)
 	save_profile()
+	EventBus.loadout_changed.emit()
 	return true
 
 
 func unequip(slot: ItemData.Slot) -> void:
 	_loadout()[_slot_key(slot)] = ""
 	save_profile()
+	EventBus.loadout_changed.emit()
 
 
 ## Uses up one copy of the equipped consumable (saved right away, so quitting mid-run can't
@@ -311,6 +331,7 @@ func consume_equipped() -> bool:
 		for loadout: Dictionary in profile["loadouts"].values():
 			if loadout.get(_slot_key(ItemData.Slot.CONSUMABLE)) == id:
 				loadout[_slot_key(ItemData.Slot.CONSUMABLE)] = ""
+		EventBus.loadout_changed.emit()
 	save_profile()
 	return true
 
@@ -383,6 +404,19 @@ func _migrate(data: Dictionary) -> Dictionary:
 		for id: Variant in merged["items"]:
 			items[str(id)] = int(merged["items"][id])
 	merged["items"] = items
+	var discovered: Array = []
+	for id: Variant in merged["discovered_materials"]:
+		discovered.append(str(id))
+	if version < 7:
+		# Older saves never recorded this. Count what's still held and what owned items were made from.
+		discovered.append_array(materials.keys())
+		for id: String in items:
+			var owned: ItemData = ItemRegistry.get_by_id(id)
+			if owned:
+				for cost: MaterialCost in owned.cost:
+					if not discovered.has(str(cost.material.id)):
+						discovered.append(str(cost.material.id))
+	merged["discovered_materials"] = discovered
 	var stats: Dictionary = new_profile()["stats"]
 	stats.merge(merged["stats"], true)
 	for key: String in stats:

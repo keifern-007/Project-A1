@@ -154,15 +154,22 @@ func _apply_character(data: CharacterData) -> void:
 func _build_model(data: CharacterData) -> void:
 	rig = data.rig.instantiate()
 	visual.add_child(rig)
-	rig.wear_loadout(str(data.id))
 	var animator: HeroAnimator = HeroAnimator.new()
 	animator.name = "HeroAnimator"
 	rig.add_child(animator)
 	animator.setup(rig, self)
 	var trail: MeshInstance3D = melee.swing_visual
 	trail.mesh = SwingArc.make_mesh()
-	trail.set_surface_override_material(0, SwingArc.make_material(rig.trail_color))
 	trail.position = Vector3(0.0, 1.0, 0.0)
+	_show_gear()
+	EventBus.loadout_changed.connect(_show_gear)
+
+
+## Puts the saved gear on the model, right away. Only the look: stats are applied when the hero
+## spawns, and the camp has no combat, so a new loadout's stats count from the next mission.
+func _show_gear() -> void:
+	rig.wear_loadout(str(character.data.id))
+	melee.swing_visual.set_surface_override_material(0, SwingArc.make_material(rig.trail_color))
 
 
 ## Hands this body to the local player, or makes it an NPC. Only controlled bodies are

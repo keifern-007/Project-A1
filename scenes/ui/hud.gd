@@ -37,8 +37,15 @@ var _stamina_warning_left: float = 0.0
 
 func _ready() -> void:
 	objective_label.text = ""
-	camera_hint.text = tr("HUD_CAMERA_HINT") % InputHints.key_for("camera_toggle")
+	_on_camera_lock_changed(false, false)
+	EventBus.camera_lock_changed.connect(_on_camera_lock_changed)
 	EventBus.objective_progress.connect(_on_objective_progress)
+
+
+func _on_camera_lock_changed(available: bool, locked: bool) -> void:
+	camera_hint.text = tr("HUD_CAMERA_HINT") % InputHints.key_for("camera_toggle")
+	if available:
+		camera_hint.text += "\n" + tr("HUD_LOCK_RELEASE" if locked else "HUD_LOCK_ON") % InputHints.key_for("lock_on")
 
 
 func bind_player(player: Player) -> void:

@@ -4,6 +4,7 @@ extends Camera3D
 ## - Isometric: keeps the target centered at whatever angle the camera was placed in the editor.
 ## - Over the shoulder: mouse or right stick looks around, walls push the camera in, the mouse is locked.
 ## Over the shoulder only applies to a Player; anything else (the camp's hero browsing) stays isometric.
+## Over the shoulder also locks onto bosses (see BossLock); the isometric view never turns, so it doesn't.
 ## Also does screen shake (requested through GameFeel.shake, never directly).
 
 @export var target: Node3D
@@ -24,6 +25,9 @@ extends Camera3D
 @export var pitch_down_limit: float = 1.05 ## Radians below level.
 @export var start_pitch: float = -0.22
 @export var follow_rate: float = 18.0
+@export var lock_turn_rate: float = 8.0 ## How quickly a boss lock turns the view. Higher = tighter.
+@export var lock_pitch_bias: float = -0.14 ## Radians. Tilts down a little, so ground telegraphs stay in view.
+@export var lock_pitch_up_limit: float = 0.06 ## A big boss up close never tips the view into the sky.
 
 @export_group("Shake")
 @export var max_shake_offset: float = 0.35 ## World units at full trauma.
@@ -34,6 +38,7 @@ const WORLD_LAYER: int = 1 ## What pushes the camera in. Enemies and heroes neve
 const AIM_LAYERS: int = 1 | 4 ## World and enemy bodies: where the crosshair lands.
 const AIM_RANGE: float = 45.0
 const AIM_MIN_DISTANCE: float = 2.5 ## Closer than this, shooting at the point would turn the hero sideways.
+const LOCK_MIN_DISTANCE: float = 0.6 ## Closer than this, the direction to the boss swings wildly: hold still.
 
 var _offset: Vector3
 var _trauma: float = 0.0
@@ -45,10 +50,13 @@ var _third_person: bool = false
 var _yaw: float = 0.0
 var _pitch: float = 0.0
 var _orbit_point: Vector3 = Vector3.ZERO
+var _lock: BossLock
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS # Must free the mouse when the game pauses. Movement checks for it.
+	_lock = BossLock.new()
+	add_child(_lock)
 	_iso_transform = global_transform
 	# An orthographic view looks the same from further back, and tall scenery near the camera doesn't get sliced.
 	_iso_transform.origin += global_basis.z * ISO_PULL_BACK
@@ -77,6 +85,11 @@ func is_third_person() -> bool:
 ## Over the shoulder: the flat direction from `origin` to where the crosshair lands, so shots go where
 ## you aim even though the hero stands off-center.
 func aim_direction(origin: Vector3) -> Vector3:
+	if _lock.is_active(): # Locked on: every attack goes at the boss.
+		var to_boss: Vector3 = _lock.point() - origin
+		to_boss.y = 0.0
+		if to_boss.length() > 0.1:
+			return to_boss.normalized()
 	var straight: Vector3 = -global_basis.z
 	straight.y = 0.0
 	straight = straight.normalized()
@@ -145,12 +158,27 @@ func _physics_process(delta: float) -> void:
 
 func _follow_over_shoulder(delta: float) -> void:
 	var player: Player = target as Player
-	if player and player.input.enabled:
+	if _lock.is_active():
+		_turn_toward_lock(delta)
+	elif player and player.input.enabled:
 		var stick: Vector2 = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 		_turn(-stick.x * stick_sensitivity * delta, -stick.y * stick_sensitivity * delta)
 	var goal: Vector3 = target.global_position + Vector3.UP * shoulder_height
 	_orbit_point = _orbit_point.lerp(goal, 1.0 - exp(-follow_rate * delta))
 	_place_over_shoulder()
+
+
+# Measured from beside the hero, where the camera sits, so the boss ends up under the crosshair.
+func _turn_toward_lock(delta: float) -> void:
+	var view: Basis = Basis.from_euler(Vector3(_pitch, _yaw, 0.0), EULER_ORDER_YXZ)
+	var to_boss: Vector3 = _lock.point() - (_orbit_point + view.x * shoulder_offset)
+	var flat: float = Vector2(to_boss.x, to_boss.z).length()
+	if flat < LOCK_MIN_DISTANCE:
+		return
+	var weight: float = 1.0 - exp(-lock_turn_rate * delta)
+	_yaw = lerp_angle(_yaw, atan2(-to_boss.x, -to_boss.z), weight)
+	var goal_pitch: float = clampf(atan2(to_boss.y, flat) + lock_pitch_bias, -pitch_down_limit, lock_pitch_up_limit)
+	_pitch = lerpf(_pitch, goal_pitch, weight)
 
 
 func _place_over_shoulder() -> void:
@@ -177,7 +205,7 @@ func _turn(yaw_change: float, pitch_change: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not _third_person or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if not _third_person or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED or _lock.is_active():
 		return
 	var motion: InputEventMouseMotion = event as InputEventMouseMotion
 	if motion:
@@ -187,6 +215,7 @@ func _input(event: InputEvent) -> void:
 # Shake runs on the real clock, so hit stop (Engine.time_scale) doesn't freeze or distort it.
 func _process(_delta: float) -> void:
 	_update_mouse()
+	_lock.update(_is_playing())
 	var now: int = Time.get_ticks_usec()
 	var real_delta: float = minf((now - _last_shake_usec) / 1_000_000.0, 0.1)
 	_last_shake_usec = now
@@ -204,10 +233,13 @@ func _on_shake_requested(trauma: float) -> void:
 ## The mouse is locked only while actually playing over the shoulder. Any menu, pause, the results
 ## screen or death disables the hero's input or pauses the tree, and that frees it.
 func _update_mouse() -> void:
-	var playing: bool = _third_person and not get_tree().paused
-	if playing:
-		var player: Player = target as Player
-		playing = player != null and player.is_node_ready() and player.input.enabled and player.is_alive()
-	var wanted: Input.MouseMode = Input.MOUSE_MODE_CAPTURED if playing else Input.MOUSE_MODE_VISIBLE
+	var wanted: Input.MouseMode = Input.MOUSE_MODE_CAPTURED if _is_playing() else Input.MOUSE_MODE_VISIBLE
 	if Input.mouse_mode != wanted:
 		Input.mouse_mode = wanted
+
+
+func _is_playing() -> bool:
+	if not _third_person or get_tree().paused:
+		return false
+	var player: Player = target as Player
+	return player != null and player.is_node_ready() and player.input.enabled and player.is_alive()
