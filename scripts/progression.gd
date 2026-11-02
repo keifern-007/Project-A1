@@ -15,6 +15,9 @@ const MAX_LEVEL: int = 100 ## For Rank and for every track.
 const RANK_CURVE: Vector2i = Vector2i(100, 50)
 const SKILL_POINTS_PER_RANK: int = 3
 const TRACK_LEVEL_COST: int = 1 ## Skill points per track level.
+const HERO_SKILL_COST: int = 3 ## Skill points to unlock a skill from a hero's own pool.
+const SHARED_SKILL_COST: int = 2 ## Skill points to unlock a skill from the shared pool, per hero.
+const UNARMED_TYPE: StringName = &"fists" ## The weapon type of an empty main hand.
 
 const GATHER_XP_PER_ITEM: int = 5
 const CRAFT_XP_PER_TIER: int = 25

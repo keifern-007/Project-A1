@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"shield_bash"
 name_key = "SKILL_SHIELD_BASH"
 anim = &"lunge"
 cooldown = 5.0

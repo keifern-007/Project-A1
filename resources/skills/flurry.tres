@@ -5,6 +5,8 @@
 
 [resource]
 script = ExtResource("1_data")
+weapon_types = Array[StringName]([&"dagger"])
+id = &"flurry"
 name_key = "SKILL_FLURRY"
 anim = &"stab"
 cooldown = 4.0

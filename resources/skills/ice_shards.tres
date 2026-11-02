@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"ice_shards"
 name_key = "SKILL_ICE_SHARDS"
 anim = &"cast"
 cooldown = 6.0

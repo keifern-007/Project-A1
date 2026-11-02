@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"fire_bolt"
 name_key = "SKILL_FIRE_BOLT"
 anim = &"cast"
 cooldown = 5.0

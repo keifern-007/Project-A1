@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"blink"
 name_key = "SKILL_BLINK"
 anim = &"raise"
 cooldown = 6.0

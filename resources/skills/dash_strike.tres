@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"dash_strike"
 name_key = "SKILL_DASH_STRIKE"
 anim = &"lunge"
 cooldown = 6.0

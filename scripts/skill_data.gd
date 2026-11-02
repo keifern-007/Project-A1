@@ -7,7 +7,12 @@ extends Resource
 
 enum Kind { PHYSICAL, MAGIC }
 
+@export var id: StringName = &"" ## Save-file key. Never change it once players have saves.
 @export var name_key: String = "" ## Translation key, e.g. "SKILL_GROUND_SLAM".
+@export var shared: bool = false ## In the pool every hero can pick from on keys 1-2.
+## Weapon types offering this as a base skill on keys 3-4, e.g. &"axe". Leave elemental skills empty:
+## they come only from the weapons listing them in ItemData.skills.
+@export var weapon_types: Array[StringName] = []
 @export var cooldown: float = 5.0
 @export var damage_multiplier: float = 1.0 ## × the caster's attack_power.
 @export var kind: Kind = Kind.PHYSICAL

@@ -10,7 +10,8 @@ extends Resource
 @export var description_key: String = "" ## Playstyle, strengths and weaknesses in words.
 @export var sort_order: int = 0 ## Left-to-right on the select screen.
 @export var passive: PassiveData ## Always on. Run by the player's PassiveComponent.
-@export var signature_skills: Array[SkillData] = [] ## Keys 1-2.
+@export var signature_skills: Array[SkillData] = [] ## Keys 1-2 by default, and free.
+@export var skill_pool: Array[SkillData] = [] ## More skills only this hero can unlock for keys 1-2.
 ## Empty = melee swing. Set (e.g. Magic Bolt) = the attack button casts this skill instead.
 @export var basic_attack: SkillData
 ## This hero's talent tree (bought at the Skill Shrine). See TalentData.

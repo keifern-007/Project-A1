@@ -6,9 +6,9 @@ extends Node
 
 const SAVE_PATH: String = "user://save.json"
 const TEMP_PATH: String = "user://save.json.tmp"
-const SAVE_VERSION: int = 8 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
+const SAVE_VERSION: int = 9 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
 ## v5: characters, one loadout each. v6: talent trees per character. v7: discovered materials (hidden recipes).
-## v8: the Consumable slot becomes an Inventory per character.
+## v8: the Consumable slot becomes an Inventory per character. v9: unlocked and chosen skills per character.
 const PACK_SLOTS: int = 6 ## Stacks a hero can carry on a mission.
 ## v3 tracks levelled from their own XP with this curve; only used to migrate old saves.
 const V3_TRACK_CURVE: Vector2i = Vector2i(30, 20)
@@ -34,6 +34,7 @@ func new_profile() -> Dictionary:
 		"loadouts": {}, # character id -> { slot key: item id or "" }
 		"packs": {}, # character id -> PACK_SLOTS entries: { "id": item id, "count": n }, or {} = empty.
 		"talents": {}, # character id -> [talent id, ...]
+		"skills": {}, # character id -> unlocked and chosen skills. Missing = the defaults. See SkillChoices.
 		"unlocks": [],
 		"skill_points": 0,
 		"track_levels": {}, # track key -> level; missing = level 1.
@@ -322,6 +323,56 @@ func unequip(slot: ItemData.Slot) -> void:
 	EventBus.loadout_changed.emit()
 
 
+# --- Skills (per character; the rules live in SkillChoices) -----------------------------------
+
+## This character's entry. Reading never creates one, so unchanged heroes stay on the defaults.
+func skill_entry(character: CharacterData) -> Dictionary:
+	return profile["skills"].get(str(character.id), SkillChoices.empty_entry())
+
+
+## Why this can't be unlocked: &"owned", &"not_in_pool", &"no_points". &"" = it can.
+func skill_unlock_block(character: CharacterData, skill: SkillData) -> StringName:
+	if SkillChoices.is_unlocked(skill_entry(character), character, skill):
+		return &"owned"
+	if not SkillChoices.in_hero_pool(character, skill):
+		return &"not_in_pool"
+	if get_skill_points() < SkillChoices.unlock_cost(skill):
+		return &"no_points"
+	return &""
+
+
+## Spends the points, saves. Returns false (and changes nothing) if not allowed.
+func unlock_skill(character: CharacterData, skill: SkillData) -> bool:
+	if skill_unlock_block(character, skill) != &"":
+		return false
+	profile["skill_points"] = get_skill_points() - SkillChoices.unlock_cost(skill)
+	_writable_skill_entry(character)["unlocked"].append(str(skill.id))
+	save_profile()
+	return true
+
+
+## Puts two skills on keys 1-2, saves. Returns false (and changes nothing) if not allowed.
+func set_hero_keys(character: CharacterData, first: SkillData, second: SkillData) -> bool:
+	if SkillChoices.hero_keys_block(skill_entry(character), character, first, second) != &"":
+		return false
+	_writable_skill_entry(character)["hero_keys"] = [str(first.id), str(second.id)]
+	save_profile()
+	return true
+
+
+## Puts two skills on keys 3-4 for this weapon's type (null = unarmed), saves. Returns false if not allowed.
+func set_weapon_keys(character: CharacterData, weapon: ItemData, first: SkillData, second: SkillData) -> bool:
+	if SkillChoices.weapon_keys_block(weapon, first, second) != &"":
+		return false
+	_writable_skill_entry(character)["weapon_keys"][SkillChoices.weapon_type(weapon)] = [str(first.id), str(second.id)]
+	save_profile()
+	return true
+
+
+func _writable_skill_entry(character: CharacterData) -> Dictionary:
+	return profile["skills"].get_or_add(str(character.id), SkillChoices.empty_entry())
+
+
 # --- Inventory (per character; potions carried on missions) ----------------------------------
 
 ## This character's PACK_SLOTS entries: { "id": item id, "count": n }, or {} = empty.
@@ -507,6 +558,11 @@ func _migrate(data: Dictionary) -> Dictionary:
 			list.append(str(talent_id))
 		talents[str(id)] = list
 	merged["talents"] = talents
+	var skills: Dictionary = {}
+	for character: CharacterData in CharacterRegistry.all():
+		if merged["skills"].has(str(character.id)):
+			skills[str(character.id)] = SkillChoices.clean_entry(merged["skills"][str(character.id)], character)
+	merged["skills"] = skills
 	merged["character"] = str(merged["character"])
 	var saved_packs: Dictionary = merged["packs"]
 	if version < 8:

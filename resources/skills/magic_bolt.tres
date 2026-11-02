@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"magic_bolt"
 name_key = "SKILL_MAGIC_BOLT"
 cooldown = 0.3
 damage_multiplier = 1.0

@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"whirlwind"
 name_key = "SKILL_WHIRLWIND"
 anim = &"spin"
 cooldown = 8.0

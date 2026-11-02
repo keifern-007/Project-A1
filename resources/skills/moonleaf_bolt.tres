@@ -5,6 +5,8 @@
 
 [resource]
 script = ExtResource("1_data")
+weapon_types = Array[StringName]([&"wand"])
+id = &"moonleaf_bolt"
 name_key = "SKILL_MOONLEAF_BOLT"
 anim = &"cast"
 cooldown = 5.0

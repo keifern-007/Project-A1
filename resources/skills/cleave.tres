@@ -5,6 +5,8 @@
 
 [resource]
 script = ExtResource("1_data")
+weapon_types = Array[StringName]([&"axe"])
+id = &"cleave"
 name_key = "SKILL_CLEAVE"
 anim = &"slash"
 cooldown = 7.0
