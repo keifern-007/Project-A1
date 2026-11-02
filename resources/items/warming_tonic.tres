@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/item_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="2_cost"]
+[ext_resource type="Script" path="res://scripts/booster_data.gd" id="3_booster"]
+[ext_resource type="Resource" path="res://resources/hazards/deep_cold.tres" id="4_hazard"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="5_mat"]
+
+[sub_resource type="Resource" id="Effect"]
+script = ExtResource("3_booster")
+name_key = "ITEM_WARMING_TONIC"
+effect = 3
+value = 0.0
+duration = 45.0
+ward = ExtResource("4_hazard")
+
+[sub_resource type="Resource" id="Cost1"]
+script = ExtResource("2_cost")
+material = ExtResource("5_mat")
+amount = 3
+
+[resource]
+script = ExtResource("1_item")
+id = &"warming_tonic"
+name_key = "ITEM_WARMING_TONIC"
+description_key = "ITEM_WARMING_TONIC_DESC"
+slot = 7
+tier = 1
+category = &"potion"
+color = Color(0.95, 0.55, 0.2, 1)
+use_effect = SubResource("Effect")
+use_cooldown = 15.0
+stack_size = 2
+cost = Array[ExtResource("2_cost")]([SubResource("Cost1")])

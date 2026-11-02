@@ -66,6 +66,7 @@ func _on_damaged(amount: int) -> void:
 func _seal() -> void:
 	_seals_done += 1
 	_sealed = true
+	cancel_stagger()
 	for move: BossMove in _moves:
 		move.cancel()
 	_change_state(State.RECOVER)

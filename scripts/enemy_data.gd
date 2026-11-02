@@ -18,6 +18,13 @@ extends Resource
 @export var ice_multiplier: float = 1.0
 @export var poison_multiplier: float = 1.0
 @export var can_be_frozen: bool = true
+## Hits of this element heal it instead of hurting (bosses: bring the right element). PHYSICAL = none.
+@export var absorbs: Element.Type = Element.Type.PHYSICAL
+@export var absorb_fraction: float = 0.5 ## HP healed, as a share of the absorbed hit's damage.
+## Bosses: damage from elements it's weak to fills a gauge. Full (this share of max HP) = staggered. 0 = never.
+@export var stagger_threshold: float = 0.0
+@export var stagger_time: float = 3.0 ## Seconds it stands stunned, after finishing any attack in progress.
+@export var stagger_damage_multiplier: float = 1.5 ## Damage it takes while staggered.
 
 @export_group("Behaviour")
 @export var detection_range: float = 10.0 ## Starts chasing when a player gets this close.

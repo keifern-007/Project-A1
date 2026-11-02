@@ -17,6 +17,7 @@ amount = 3
 
 [resource]
 script = ExtResource("1_item")
+armor_weight = 0.1
 id = &"moonleaf_vest"
 name_key = "ITEM_MOONLEAF_VEST"
 description_key = "ITEM_MOONLEAF_VEST_DESC"

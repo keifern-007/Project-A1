@@ -17,6 +17,7 @@ amount = 4
 
 [resource]
 script = ExtResource("1_data")
+armor_weight = 0.05
 id = &"sun_eaten_crown"
 name_key = "ITEM_SUN_EATEN_CROWN"
 description_key = "ITEM_SUN_EATEN_CROWN_DESC"

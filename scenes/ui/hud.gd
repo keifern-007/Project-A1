@@ -9,6 +9,7 @@ const SKILL_SLOT_SCENE: PackedScene = preload("res://scenes/ui/skill_slot.tscn")
 var _skill_caster: SkillCasterComponent
 var _boosters: BoosterComponent
 var _passives: PassiveComponent
+var _hazards: HazardComponent
 var _slots: Array[SkillSlot] = []
 var _consumables: ConsumableComponent
 var _consumable_slot: SkillSlot
@@ -64,6 +65,7 @@ func bind_player(player: Player) -> void:
 	_on_xp_changed(player.level.xp, player.level.xp_to_next(), player.level.level)
 	_boosters = player.boosters
 	_passives = player.passives
+	_hazards = player.hazards
 
 	_skill_caster = player.skill_caster
 	for child: Node in skill_row.get_children():
@@ -81,7 +83,6 @@ func bind_player(player: Player) -> void:
 	if _consumables.item:
 		_consumable_slot = SKILL_SLOT_SCENE.instantiate()
 		skill_row.add_child(_consumable_slot)
-		_consumable_slot.setup("", "use_consumable", _consumables.item.use_cooldown)
 		_consumables.changed.connect(_on_consumables_changed)
 		_on_consumables_changed()
 
@@ -97,6 +98,8 @@ func _process(delta: float) -> void:
 		lines.append(tr("HUD_BOOST") % [tr(_boosters.active_boost.name_key), ceili(_boosters.time_left)])
 	if _passives and _passives.status_text() != "":
 		lines.append(_passives.status_text())
+	if _hazards and _hazards.status_text() != "":
+		lines.append(_hazards.status_text())
 	boost_label.text = "\n".join(lines)
 	if _skill_caster:
 		for i: int in _slots.size():
@@ -105,16 +108,20 @@ func _process(delta: float) -> void:
 		if cast_bar.visible:
 			cast_bar.value = _skill_caster.cast_progress()
 			cast_label.text = tr("HUD_CASTING") % tr(_skill_caster.casting_skill().name_key)
-	if _consumable_slot and _consumables.get_count() > 0:
+	if _consumable_slot and _consumables.item:
 		_consumable_slot.update_cooldown(_consumables.cooldown_left)
 
 
-## "Moonleaf Draught x3"; at zero it stays visible, dimmed and marked "Empty".
+## The selected stack: "Moonleaf Draught x3", with the 'next' key if there's another stack.
+## With nothing left it stays visible, dimmed and marked "Empty".
 func _on_consumables_changed() -> void:
-	var count: int = _consumables.get_count()
-	_consumable_slot.set_title("%s %s" % [tr(_consumables.item.name_key), tr("UI_COUNT_TAG") % count])
-	if count == 0:
+	var next: String = tr("HUD_NEXT_ITEM") % InputHints.key_for("cycle_consumable") if _consumables.can_cycle() else ""
+	_consumable_slot.setup("", "use_consumable", _consumables.cooldown_total, next)
+	if _consumables.item == null:
+		_consumable_slot.set_title(tr("UI_INVENTORY"))
 		_consumable_slot.show_empty()
+		return
+	_consumable_slot.set_title("%s %s" % [tr(_consumables.item.name_key), tr("UI_COUNT_TAG") % _consumables.get_count()])
 
 
 ## "25 MP" / "30 ST"; "" for free skills.

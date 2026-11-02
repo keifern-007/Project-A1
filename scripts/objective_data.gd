@@ -32,6 +32,8 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL }
 @export var kills_before_boss: int = 8 ## 0 = boss appears immediately.
 @export var boss_drop: MaterialData ## Boss-exclusive reward.
 @export var boss_drop_amount: int = 1
+@export var scout_boss: EnemyData ## What the Mission Board's scouting report describes. Empty = no report.
+@export var hazard: HazardData ## Lasting danger once the boss appears. Empty = none.
 
 
 func available_on(map: MapData) -> bool:

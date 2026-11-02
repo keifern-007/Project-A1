@@ -25,7 +25,8 @@ extends Resource
 @export var max_stamina: float = 100.0 ## Spent by physical skills, basic attacks and dodging.
 @export var stamina_regen: float = 15.0 ## Per second.
 @export var attack_stamina_cost: float = 6.0 ## Per basic attack (melee swing or e.g. Magic Bolt).
-@export var dodge_stamina_cost: float = 20.0 ## Per dodge roll.
+@export var dodges_per_bar: float = 6.0 ## Dodge rolls a full bar pays for with no armor. Armor weight lowers it.
+@export var stamina_regen_pause: float = 0.9 ## Seconds after spending stamina before it refills.
 @export var max_mana: float = 40.0 ## Spent by magic skills.
 @export var mana_regen: float = 2.0 ## Per second: slow on purpose, kills are the main source.
 @export var mana_per_kill: float = 6.0

@@ -11,6 +11,9 @@ extends Node3D
 @export var knockback: float = 10.0
 @export var element: Element.Type = Element.Type.PHYSICAL
 @export var shake: float = 0.4 ## Screen shake on strike (GameFeel respects the settings).
+## Cancels the hero's attack and always knocks them back. Off for rapid ticks like a breath,
+## which would otherwise lock the hero out of attacking.
+@export var interrupts: bool = true
 
 @export_group("Timing")
 @export var windup: float = 1.0 ## Telegraph time. Phase two shortens every timer.
@@ -82,6 +85,7 @@ func _prepare_hitbox(hitbox: HitboxComponent) -> void:
 	hitbox.damage = damage
 	hitbox.knockback = knockback
 	hitbox.element = element
+	hitbox.interrupts = interrupts
 	hitbox.active = false
 
 

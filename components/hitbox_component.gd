@@ -9,6 +9,8 @@ extends Area3D
 @export var element: Element.Type = Element.Type.PHYSICAL
 ## Heavy hits (big weapons) knock guards aside, e.g. a Shieldback's shield.
 @export var guard_break: bool = false
+## A boss's blow: cancels the hero's wind-up (no refund) and always knocks them back. Set by boss moves.
+@export var interrupts: bool = false
 ## Turn on only during an attack's active frames. Traps just leave it on.
 @export var active: bool = true:
 	set(value):

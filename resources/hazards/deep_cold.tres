@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="HazardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/hazard_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "HAZARD_DEEP_COLD"
+effect_key = "HAZARD_DEEP_COLD_EFFECT"
+kind = 0
+counter_item_id = "warming_tonic"
+stamina_regen_scale = 0.4

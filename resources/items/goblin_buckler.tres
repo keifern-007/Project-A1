@@ -17,6 +17,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_item")
+armor_weight = 0.1
 id = &"goblin_buckler"
 name_key = "ITEM_GOBLIN_BUCKLER"
 description_key = "ITEM_GOBLIN_BUCKLER_DESC"

@@ -133,7 +133,7 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="DetailsScroll" type="ScrollContainer" parent="Margin/VBox"]
-custom_minimum_size = Vector2(0, 130)
+custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 horizontal_scroll_mode = 0
 

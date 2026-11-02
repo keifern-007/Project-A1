@@ -24,6 +24,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_data")
+stack_size = 2
 id = &"ogre_blood"
 name_key = "ITEM_OGRE_BLOOD"
 description_key = "ITEM_OGRE_BLOOD_DESC"

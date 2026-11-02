@@ -10,6 +10,7 @@ signal boost_ended
 @export var health: HealthComponent
 @export var mana: MeterComponent ## Optional: for mana potions.
 
+var hazards: HazardComponent ## Optional, set by the Player: for potions that counter a boss hazard.
 var active_boost: BoosterData = null
 var time_left: float = 0.0
 
@@ -26,6 +27,9 @@ func apply(booster: BoosterData) -> void:
 			time_left = booster.duration
 			stats.set_damage_modifier(&"booster", 1.0 + booster.value)
 			boost_started.emit(booster)
+		BoosterData.Effect.HAZARD_WARD:
+			if hazards:
+				hazards.ward(booster.ward, booster.duration)
 
 
 func _physics_process(delta: float) -> void:

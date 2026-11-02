@@ -40,6 +40,11 @@ func _physics_process(delta: float) -> void:
 
 
 func _take_hit(hitbox: HitboxComponent) -> void:
+	if status and status.absorbs(hitbox.element): # The wrong element heals instead of hurting.
+		_cooldown_left = hit_cooldown
+		health.heal(status.absorbed_healing(hitbox.damage))
+		hurt.emit(0, hitbox)
+		return
 	var defense: int = stats.defense if stats else 0
 	var element_scale: float = status.element_multiplier(hitbox.element) if status else 1.0
 	var guard_scale: float = hit_modifier.call(hitbox) if hit_modifier.is_valid() else 1.0

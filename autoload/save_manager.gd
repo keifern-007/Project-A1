@@ -6,8 +6,10 @@ extends Node
 
 const SAVE_PATH: String = "user://save.json"
 const TEMP_PATH: String = "user://save.json.tmp"
-const SAVE_VERSION: int = 7 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
+const SAVE_VERSION: int = 8 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
 ## v5: characters, one loadout each. v6: talent trees per character. v7: discovered materials (hidden recipes).
+## v8: the Consumable slot becomes an Inventory per character.
+const PACK_SLOTS: int = 6 ## Stacks a hero can carry on a mission.
 ## v3 tracks levelled from their own XP with this curve; only used to migrate old saves.
 const V3_TRACK_CURVE: Vector2i = Vector2i(30, 20)
 ## Share of a run's rewards kept when the run is LOST. Design decision: keep everything (1.0).
@@ -30,6 +32,7 @@ func new_profile() -> Dictionary:
 		"items": {},
 		"character": "", # Chosen character id; "" = not chosen yet (the first one is used).
 		"loadouts": {}, # character id -> { slot key: item id or "" }
+		"packs": {}, # character id -> PACK_SLOTS entries: { "id": item id, "count": n }, or {} = empty.
 		"talents": {}, # character id -> [talent id, ...]
 		"unlocks": [],
 		"skill_points": 0,
@@ -264,7 +267,7 @@ func select_character(character: CharacterData) -> void:
 # --- Loadout (per character; character_id "" = the chosen character) -------------------------
 
 func get_equipped(slot: ItemData.Slot, character_id: String = "") -> ItemData:
-	var id: String = _loadout(character_id)[_slot_key(slot)]
+	var id: String = str(_loadout(character_id).get(_slot_key(slot), ""))
 	return ItemRegistry.get_by_id(id) if id != "" else null
 
 
@@ -296,6 +299,8 @@ func equip(item: ItemData, slot: int = -1) -> bool:
 	var target: ItemData.Slot = item.slot if slot < 0 else slot as ItemData.Slot
 	if not has_item(str(item.id)) or not item.can_go_in(target) or not can_use_tier(item):
 		return false
+	if target == ItemData.Slot.CONSUMABLE: # Potions go in the Inventory, not the loadout.
+		return false
 	var equipped: Dictionary = _loadout()
 	if equipped.values().count(str(item.id)) >= get_item_count(str(item.id)):
 		for key: String in equipped:
@@ -317,23 +322,86 @@ func unequip(slot: ItemData.Slot) -> void:
 	EventBus.loadout_changed.emit()
 
 
-## Uses up one copy of the equipped consumable (saved right away, so quitting mid-run can't
-## refund it). When the last copy is gone, every character's loadout lets go of it.
-## Returns false if there's none.
-func consume_equipped() -> bool:
-	var item: ItemData = get_equipped(ItemData.Slot.CONSUMABLE)
-	if item == null or not has_item(str(item.id)):
+# --- Inventory (per character; potions carried on missions) ----------------------------------
+
+## This character's PACK_SLOTS entries: { "id": item id, "count": n }, or {} = empty.
+func get_pack(character_id: String = "") -> Array:
+	var id: String = character_id if character_id != "" else str(get_character().id)
+	if not profile["packs"].has(id):
+		profile["packs"][id] = _clean_pack([], {})
+	return profile["packs"][id]
+
+
+## Copies of a potion that no hero is carrying, so they're still in camp.
+func pack_available(item_id: String) -> int:
+	var carried: int = 0
+	for pack: Array in profile["packs"].values():
+		for entry: Dictionary in pack:
+			if entry.get("id", "") == item_id:
+				carried += int(entry["count"])
+	return get_item_count(item_id) - carried
+
+
+## Fills one slot (count 0 or id "" empties it) and saves. Refused if it's over the stack size
+## or more copies than are free. Returns true if it changed.
+func set_pack_slot(index: int, item_id: String, count: int, character_id: String = "") -> bool:
+	var pack: Array = get_pack(character_id)
+	if item_id == "" or count <= 0:
+		pack[index] = {}
+	else:
+		var item: ItemData = ItemRegistry.get_by_id(item_id)
+		var already_here: int = int(pack[index].get("count", 0)) if pack[index].get("id", "") == item_id else 0
+		if item == null or count > item.stack_size or count > pack_available(item_id) + already_here:
+			return false
+		pack[index] = { "id": item_id, "count": count }
+	save_profile()
+	EventBus.loadout_changed.emit()
+	return true
+
+
+## Uses up one copy from a slot (saved right away, so quitting mid-run can't refund it).
+## Returns false if the slot is empty.
+func use_pack_slot(index: int, character_id: String = "") -> bool:
+	var pack: Array = get_pack(character_id)
+	var entry: Dictionary = pack[index]
+	if entry.is_empty():
 		return false
-	var id: String = str(item.id)
+	var id: String = str(entry["id"])
 	profile["items"][id] = get_item_count(id) - 1
 	if profile["items"][id] <= 0:
 		profile["items"].erase(id)
-		for loadout: Dictionary in profile["loadouts"].values():
-			if loadout.get(_slot_key(ItemData.Slot.CONSUMABLE)) == id:
-				loadout[_slot_key(ItemData.Slot.CONSUMABLE)] = ""
-		EventBus.loadout_changed.emit()
+	entry["count"] = int(entry["count"]) - 1
+	if entry["count"] <= 0:
+		pack[index] = {}
+		EventBus.loadout_changed.emit() # The hip potion may change.
 	save_profile()
 	return true
+
+
+## What this hero's model carries at the hip: the first stack. null = none.
+func first_pack_item(character_id: String = "") -> ItemData:
+	for entry: Dictionary in get_pack(character_id):
+		if not entry.is_empty():
+			return ItemRegistry.get_by_id(str(entry["id"]))
+	return null
+
+
+## Exactly PACK_SLOTS valid entries. `budget` (item id -> copies not yet carried) keeps every hero's
+## total within what's owned; it's spent as stacks are accepted. Item data can change between versions.
+func _clean_pack(saved: Array, budget: Dictionary) -> Array:
+	var pack: Array = []
+	for i: int in PACK_SLOTS:
+		var entry: Dictionary = {}
+		if i < saved.size() and saved[i] is Dictionary and not (saved[i] as Dictionary).is_empty():
+			var id: String = str(saved[i].get("id", ""))
+			var item: ItemData = ItemRegistry.get_by_id(id)
+			if item and item.slot == ItemData.Slot.CONSUMABLE:
+				var count: int = mini(mini(int(saved[i].get("count", 0)), item.stack_size), int(budget.get(id, 0)))
+				if count > 0:
+					entry = { "id": id, "count": count }
+					budget[id] = int(budget[id]) - count
+		pack.append(entry)
+	return pack
 
 
 ## A character's { slot key: item id } ("" = the chosen character), created empty the first time.
@@ -347,7 +415,8 @@ func _loadout(character_id: String = "") -> Dictionary:
 func _empty_loadout() -> Dictionary:
 	var loadout: Dictionary = {}
 	for slot: ItemData.Slot in ItemData.Slot.values():
-		loadout[_slot_key(slot)] = ""
+		if slot != ItemData.Slot.CONSUMABLE: # Potions live in the Inventory.
+			loadout[_slot_key(slot)] = ""
 	return loadout
 
 
@@ -439,6 +508,19 @@ func _migrate(data: Dictionary) -> Dictionary:
 		talents[str(id)] = list
 	merged["talents"] = talents
 	merged["character"] = str(merged["character"])
+	var saved_packs: Dictionary = merged["packs"]
+	if version < 8:
+		# The old Consumable slot becomes that hero's first stack. Spare copies stay in camp.
+		saved_packs = {}
+		for id: Variant in loadouts:
+			var potion: String = str(loadouts[id].get("consumable", ""))
+			if potion != "":
+				saved_packs[str(id)] = [{ "id": potion, "count": items.get(potion, 0) }]
+	var budget: Dictionary = items.duplicate()
+	var packs: Dictionary = {}
+	for id: Variant in saved_packs:
+		packs[str(id)] = _clean_pack(saved_packs[id], budget)
+	merged["packs"] = packs
 	var cleaned: Dictionary = {}
 	for id: Variant in loadouts:
 		cleaned[str(id)] = _clean_equipped(loadouts[id], items)
@@ -451,8 +533,8 @@ func _migrate(data: Dictionary) -> Dictionary:
 ## (item data and rules can change between versions).
 func _clean_equipped(saved: Dictionary, owned: Dictionary) -> Dictionary:
 	var equipped: Dictionary = _empty_loadout()
-	for slot: ItemData.Slot in ItemData.Slot.values():
-		var key: String = _slot_key(slot)
+	for key: String in equipped:
+		var slot: ItemData.Slot = ItemData.Slot[key.to_upper()]
 		var id: String = str(saved.get(key, ""))
 		var item: ItemData = ItemRegistry.get_by_id(id) if owned.has(id) else null
 		if item and item.can_go_in(slot) and can_use_tier(item):

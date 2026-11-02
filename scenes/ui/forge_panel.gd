@@ -155,12 +155,15 @@ func _stat_lines(item: ItemData) -> Array[String]:
 		if value != 0:
 			var color: String = GOOD_COLOR if value > 0 else BAD_COLOR
 			lines.append("[color=%s]%+d %s[/color]" % [color, value, tr(stat[1])])
+	if item.armor_weight > 0.0:
+		lines.append(item.armor_weight_text())
 	if not item.skills.is_empty():
 		lines.append(item.skills_text())
 		lines.append(item.weight_text())
 	if item.use_effect:
 		lines.append(item.use_effect.describe())
 		lines.append(tr("UI_USE_COOLDOWN") % roundi(item.use_cooldown))
+		lines.append(tr("UI_STACK_SIZE") % item.stack_size)
 	return lines
 
 

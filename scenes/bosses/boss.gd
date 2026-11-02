@@ -8,8 +8,11 @@ extends CharacterBody3D
 ## and phase_two_scene (e.g. a thicker blizzard) is added to the arena.
 ## Scene needs: StatsComponent, HealthComponent, HurtboxComponent, StatusEffectComponent,
 ## CollisionShape3D, Visual, Animator (a BossAnimator), Moves (BossMove children); StunLabel optional.
+## Hits from elements it's weak to fill a stagger gauge. When full, it's stunned and takes extra damage,
+## but only after finishing any attack in progress: players can't interrupt a boss's attack (team rule).
 
 signal phase_changed(phase: int)
+signal stagger_changed(fraction: float, staggered: bool) ## The boss bar shows this in words.
 
 enum State { INTRO, CHASE, WINDUP, ACTIVE, RECOVER, DEAD }
 
@@ -34,6 +37,9 @@ var _state_time: float = 0.0
 var _move: BossMove
 var _moves: Array[BossMove] = []
 var _extra_recovery: float = 0.0
+var _stagger_built: float = 0.0
+var _stagger_pending: bool = false
+var _stagger_left: float = 0.0
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var stats: StatsComponent = $StatsComponent
@@ -64,7 +70,7 @@ func _ready() -> void:
 		stun_label.visible = false
 	health.damaged.connect(_on_damaged)
 	health.died.connect(_on_died)
-	hurtbox.hurt.connect(func(_amount: int, _hitbox: HitboxComponent) -> void: GameFeel.hit_stop(get_tree(), HIT_STOP))
+	hurtbox.hurt.connect(_on_hurt)
 	animator.roar(intro_time)
 	get_tree().create_timer(intro_time * 0.35).timeout.connect(func() -> void: GameFeel.shake(0.8))
 	EventBus.boss_spawned.emit(self)
@@ -72,6 +78,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
+		return
+	if _stagger_pending and (state == State.CHASE or state == State.RECOVER):
+		_start_stagger()
+	if _stagger_left > 0.0:
+		_process_stagger(delta)
 		return
 	_state_time += delta * speed_scale
 	var move_drives_velocity: bool = false
@@ -111,6 +122,58 @@ func crash(stun_time: float) -> void:
 		stun_label.visible = true
 	GameFeel.shake(0.6)
 	_end_active()
+
+
+## Drops a stagger in progress or waiting to start (the King's seal, death). The gauge stays.
+func cancel_stagger() -> void:
+	_stagger_pending = false
+	if _stagger_left > 0.0:
+		_stagger_left = 0.0
+		hurtbox.damage_taken_multiplier /= data.stagger_damage_multiplier
+		if stun_label:
+			stun_label.text = tr("STATUS_STUNNED")
+			stun_label.visible = false
+		stagger_changed.emit(0.0, false)
+
+
+func _on_hurt(amount: int, hitbox: HitboxComponent) -> void:
+	GameFeel.hit_stop(get_tree(), HIT_STOP)
+	if data == null or data.stagger_threshold <= 0.0 or data.element_multiplier(hitbox.element) <= 1.0:
+		return
+	if _stagger_pending or _stagger_left > 0.0:
+		return
+	_stagger_built += amount
+	var fraction: float = _stagger_built / (health.max_health * data.stagger_threshold)
+	if fraction >= 1.0:
+		_stagger_built = 0.0
+		_stagger_pending = true
+		fraction = 1.0
+	stagger_changed.emit(fraction, false)
+
+
+func _start_stagger() -> void:
+	_stagger_pending = false
+	_stagger_left = data.stagger_time
+	hurtbox.damage_taken_multiplier *= data.stagger_damage_multiplier
+	if stun_label:
+		stun_label.text = tr("STATUS_STAGGERED")
+		stun_label.visible = true
+	GameFeel.shake(0.6)
+	animator.recover(data.stagger_time)
+	stagger_changed.emit(0.0, true)
+
+
+func _process_stagger(delta: float) -> void:
+	_stagger_left -= delta
+	velocity.x = 0.0
+	velocity.z = 0.0
+	if not is_on_floor():
+		velocity.y -= _gravity * delta
+	move_and_slide()
+	if _stagger_left <= 0.0:
+		_stagger_left = 0.001 # cancel_stagger undoes the bonus damage only while one is running.
+		cancel_stagger()
+		_change_state(State.CHASE)
 
 
 func forward() -> Vector3:
@@ -211,6 +274,7 @@ func _on_damaged(_amount: int) -> void:
 
 
 func _on_died() -> void:
+	cancel_stagger()
 	_change_state(State.DEAD)
 	for move: BossMove in _moves:
 		move.cancel()

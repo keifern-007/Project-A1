@@ -32,6 +32,7 @@ var cooldown_left: float = 0.0
 func _ready() -> void:
 	hitbox.damage = damage
 	hitbox.knockback = knockback
+	hitbox.interrupts = true
 	hitbox.active = false
 	marker.visible = false
 

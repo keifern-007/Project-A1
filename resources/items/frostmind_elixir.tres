@@ -24,6 +24,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_data")
+stack_size = 1
 id = &"frostmind_elixir"
 name_key = "ITEM_FROSTMIND_ELIXIR"
 description_key = "ITEM_FROSTMIND_ELIXIR_DESC"

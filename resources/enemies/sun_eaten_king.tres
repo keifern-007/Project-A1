@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1_data")
+absorbs = 1
+stagger_threshold = 0.15
 name_key = "ENEMY_SUN_EATEN_KING"
 max_health = 1100
 attack_power = 0

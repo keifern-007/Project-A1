@@ -63,6 +63,16 @@ func element_multiplier(element: Element.Type) -> float:
 	return data.element_multiplier(element) if data else 1.0
 
 
+func absorbs(element: Element.Type) -> bool:
+	return data != null and element != Element.Type.PHYSICAL and data.absorbs == element
+
+
+## HP gained from a hit this enemy absorbs. Says so above its head, so the player learns why.
+func absorbed_healing(hit_damage: int) -> int:
+	_show_popup(tr("POPUP_ABSORBED"))
+	return roundi(hit_damage * data.absorb_fraction)
+
+
 ## Called by the hurtbox after an element hit landed. amount = the damage it really did.
 func on_hit(element: Element.Type, amount: int) -> void:
 	if element == Element.Type.PHYSICAL or health == null or health.is_dead:
@@ -163,11 +173,16 @@ func _refresh_label() -> void:
 
 func _show_weakness_popup(element: Element.Type) -> void:
 	var multiplier: float = element_multiplier(element)
-	if multiplier == 1.0 or _popup_cooldown_left > 0.0:
+	if multiplier != 1.0:
+		_show_popup(tr("POPUP_WEAK") if multiplier > 1.0 else tr("POPUP_RESIST"))
+
+
+func _show_popup(text: String) -> void:
+	if _popup_cooldown_left > 0.0:
 		return
 	_popup_cooldown_left = POPUP_COOLDOWN
 	var popup: Label3D = _make_label()
-	popup.text = tr("POPUP_WEAK") if multiplier > 1.0 else tr("POPUP_RESIST")
+	popup.text = text
 	# Lives in the world, not on the enemy, so it outlasts the killing blow.
 	get_parent().get_parent().add_child(popup)
 	var status_lines: int = _label.text.count("\n") + 1 if _label.text != "" else 0

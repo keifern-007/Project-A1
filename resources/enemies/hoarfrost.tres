@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1_data")
+absorbs = 2
+stagger_threshold = 0.15
 name_key = "ENEMY_HOARFROST"
 max_health = 1800
 attack_power = 0

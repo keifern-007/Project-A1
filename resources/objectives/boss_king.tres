@@ -6,8 +6,14 @@
 [ext_resource type="Resource" path="res://resources/moods/storm.tres" id="4_mood"]
 [ext_resource type="Resource" path="res://resources/maps/sunscar_dunes.tres" id="5_map"]
 
+[ext_resource type="Resource" path="res://resources/enemies/sun_eaten_king.tres" id="7_scout"]
+
+[ext_resource type="Resource" path="res://resources/hazards/sun_curse.tres" id="8_hazard"]
+
 [resource]
 script = ExtResource("1_data")
+hazard = ExtResource("8_hazard")
+scout_boss = ExtResource("7_scout")
 name_key = "OBJ_BOSS_KING"
 description_key = "OBJ_BOSS_KING_DESC"
 type = 1

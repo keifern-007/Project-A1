@@ -3,16 +3,20 @@ extends CharacterBody3D
 ## The chosen character (stats, speed, look, skills) + movement relative to the camera, a dodge roll with invulnerability frames (i-frames),
 ## a basic melee attack, skills and the loadout's consumable.
 ## Every attack is wind-up (slow walk, keeps aiming, dodging cancels and refunds) -> fires ->
-## commit (locked in, no dodging), Dark Souls style. Taking a hit doesn't interrupt either.
-## Basic attacks and dodging spend stamina (amounts from CharacterData); a cancelled wind-up refunds it.
+## commit (locked in, no dodging), Dark Souls style. A boss's hit interrupts the wind-up with no refund;
+## other enemies' hits don't interrupt anything.
+## Basic attacks and dodging spend stamina (from CharacterData, raised by armor weight).
 
 const LEAN_BACK: float = 0.436 ## ~25 degrees, in radians. The wind-up telegraph.
 const LEAN_FORWARD: float = -0.262 ## ~-15 degrees. The strike.
 const LEAN_STRIKE_TIME: float = 0.05
 const DODGE_BUFFER: float = 0.2 ## A dodge pressed this soon before the commit ends still happens.
 const HEAVY_WEAPON: float = 1.3 ## Main hand wind-up multiplier from which hits break guards.
+const BOSS_MIN_KNOCKBACK: float = 6.0 ## Even a boss move with little push of its own moves you this much.
+const BOSS_MIN_KNOCKBACK_TAKEN: float = 0.5 ## Knockback immunity (Bulwark) only halves a boss's blow.
 
 signal dodged
+signal attack_interrupted ## A boss's hit cancelled our wind-up. Hook for a sound.
 signal stamina_short ## An attack or dodge was refused for lack of stamina (HUD shows 'No stamina').
 signal collected(pickup: Pickup) ## Hook for pickup sounds.
 
@@ -28,6 +32,7 @@ signal collected(pickup: Pickup) ## Hook for pickup sounds.
 
 @export_group("Feel")
 @export var hurt_shake: float = 0.5
+@export var boss_hit_shake: float = 0.8
 @export var hurt_hit_stop: float = 0.08
 
 @export_group("Dodge")
@@ -48,6 +53,7 @@ var _speed_modifiers: Dictionary = {} # source -> walk speed multiplier (quicksa
 var _dodge_stamina_cost: float = 0.0
 var _lean_tween: Tween
 var rig: HeroRig ## The hero's model. Built in _ready from CharacterData.rig.
+var hazards: HazardComponent ## The boss's lasting danger on us, if the mission has one.
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var input: PlayerInput = $PlayerInput
@@ -70,11 +76,20 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	set_controlled(controlled)
+	hurtbox.hurt.connect(_on_hurt) # Before the model's animator, so an interrupted hero still flinches.
 	_apply_character(character.data)
+	hazards = HazardComponent.new()
+	hazards.stamina = stamina
+	hazards.health = health
+	hazards.stats = $StatsComponent
+	add_child(hazards)
+	boosters.hazards = hazards
 	skill_caster.set_skills(character.skill_loadout())
 	skill_caster.basic_attack = character.data.basic_attack
 	var weapon_windup: float = character.weapon_windup_multiplier()
-	melee.windup_time *= weapon_windup
+	var armor_windup: float = EquipmentComponent.windup_multiplier(_armor_load())
+	melee.windup_time *= weapon_windup * armor_windup
+	skill_caster.armor_windup_multiplier = armor_windup
 	var heavy: bool = weapon_windup >= HEAVY_WEAPON
 	melee.hitbox.guard_break = heavy
 	for skill: SkillData in character.weapon_skills():
@@ -82,7 +97,6 @@ func _ready() -> void:
 		if heavy:
 			skill_caster.guard_break_skills[skill] = true
 	health.died.connect(_on_died)
-	hurtbox.hurt.connect(_on_hurt)
 	hurtbox.damage_taken_multiplier *= GameState.damage_taken_multiplier() # On top of passives (Bulwark).
 	melee.windup_started.connect(_lean_into_windup)
 	melee.windup_cancelled.connect(_animate_lean.bind(0.0, LEAN_STRIKE_TIME))
@@ -109,13 +123,15 @@ func _physics_process(delta: float) -> void:
 	if _dodge_buffer_left > 0.0 and not frozen and not is_committed() and _dodge_cooldown_left == 0.0 and _dash_time_left == 0.0:
 		_dodge_buffer_left = 0.0
 		# The wind-up's refund counts, so a dodge out of a wind-up works even on an empty bar.
-		if stamina.current + _windup_refund() >= _dodge_stamina_cost:
+		if stamina.has(_dodge_stamina_cost - _windup_refund()):
 			_cancel_windup() # Dodging out of a wind-up refunds it.
 			stamina.spend(_dodge_stamina_cost)
 			_start_dodge(move_dir)
 		else:
 			stamina_short.emit()
 
+	if combat_enabled and input.is_cycle_consumable_pressed():
+		consumables.cycle()
 	if combat_enabled and _dash_time_left == 0.0 and not frozen:
 		_handle_combat()
 
@@ -142,9 +158,8 @@ func _physics_process(delta: float) -> void:
 func _apply_character(data: CharacterData) -> void:
 	move_speed = data.move_speed * talents.move_speed_multiplier()
 	dodge_cooldown = data.dodge_cooldown
-	_attack_stamina_cost = data.attack_stamina_cost
-	_dodge_stamina_cost = data.dodge_stamina_cost
 	stamina.configure(data.max_stamina, data.stamina_regen)
+	stamina.regen_pause = data.stamina_regen_pause
 	mana.configure(data.max_mana, data.mana_regen, data.mana_per_kill)
 	visual.scale = data.body_scale
 	_build_model(data)
@@ -170,6 +185,14 @@ func _build_model(data: CharacterData) -> void:
 func _show_gear() -> void:
 	rig.wear_loadout(str(character.data.id))
 	melee.swing_visual.set_surface_override_material(0, SwingArc.make_material(rig.trail_color))
+	var load_amount: float = _armor_load()
+	_attack_stamina_cost = character.data.attack_stamina_cost * EquipmentComponent.attack_cost_multiplier(load_amount)
+	_dodge_stamina_cost = character.data.max_stamina / character.data.dodges_per_bar \
+		* EquipmentComponent.dodge_cost_multiplier(load_amount)
+
+
+func _armor_load() -> float:
+	return EquipmentComponent.armor_load(SaveManager.equipped_items(str(character.data.id)))
 
 
 ## Hands this body to the local player, or makes it an NPC. Only controlled bodies are
@@ -373,13 +396,22 @@ func _set_ghosted(on: bool) -> void:
 
 
 func _on_hurt(_amount: int, hitbox: HitboxComponent) -> void:
+	if hitbox.interrupts and is_winding_up():
+		skill_caster.cancel_cast(false) # A hit refunds nothing; only dodging out does.
+		melee.cancel_windup()
+		attack_interrupted.emit()
 	var away: Vector3 = global_position - hitbox.global_position
 	away.y = 0.0
-	var push: Vector3 = away.normalized() * hitbox.knockback * passives.knockback_taken()
+	var force: float = hitbox.knockback
+	var taken: float = passives.knockback_taken()
+	if hitbox.interrupts:
+		force = maxf(force, BOSS_MIN_KNOCKBACK)
+		taken = maxf(taken, BOSS_MIN_KNOCKBACK_TAKEN)
+	var push: Vector3 = away.normalized() * force * taken
 	# Walking acceleration pulls us back to normal quickly, so this is a short shove.
 	velocity.x = push.x
 	velocity.z = push.z
-	GameFeel.shake(hurt_shake)
+	GameFeel.shake(boss_hit_shake if hitbox.interrupts else hurt_shake)
 	GameFeel.hit_stop(get_tree(), hurt_hit_stop)
 
 

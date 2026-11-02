@@ -27,6 +27,7 @@ var cooldown_speed: float = 1.0
 var skill_damage_mods: Dictionary = {}
 var skill_cooldown_mods: Dictionary = {}
 var skill_windup_mods: Dictionary = {} ## From the main-hand weapon.
+var armor_windup_multiplier: float = 1.0 ## Armor weight slows every wind-up a little.
 var guard_break_skills: Dictionary = {} ## skill -> true: a heavy weapon's skills knock shields aside.
 
 var _cooldowns: Array[float] = []
@@ -114,12 +115,12 @@ func try_cast(slot: int, caster: Node3D, direction: Vector3, world: Node) -> boo
 	return true
 
 
-## Stops the current cast and refunds its cost (e.g. the player dodged).
-func cancel_cast() -> void:
+## Stops the current cast. Dodging out refunds its cost; being interrupted by a hit doesn't.
+func cancel_cast(refund: bool = true) -> void:
 	if not is_casting():
 		return
 	var skill: SkillData = _cast["skill"]
-	if meter_for(skill):
+	if refund and meter_for(skill):
 		meter_for(skill).restore(skill.cost)
 	_cast = {}
 	cast_ended.emit(false)
@@ -138,9 +139,9 @@ func try_basic(caster: Node3D, direction: Vector3, world: Node) -> bool:
 	return true
 
 
-## A skill's wind-up after the weapon's weight.
+## A skill's wind-up after the weapon's weight and the armor's.
 func windup_of(skill: SkillData) -> float:
-	return skill.cast_time * skill_windup_mods.get(skill, 1.0)
+	return skill.cast_time * skill_windup_mods.get(skill, 1.0) * armor_windup_multiplier
 
 
 ## A skill's cooldown after talents. The HUD uses it for the bar's full length.

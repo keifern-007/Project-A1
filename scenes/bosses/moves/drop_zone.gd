@@ -51,6 +51,7 @@ func _ready() -> void:
 	hitbox.damage = _damage
 	hitbox.element = _element
 	hitbox.knockback = _knockback
+	hitbox.interrupts = true # Drop zones only ever come from a boss fight.
 	hitbox.active = false
 
 

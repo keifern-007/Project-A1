@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="HazardData" format=3]
+
+[ext_resource type="Script" path="res://scripts/hazard_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "HAZARD_SUN_CURSE"
+effect_key = "HAZARD_SUN_CURSE_EFFECT"
+kind = 1
+counter_item_id = "purifying_salts"
+shrink_per_tick = 0.03
+shrink_interval = 5.0
+shrink_limit = 0.5

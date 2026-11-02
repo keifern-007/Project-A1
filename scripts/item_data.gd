@@ -24,6 +24,9 @@ enum Style { ANY, PHYSICAL, MAGIC }
 @export var skills: Array[SkillData] = []
 ## Main-hand weapons: scales the wind-up of basic swings and this weapon's skills. Bigger = slower.
 @export var windup_multiplier: float = 1.0
+## Armor and shields: added up over everything worn (full load = 1.0, see EquipmentComponent).
+## 0.2 = dodges cost 20% more, with a much smaller effect on attacks.
+@export var armor_weight: float = 0.0
 
 @export_group("Stats")
 @export var max_health: int = 0
@@ -31,9 +34,10 @@ enum Style { ANY, PHYSICAL, MAGIC }
 @export var defense: int = 0
 
 @export_group("Consumable")
-## CONSUMABLE slot only: what drinking/using it does. One copy is used up each time.
+## Potions, carried in the Inventory: what drinking/using it does. One copy is used up each time.
 @export var use_effect: BoosterData
-@export var use_cooldown: float = 10.0 ## Seconds before the next one can be used.
+@export var use_cooldown: float = 10.0 ## Seconds before any potion can be used again.
+@export var stack_size: int = 3 ## Most copies in one Inventory slot. Stronger potions stack smaller.
 
 @export_group("Recipe")
 @export var cost: Array[MaterialCost] = []
@@ -71,6 +75,13 @@ func weight_text() -> String:
 	elif windup_multiplier < 1.0:
 		weight_key = "UI_WEIGHT_LIGHT"
 	return TranslationServer.translate("UI_WEAPON_WEIGHT") % [TranslationServer.translate(weight_key), windup_multiplier]
+
+
+## "Armor weight +20%" for the Forge and Gear Rack; "" if it weighs nothing.
+func armor_weight_text() -> String:
+	if armor_weight <= 0.0:
+		return ""
+	return TranslationServer.translate("UI_ARMOR_WEIGHT") % roundi(armor_weight * 100.0)
 
 
 ## "Skills: Cleave, Hatchet Throw" for the Forge and Gear Rack; "" if it grants none.

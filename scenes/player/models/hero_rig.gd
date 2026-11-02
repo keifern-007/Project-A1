@@ -38,7 +38,8 @@ func wear(items: Dictionary) -> void:
 func wear_loadout(character_id: String) -> void:
 	var items: Dictionary = {}
 	for slot: int in ItemData.Slot.values():
-		var item: ItemData = SaveManager.get_equipped(slot, character_id)
+		var item: ItemData = SaveManager.first_pack_item(character_id) if slot == ItemData.Slot.CONSUMABLE \
+			else SaveManager.get_equipped(slot, character_id)
 		if item:
 			items[slot] = item
 	wear(items)

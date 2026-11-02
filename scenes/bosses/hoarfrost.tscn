@@ -325,6 +325,7 @@ script = ExtResource("11_cone")
 anim = &"breath"
 damage = 7
 knockback = 1.5
+interrupts = false
 element = 2
 shake = 0.2
 windup = 1.2

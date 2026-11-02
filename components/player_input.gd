@@ -70,6 +70,11 @@ func is_consumable_pressed() -> bool:
 	return enabled and Input.is_action_just_pressed("use_consumable")
 
 
+## Pressed this frame: select the next stack in the Inventory.
+func is_cycle_consumable_pressed() -> bool:
+	return enabled and Input.is_action_just_pressed("cycle_consumable")
+
+
 ## slot is 1–4, matching the skill_1..skill_4 actions.
 func is_skill_pressed(slot: int) -> bool:
 	return enabled and Input.is_action_just_pressed("skill_%d" % slot)

@@ -269,6 +269,41 @@ ITEM_FROST_HEART_DESC,Hits harder. Your own heart beats slower.
 ITEM_BURIAL_TALISMAN,Burial Talisman
 ITEM_BURIAL_TALISMAN_DESC,"Hard to kill. Hard to enjoy, too."
 UI_WEAPON_WEIGHT,%s weapon: wind-up x%.1f
+UI_ARMOR_WEIGHT,Armor weight +%d%%
+UI_SCOUT_TITLE,Scouting report
+UI_SCOUT_WEAK,Weak to: %s
+UI_SCOUT_WEAK_STAGGER,Weak to: %s (fills its stagger gauge)
+UI_SCOUT_HEALS,Healed by: %s
+UI_SCOUT_RESISTS,Resists: %s
+UI_SCOUT_IMMUNE,Immune to: %s
+UI_SCOUT_SKILL_WARNING,Warning: your %s would heal it
+UI_SCOUT_HAZARD,Hazard: %s: %s
+UI_SCOUT_COUNTER,Counter: %s (you carry %d)
+HUD_HAZARD_WARDED,+ %s held off: %ds
+HUD_STAGGER,Stagger %d%%
+HUD_STAGGERED,! Staggered
+STATUS_STAGGERED,! Staggered
+POPUP_ABSORBED,Absorbed!
+EFFECT_WARD,Cures %s and holds it off for %ds
+HAZARD_DEEP_COLD,Deep Cold
+HAZARD_DEEP_COLD_EFFECT,stamina refills far slower
+HAZARD_SUN_CURSE,Sun Curse
+HAZARD_SUN_CURSE_EFFECT,max HP keeps shrinking
+ITEM_WARMING_TONIC,Warming Tonic
+ITEM_WARMING_TONIC_DESC,Burns all the way down. That's the point.
+ITEM_PURIFYING_SALTS,Purifying Salts
+ITEM_PURIFYING_SALTS_DESC,Sniff once. Regret it. Live.
+UI_INVENTORY,Inventory
+UI_INVENTORY_FILLED,%d of %d slots
+UI_INVENTORY_PACK,Carried on missions
+UI_INVENTORY_STASH,Potions in camp
+UI_INVENTORY_HELP,Click to pick up and place. Right click: one at a time or half a stack.
+UI_INVENTORY_HOLDING,Holding: %s x%d. Click a slot to place or a potion in camp to put it back.
+UI_INVENTORY_NONE,Craft potions at the Forge to fill your Inventory.
+UI_INVENTORY_ALL_PACKED,All carried
+UI_STACK_SIZE,Stacks to %d
+HUD_NEXT_ITEM,[%s] Next
+UI_TOTAL_DODGES,Dodges %d
 UI_WEIGHT_LIGHT,Light
 UI_WEIGHT_MEDIUM,Medium
 UI_WEIGHT_HEAVY,Heavy
@@ -411,9 +446,9 @@ TUT_FIGHT,Last lesson: put it all together and beat these goblins!
 TUT_FIGHT_TIP,"Watch them lean back before they swing, then roll or step away. Kills drop XP gems: walk near them to collect."
 TUT_GUIDE_TITLE,You're ready!
 TUT_GUIDE_INTRO,"Back in camp, walk up to a station and press the key shown above it."
-TUT_GUIDE_MISSIONS,Mission Board: choose a map and objective and start a run.
+TUT_GUIDE_MISSIONS,Mission Board: choose a map and objective and start a run. Read a boss's scouting report before you go.
 TUT_GUIDE_FORGE,"Forge: craft weapons, armor and potions. New recipes appear as you find their materials."
-TUT_GUIDE_GEAR,Gear Rack: equip what you've crafted. Your weapon sets skills 3 and 4.
+TUT_GUIDE_GEAR,Gear Rack: equip what you've crafted and fill your Inventory with potions. Your weapon sets skills 3 and 4.
 TUT_GUIDE_SHRINE,Skill Shrine: spend skill points to level up and buy hero talents.
 TUT_GUIDE_STASH,Stash: see everything you own.
 TUT_GUIDE_HEROES,Other heroes: walk up to one to see their card and switch.

@@ -3,11 +3,14 @@
 [ext_resource type="Script" uid="uid://dg1rvuqtci4b6" path="res://scripts/objective_data.gd" id="1_data"]
 [ext_resource type="PackedScene" path="res://scenes/bosses/ogre.tscn" id="2_boss"]
 [ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="3_drop"]
-[ext_resource type="Resource" uid="uid://hfpnvup0y56r" path="res://resources/moods/storm.tres" id="mood_storm"]
 [ext_resource type="Resource" uid="uid://c5itfihxjbc5g" path="res://resources/maps/greybox.tres" id="5_map"]
+[ext_resource type="Resource" uid="uid://hfpnvup0y56r" path="res://resources/moods/storm.tres" id="mood_storm"]
+
+[ext_resource type="Resource" path="res://resources/enemies/ogre.tres" id="7_scout"]
 
 [resource]
 script = ExtResource("1_data")
+scout_boss = ExtResource("7_scout")
 name_key = "OBJ_BOSS_OGRE"
 description_key = "OBJ_BOSS_OGRE_DESC"
 type = 1

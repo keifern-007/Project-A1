@@ -1,7 +1,8 @@
 extends Control
-## The camp's Gear Rack, Albion-style: a paper doll of 8 slots arranged around the body,
+## The camp's Gear Rack, Albion-style: a paper doll of 7 slots arranged around the body,
 ## the gear you own for the selected slot on the right (press to equip, press again to
 ## unequip), and total stats at the bottom. Hand rules live in SaveManager.equip().
+## The doll's Inventory cell shows the potions carried on missions instead (InventoryView).
 
 signal closed
 
@@ -19,7 +20,9 @@ const BAD_COLOR: String = "#f08a7a"
 
 var _slot: ItemData.Slot = ItemData.Slot.MAIN_HAND
 var _slot_buttons: Dictionary = {} # Slot -> Button
+var _inventory: InventoryView
 
+@onready var item_scroll: ScrollContainer = $Center/Panel/VBox/Columns/Owned/ItemScroll
 @onready var hero_preview: ModelPreview = %HeroPreview
 @onready var doll_grid: GridContainer = %DollGrid
 @onready var title_label: Label = %Title
@@ -32,6 +35,12 @@ var _slot_buttons: Dictionary = {} # Slot -> Button
 func _ready() -> void:
 	title_label.text = tr("UI_LOADOUT_OF") % tr(SaveManager.get_character().name_key)
 	_build_doll()
+	_inventory = InventoryView.new()
+	_inventory.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	item_scroll.get_parent().add_child(_inventory)
+	_inventory.changed.connect(func() -> void:
+		hero_preview.show_hero(SaveManager.get_character())
+		_refresh_doll())
 	back_button.pressed.connect(closed.emit)
 	(_slot_buttons[_slot] as Button).grab_focus()
 	_refresh()
@@ -65,6 +74,7 @@ func _build_doll() -> void:
 
 func _select_slot(slot: ItemData.Slot) -> void:
 	_slot = slot
+	_inventory.drop_hand()
 	_refresh()
 
 
@@ -86,6 +96,11 @@ func _refresh() -> void:
 ## Each slot: its name on top, what's in it below. Selected slot gets a marker (never color alone).
 func _refresh_doll() -> void:
 	for slot: ItemData.Slot in _slot_buttons:
+		if slot == ItemData.Slot.CONSUMABLE:
+			var filled: int = SaveManager.get_pack().filter(func(entry: Dictionary) -> bool: return not entry.is_empty()).size()
+			(_slot_buttons[slot] as Button).text = "%s%s\n%s" % ["» " if slot == _slot else "", tr("UI_INVENTORY"),
+				tr("UI_INVENTORY_FILLED") % [filled, SaveManager.PACK_SLOTS]]
+			continue
 		var equipped: ItemData = SaveManager.get_equipped(slot)
 		var content: String = tr(equipped.name_key) if equipped else tr("UI_EMPTY_SLOT")
 		if slot == ItemData.Slot.OFF_HAND and SaveManager.hands_full():
@@ -95,6 +110,13 @@ func _refresh_doll() -> void:
 
 
 func _refresh_item_list() -> void:
+	var inventory_open: bool = _slot == ItemData.Slot.CONSUMABLE
+	_inventory.visible = inventory_open
+	item_scroll.visible = not inventory_open
+	items_header.visible = not inventory_open
+	if inventory_open:
+		_inventory.refresh()
+		return
 	items_header.text = tr(ItemData.slot_key(_slot))
 	for child: Node in item_list.get_children():
 		child.queue_free()
@@ -139,6 +161,13 @@ func _refresh_totals() -> void:
 		if diff != 0:
 			text += " [color=%s](%+d)[/color]" % [GOOD_COLOR if diff > 0 else BAD_COLOR, diff]
 		parts.append(text)
+	var load_amount: float = EquipmentComponent.armor_load(SaveManager.equipped_items())
+	var dodges: int = EquipmentComponent.dodges_with(base.dodges_per_bar, load_amount)
+	var dodge_diff: int = dodges - EquipmentComponent.dodges_with(base.dodges_per_bar, 0.0)
+	var dodge_text: String = tr("UI_TOTAL_DODGES") % dodges
+	if dodge_diff != 0:
+		dodge_text += " [color=%s](%+d)[/color]" % [GOOD_COLOR if dodge_diff > 0 else BAD_COLOR, dodge_diff]
+	parts.append(dodge_text)
 	totals_label.text = "     ".join(parts)
 
 
@@ -147,6 +176,8 @@ func _short_stats(item: ItemData) -> String:
 	for stat: Array in [[item.max_health, "STAT_MAX_HEALTH"], [item.attack_power, "STAT_ATTACK"], [item.defense, "STAT_DEFENSE"]]:
 		if stat[0] != 0:
 			parts.append("%+d %s" % [stat[0], tr(stat[1])])
+	if item.armor_weight > 0.0:
+		parts.append(item.armor_weight_text())
 	if not item.skills.is_empty():
 		parts.append(item.skills_text())
 		parts.append(item.weight_text())
