@@ -224,6 +224,21 @@ TALENT_SKILL_DAMAGE,%s: %+d%% damage
 TALENT_SKILL_COOLDOWN,%s: %+d%% cooldown
 UI_TAB_TRACKS,Tracks
 UI_TAB_TALENTS,%s Talents
+UI_TAB_SKILLS,%s Skills
+TALENT_ONLY_EQUIPPED,Only when that skill is equipped
+UI_SKILLS_PICK_KEY,Pick a key and then a skill for it. Choices apply from your next mission.
+UI_SKILLS_HERO_HEADER,Keys 1 and 2: hero skills
+UI_SKILLS_SHARED,Shared skills (at most 1 on your keys)
+UI_SKILLS_WEAPON_HEADER,Keys 3 and 4: %s
+UI_SKILLS_WEAPON_HINT,Free with the weapon. Elemental weapons add their own skills.
+UI_UNARMED,Unarmed
+UI_SKILL_ON_KEY,On key %s
+UI_SKILL_SWAP,Swap keys
+UI_SKILL_PUT,Put on key %s
+UI_SKILL_UNLOCK,Unlock (%d pts)
+UI_SKILL_NEEDS_POINTS,Needs %d pts
+UI_SKILL_ONE_SHARED,Only 1 shared skill
+UI_SKILL_NUMBERS,%s  |  %ds cooldown  |  %.2fs wind-up
 UI_TALENT_TIER,Tier %d
 UI_TALENT_TIER_CHOICE,Tier %d (choose one)
 UI_TALENT_COST,Learn (%d pts)
@@ -449,7 +464,7 @@ TUT_GUIDE_INTRO,"Back in camp, walk up to a station and press the key shown abov
 TUT_GUIDE_MISSIONS,Mission Board: choose a map and objective and start a run. Read a boss's scouting report before you go.
 TUT_GUIDE_FORGE,"Forge: craft weapons, armor and potions. New recipes appear as you find their materials."
 TUT_GUIDE_GEAR,Gear Rack: equip what you've crafted and fill your Inventory with potions. Your weapon sets skills 3 and 4.
-TUT_GUIDE_SHRINE,Skill Shrine: spend skill points to level up and buy hero talents.
+TUT_GUIDE_SHRINE,"Skill Shrine: spend skill points to level up, buy hero talents and choose your skills."
 TUT_GUIDE_STASH,Stash: see everything you own.
 TUT_GUIDE_HEROES,Other heroes: walk up to one to see their card and switch.
 UI_OPT_CAMERA,Over-the-shoulder camera (off = isometric)

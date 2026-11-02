@@ -8,9 +8,6 @@
 [ext_resource type="Script" path="res://components/melee_attack_component.gd" id="6_melee"]
 [ext_resource type="Script" path="res://components/hitbox_component.gd" id="7_hitbox"]
 [ext_resource type="Script" path="res://components/skill_caster_component.gd" id="8_caster"]
-[ext_resource type="Script" path="res://scripts/skill_data.gd" id="9_skilldata"]
-[ext_resource type="Resource" path="res://resources/skills/ground_slam.tres" id="10_slam"]
-[ext_resource type="Resource" path="res://resources/skills/haymaker.tres" id="17_haymaker"]
 [ext_resource type="Script" path="res://components/level_component.gd" id="11_level"]
 [ext_resource type="Script" path="res://components/booster_component.gd" id="12_boosters"]
 [ext_resource type="Script" path="res://components/equipment_component.gd" id="13_equipment"]
@@ -51,7 +48,6 @@ script = ExtResource("3_stats")
 [node name="CharacterComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
 script = ExtResource("15_character")
 stats = NodePath("../StatsComponent")
-unarmed_skills = Array[ExtResource("9_skilldata")]([ExtResource("17_haymaker"), ExtResource("10_slam")])
 
 [node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats")]
 script = ExtResource("4_health")

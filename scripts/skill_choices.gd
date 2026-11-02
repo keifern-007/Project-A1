@@ -9,6 +9,9 @@ extends RefCounted
 ## the skills on that exact weapon, so elemental skills need an elemental weapon.
 
 
+const UNARMED_DEFAULT_IDS: Array[String] = ["haymaker", "ground_slam"]
+
+
 static func empty_entry() -> Dictionary:
 	return { "unlocked": [], "hero_keys": [], "weapon_keys": {} }
 
@@ -60,6 +63,23 @@ static func weapon_pool(weapon: ItemData) -> Array[SkillData]:
 		if skill.weapon_types.has(type) and not pool.has(skill):
 			pool.append(skill)
 	return pool
+
+
+## Keys 3-4 before anything is chosen: the weapon's own skills, else the unarmed ones.
+static func default_weapon_keys(weapon: ItemData) -> Array[SkillData]:
+	var skills: Array[SkillData] = []
+	if weapon and not weapon.skills.is_empty():
+		skills.assign(weapon.skills)
+		return skills
+	for id: String in UNARMED_DEFAULT_IDS:
+		skills.append(SkillRegistry.get_by_id(id))
+	return skills
+
+
+## What's really on keys 3-4 with this weapon: the choice, or the defaults if none was made.
+static func weapon_keys_or_default(entry: Dictionary, weapon: ItemData) -> Array[SkillData]:
+	var chosen: Array[SkillData] = weapon_keys(entry, weapon)
+	return chosen if not chosen.is_empty() else default_weapon_keys(weapon)
 
 
 ## The skills chosen for keys 3-4 with this weapon. A choice this weapon can't use (Flame Cleave on

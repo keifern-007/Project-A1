@@ -57,7 +57,7 @@ func show_character(character: CharacterData, on_right: bool, choosing: bool) ->
 		"%s  %d   %s  %d" % [tr("STAT_STAMINA"), roundi(character.max_stamina), tr("STAT_MANA"), roundi(character.max_mana)],
 	])
 	var skill_names: Array[String] = []
-	for skill: SkillData in character.signature_skills:
+	for skill: SkillData in SkillChoices.hero_keys(SaveManager.skill_entry(character), character):
 		skill_names.append(skill.display_name())
 	var lines: Array[String] = [tr("UI_SKILLS_ROW") % ", ".join(skill_names)]
 	if character.basic_attack:

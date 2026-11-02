@@ -44,10 +44,10 @@ static func text(objective: ObjectiveData, character: CharacterData) -> String:
 static func _skill_warning(boss: EnemyData, character: CharacterData) -> String:
 	if boss.absorbs == Element.Type.PHYSICAL or character == null:
 		return ""
-	var skills: Array[SkillData] = character.signature_skills.duplicate()
+	var entry: Dictionary = SaveManager.skill_entry(character)
+	var skills: Array[SkillData] = SkillChoices.hero_keys(entry, character)
 	var weapon: ItemData = SaveManager.get_equipped(ItemData.Slot.MAIN_HAND, str(character.id))
-	if weapon:
-		skills.append_array(weapon.skills)
+	skills.append_array(SkillChoices.weapon_keys_or_default(entry, weapon))
 	var names: Array[String] = []
 	for skill: SkillData in skills:
 		if skill.element == boss.absorbs:

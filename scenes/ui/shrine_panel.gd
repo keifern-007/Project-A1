@@ -1,7 +1,7 @@
 extends Control
-## The camp's Skill Shrine: your Rank and unspent skill points, then two tabs:
-## Tracks (Gathering, Crafting, Mastery: "+ Level" spends a point) and the current hero's
-## Talents (TalentTreeView). The rules live in SaveManager (level_track, buy_talent).
+## The camp's Skill Shrine: your Rank and unspent skill points, then three tabs:
+## Tracks (Gathering, Crafting, Mastery: "+ Level" spends a point), the current hero's
+## Talents (TalentTreeView) and Skills (SkillPickerView). The rules live in SaveManager and SkillChoices.
 
 signal closed
 
@@ -13,6 +13,7 @@ var _level_labels: Dictionary = {} # track key -> Label
 var _hint_labels: Dictionary = {} # track key -> Label
 var _buttons: Dictionary = {} # track key -> Button
 var _talent_view: TalentTreeView = TalentTreeView.new()
+var _skill_view: SkillPickerView = SkillPickerView.new()
 
 @onready var rank_label: Label = %RankLabel
 @onready var rank_bar: ProgressBar = %RankBar
@@ -21,6 +22,7 @@ var _talent_view: TalentTreeView = TalentTreeView.new()
 @onready var content: VBoxContainer = %Content
 @onready var tracks_tab: Button = %TracksTab
 @onready var talents_tab: Button = %TalentsTab
+@onready var skills_tab: Button = %SkillsTab
 @onready var back_button: Button = %BackButton
 
 
@@ -42,13 +44,18 @@ func _ready() -> void:
 			track_list.add_child(_make_row(key))
 	content.add_child(_talent_view)
 	_talent_view.learned.connect(func(_talent: TalentData) -> void: _show_talents())
+	content.add_child(_skill_view)
+	_skill_view.changed.connect(_show_skills)
 	var tabs: ButtonGroup = ButtonGroup.new()
 	tracks_tab.button_group = tabs
 	talents_tab.button_group = tabs
+	skills_tab.button_group = tabs
 	tracks_tab.text = tr("UI_TAB_TRACKS")
 	talents_tab.text = tr("UI_TAB_TALENTS") % tr(SaveManager.get_character().name_key)
+	skills_tab.text = tr("UI_TAB_SKILLS") % tr(SaveManager.get_character().name_key)
 	tracks_tab.pressed.connect(_show_tracks)
 	talents_tab.pressed.connect(_show_talents)
+	skills_tab.pressed.connect(_show_skills)
 	tracks_tab.button_pressed = true
 	_show_tracks()
 
@@ -56,6 +63,7 @@ func _ready() -> void:
 func _show_tracks() -> void:
 	track_list.show()
 	_talent_view.hide()
+	_skill_view.hide()
 	_refresh()
 	# Focus the first track you can level, else the tab.
 	for key: String in _buttons:
@@ -67,6 +75,7 @@ func _show_tracks() -> void:
 
 func _show_talents() -> void:
 	track_list.hide()
+	_skill_view.hide()
 	_talent_view.show()
 	_talent_view.show_tree(SaveManager.get_character())
 	_refresh()
@@ -76,6 +85,19 @@ func _show_talents() -> void:
 		button.grab_focus()
 	else:
 		talents_tab.grab_focus()
+
+
+func _show_skills() -> void:
+	track_list.hide()
+	_talent_view.hide()
+	_skill_view.show()
+	_skill_view.show_skills(SaveManager.get_character())
+	_refresh()
+	var button: Button = _skill_view.first_action()
+	if button:
+		button.grab_focus()
+	else:
+		skills_tab.grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:

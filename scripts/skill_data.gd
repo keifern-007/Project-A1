@@ -13,6 +13,9 @@ enum Kind { PHYSICAL, MAGIC }
 ## Weapon types offering this as a base skill on keys 3-4, e.g. &"axe". Leave elemental skills empty:
 ## they come only from the weapons listing them in ItemData.skills.
 @export var weapon_types: Array[StringName] = []
+## An elemental version of another skill: talents that tune that skill also tune this one.
+@export var base_skill: SkillData
+@export var breaks_guards: bool = false ## Knocks shields aside whatever the weapon (heavy weapons always do).
 @export var cooldown: float = 5.0
 @export var damage_multiplier: float = 1.0 ## × the caster's attack_power.
 @export var kind: Kind = Kind.PHYSICAL

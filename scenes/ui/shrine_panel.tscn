@@ -50,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(760, 600)
+custom_minimum_size = Vector2(760, 690)
 layout_mode = 2
 theme_override_styles/panel = SubResource("PanelStyle")
 
@@ -106,6 +106,14 @@ toggle_mode = true
 theme_override_font_sizes/font_size = 18
 
 [node name="TalentsTab" type="Button" parent="Center/Panel/VBox/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+auto_translate_mode = 2
+toggle_mode = true
+theme_override_font_sizes/font_size = 18
+
+[node name="SkillsTab" type="Button" parent="Center/Panel/VBox/Tabs"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 40)
 layout_mode = 2

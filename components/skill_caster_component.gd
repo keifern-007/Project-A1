@@ -146,7 +146,7 @@ func windup_of(skill: SkillData) -> float:
 
 ## A skill's cooldown after talents. The HUD uses it for the bar's full length.
 func cooldown_of(skill: SkillData) -> float:
-	return skill.cooldown * maxf(skill_cooldown_mods.get(skill, 1.0), 0.1)
+	return skill.cooldown * maxf(_talent_mod(skill_cooldown_mods, skill), 0.1)
 
 
 func _finish_cast() -> void:
@@ -170,14 +170,19 @@ func _fire(slot: int, skill: SkillData, caster: Node3D, direction: Vector3, worl
 func _spawn(skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -> void:
 	var effect: SkillEffect = skill.effect_scene.instantiate()
 	var attack_power: int = stats.get_attack_power() if stats else 0
-	effect.damage = roundi(attack_power * skill.damage_multiplier * skill_damage_mods.get(skill, 1.0))
+	effect.damage = roundi(attack_power * skill.damage_multiplier * _talent_mod(skill_damage_mods, skill))
 	effect.element = skill.element
 	effect.direction = direction
 	effect.caster = caster
 	world.add_child(effect)
 	effect.global_position = caster.global_position
-	if guard_break_skills.has(skill):
+	if guard_break_skills.has(skill) or skill.breaks_guards:
 		_mark_guard_break(effect)
+
+
+## A talent's multiplier for this skill. An elemental version counts as the skill it's based on.
+func _talent_mod(mods: Dictionary, skill: SkillData) -> float:
+	return mods.get(skill, mods.get(skill.base_skill, 1.0))
 
 
 func _mark_guard_break(node: Node) -> void:

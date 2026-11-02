@@ -23,6 +23,7 @@ const COST_PER_TIER: Array[int] = [0, 1, 2, 3] ## Index = tier.
 @export var skill: SkillData
 @export var skill_damage_percent: float = 0.0
 @export var skill_cooldown_percent: float = 0.0 ## -0.25 = 25% shorter cooldown.
+@export var always_equipped: bool = false ## The skill can't be swapped out (a basic attack): no 'only when equipped' note.
 
 
 func cost() -> int:
@@ -44,6 +45,8 @@ func effect_lines() -> Array[String]:
 			lines.append(TranslationServer.translate("TALENT_SKILL_DAMAGE") % [skill_name, roundi(skill_damage_percent * 100.0)])
 		if not is_zero_approx(skill_cooldown_percent):
 			lines.append(TranslationServer.translate("TALENT_SKILL_COOLDOWN") % [skill_name, roundi(skill_cooldown_percent * 100.0)])
+		if not always_equipped:
+			lines.append(TranslationServer.translate("TALENT_ONLY_EQUIPPED"))
 	return lines
 
 

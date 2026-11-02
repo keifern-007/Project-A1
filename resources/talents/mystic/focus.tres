@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+always_equipped = true
 id = &"focus"
 name_key = "TALENT_FOCUS"
 tier = 1
