@@ -11,3 +11,4 @@ type = 7
 required_rank = 2
 only_on_map = ExtResource("2_map")
 victory_reward_multiplier = 1.5
+sites_to_clear = 8

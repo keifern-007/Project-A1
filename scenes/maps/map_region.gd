@@ -1,28 +1,37 @@
 class_name MapRegion
 extends Area3D
-## One region of a big map, with its own goal (defeat its enemies, or gather its plants).
-## Nothing happens until a hero first walks in: then its enemies come, from its own WaveSpawner.
-## Scene needs: a CollisionShape3D (the region's area), a WaveSpawner child named "WaveSpawner"
-## (autostart off, with Marker3D spawn points) and, for GATHER, Marker3D children of a "GatherPoints" node.
-## A sign floating high above it names it and its goal, so it can be found from anywhere (text, not color).
+## A site on a big map with its own goal: defeat what lives there, gather its plants, open its cache
+## or rest at its shrine. Nothing happens until a hero first walks in: then its enemies come, from
+## its own WaveSpawner (if it has one). Sites are small scenes (scenes/maps/site_*.tscn) that a
+## SiteScatter places on the map each run.
+## Scene needs: a CollisionShape3D (the site's area); a WaveSpawner child named "WaveSpawner"
+## (autostart off, Marker3D spawn points) if enemy_count > 0; for GATHER, Marker3D children of a
+## "GatherPoints" node; for CACHE and SHRINE, an Interactable child named "Interact".
+## A sign floating above it names it and its goal (text, not color), within sign_range metres.
 
 signal progress_changed
 signal completed
 
-enum Goal { DEFEAT, GATHER }
+enum Goal { DEFEAT, GATHER, CACHE, SHRINE }
 
 const SIGN_PIXEL_SIZE: float = 0.0014 ## The sign keeps this size on screen at any distance.
-const SIGN_RANGE: float = 70.0 ## Metres from the camera within which the sign shows.
+const GOAL_KEYS: Array[String] = ["REGION_GOAL_DEFEAT", "REGION_GOAL_GATHER", "REGION_GOAL_CACHE", "REGION_GOAL_SHRINE"]
 
 @export var name_key: String = ""
 @export var goal: Goal = Goal.DEFEAT
 ## Like a wave number: higher brings tougher enemy types (SpawnEntry.from_wave) and more HP.
+## A SiteScatter sets it from the distance to base camp, plus level_bonus.
 @export var level: int = 1
-@export var enemy_count: int = 6 ## DEFEAT: all of them. GATHER: they harass you while you gather.
+@export var level_bonus: int = 0 ## A tougher kind of site (a watchtower) adds this.
+@export var enemy_count: int = 6 ## DEFEAT: all of them. Other goals: guards that come when you arrive.
+## Set = these enemies instead of the map's pool (a puffcap ring, a tusker wallow).
+@export var enemy_pool_override: Array[SpawnEntry] = []
 @export var gather_material: MaterialData
 @export var gather_amount: int = 6
 @export var gather_node_scene: PackedScene
+@export var cache_rewards: Array[MaterialCost] = [] ## CACHE: what opening it gives.
 @export var sign_height: float = 6.0
+@export var sign_range: float = 70.0
 
 var progress: int = 0
 var done: bool = false
@@ -30,10 +39,10 @@ var player_inside: bool = false
 
 var _woken: bool = false
 var _enemy_pool: Array[SpawnEntry] = []
-var _own_enemies: Dictionary = {} # Enemy -> true, so other regions' kills don't count here.
+var _own_enemies: Dictionary = {} # Enemy -> true, so other sites' kills don't count here.
 var _sign: Label3D
 
-@onready var spawner: WaveSpawner = $WaveSpawner
+@onready var spawner: WaveSpawner = get_node_or_null("WaveSpawner")
 
 
 func _ready() -> void:
@@ -43,29 +52,34 @@ func _ready() -> void:
 	monitorable = false
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	spawner.enemy_spawned.connect(func(enemy: Node3D) -> void: _own_enemies[enemy] = true)
+	if spawner:
+		spawner.enemy_spawned.connect(func(enemy: Node3D) -> void: _own_enemies[enemy] = true)
 	EventBus.enemy_killed.connect(_on_enemy_killed)
+	var interact: Interactable = get_node_or_null("Interact")
+	if interact:
+		interact.interacted.connect(_on_interacted)
 	_make_sign()
 	if goal == Goal.GATHER:
 		_place_gather_nodes()
 
 
-## Called by the objective: which enemies this map uses.
+## Called by the objective: which enemies this map uses (unless the site has its own).
 func setup(enemy_pool: Array[SpawnEntry]) -> void:
-	_enemy_pool = enemy_pool
+	_enemy_pool = enemy_pool if enemy_pool_override.is_empty() else enemy_pool_override
 
 
 func goal_amount() -> int:
-	return enemy_count if goal == Goal.DEFEAT else gather_amount
+	match goal:
+		Goal.DEFEAT:
+			return enemy_count
+		Goal.GATHER:
+			return gather_amount
+	return 1
 
 
-## "Old Clearing: Defeat the goblins" for the HUD.
+## "Goblin Camp: Defeat them all" for the HUD.
 func hud_text() -> String:
-	return tr("REGION_HUD") % [tr(name_key), tr(_goal_key())]
-
-
-func _goal_key() -> String:
-	return "REGION_GOAL_DEFEAT" if goal == Goal.DEFEAT else "REGION_GOAL_GATHER"
+	return tr("REGION_HUD") % [tr(name_key), tr(GOAL_KEYS[goal])]
 
 
 func _on_body_entered(body: Node3D) -> void:
@@ -89,11 +103,13 @@ func _on_body_exited(body: Node3D) -> void:
 
 func _wake() -> void:
 	_woken = true
+	if spawner == null or enemy_count <= 0 or _enemy_pool.is_empty():
+		return
 	spawner.enemy_pool = _enemy_pool
 	spawner.first_wave_size = enemy_count
 	spawner.wave_size_growth = 0
-	spawner.wave = level - 1 # One wave, numbered `level`.
-	spawner.max_waves = level
+	spawner.wave = level + level_bonus - 1 # One wave, numbered by the site's level.
+	spawner.max_waves = level + level_bonus
 	spawner.wave_cleared.connect(func(_wave: int) -> void:
 		if goal == Goal.DEFEAT:
 			_finish())
@@ -107,6 +123,19 @@ func _on_enemy_killed(enemy: Node) -> void:
 	if goal == Goal.DEFEAT:
 		progress = mini(progress + 1, enemy_count)
 		_refresh()
+
+
+## The cache opens (its loot), or the stones heal the hero completely.
+func _on_interacted(player: Player) -> void:
+	if done:
+		return
+	if goal == Goal.CACHE:
+		for reward: MaterialCost in cache_rewards:
+			EventBus.material_obtained.emit(reward.material, reward.amount)
+	elif goal == Goal.SHRINE:
+		player.health.heal(player.health.max_health)
+	(get_node("Interact") as Interactable).enabled = false
+	_finish()
 
 
 func _place_gather_nodes() -> void:
@@ -138,8 +167,10 @@ func _finish() -> void:
 func _refresh() -> void:
 	if done:
 		_sign.text = tr("REGION_SIGN_DONE") % tr(name_key)
+	elif goal == Goal.CACHE or goal == Goal.SHRINE:
+		_sign.text = "%s\n%s" % [tr(name_key), tr(GOAL_KEYS[goal])]
 	else:
-		_sign.text = tr("REGION_SIGN") % [tr(name_key), tr(_goal_key()), progress, goal_amount()]
+		_sign.text = tr("REGION_SIGN") % [tr(name_key), tr(GOAL_KEYS[goal]), progress, goal_amount()]
 	progress_changed.emit()
 
 
@@ -154,6 +185,6 @@ func _make_sign() -> void:
 	_sign.outline_size = 12
 	_sign.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	_sign.position = Vector3(0.0, sign_height, 0.0)
-	_sign.visibility_range_end = SIGN_RANGE # Farther away, the HUD's pointer guides instead of a crowd of signs.
+	_sign.visibility_range_end = sign_range # Farther away, the compass guides instead of a crowd of signs.
 	add_child(_sign)
 	_refresh()

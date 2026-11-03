@@ -44,6 +44,7 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	add_to_group("enemies") # Supports (Goblin Shaman) look for allies here.
+	_unturn_body()
 	if data:
 		data = data.variant_for(GameState.biome())
 		data.apply_look(visual)
@@ -126,6 +127,19 @@ func walk(dir: Vector3, speed_factor: float = 1.0) -> void:
 func stand_still() -> void:
 	velocity.x = 0.0
 	velocity.z = 0.0
+
+
+## Facing works on Visual's own turn, in world terms, so the body itself must not be turned (placed
+## turned in a map, or spawned inside a turned node). Any turn it starts with moves onto Visual,
+## so it still looks the way it was placed, and from then on face() points it the right way.
+func _unturn_body() -> void:
+	var yaw: float = global_rotation.y
+	if is_zero_approx(yaw):
+		return
+	var spot: Vector3 = global_position
+	global_rotation = Vector3.ZERO
+	global_position = spot
+	visual.rotation.y += yaw
 
 
 func face(dir: Vector3) -> void:

@@ -49,7 +49,9 @@ func _load_map() -> void:
 	var world: Node = map_data.scene.instantiate()
 	retro_screen.add_world(world)
 	world.add_child(MapNavigation.new())
-	add_child(OccluderFader.new())
+	var fader: OccluderFader = OccluderFader.new()
+	fader.world = world
+	add_child(fader)
 	if GameState.objective == null:
 		GameState.objective = default_objective
 	var objective_data: ObjectiveData = GameState.objective as ObjectiveData

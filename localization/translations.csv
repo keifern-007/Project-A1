@@ -581,10 +581,7 @@ UI_FULL_HP,full
 UI_LEAVE_CLASSIC,Save and leave? Press again (this stage restarts)
 MAP_WHISPERWOOD,Whisperwood
 OBJ_EXPEDITION,Expedition
-OBJ_REGIONS,Regions cleared
 REGION_HUD,%s: %s
-REGION_GOAL_DEFEAT,Defeat its goblins
-REGION_GOAL_GATHER,Gather its Moonleaf
 REGION_SIGN,%s\n%s  %d/%d
 REGION_SIGN_DONE,%s\n= Cleared
 UI_CART,Ride home (cart)
@@ -592,8 +589,6 @@ UI_CART_CONFIRM,Press [%s] again to ride home
 UI_CART_HOME,Home Early
 UI_CART_HOME_SUB,The cart took you home. You keep what you collected.
 UI_EXPEDITION_BONUS,Expedition complete: rewards x%.1f
-MAP_WHISPERWOOD_DESC,"A huge old forest: a river, a high ridge, ruins and dark woods, joined by narrow passes. Goblins have spread through all of it."
-OBJ_EXPEDITION_DESC,"Explore five zones and finish each one's goal to win (rewards x1.5). The HUD points to the nearest one. The cart at base camp takes you home early with what you collected, but that isn't a win."
 REGION_FOREST_EDGE,Forest Edge
 REGION_RIVER_BEND,River Bend
 REGION_HIGH_RIDGE,High Ridge
@@ -610,3 +605,19 @@ COMPASS_E,E
 COMPASS_S,S
 COMPASS_W,W
 COMPASS_DISTANCE,%d m
+REGION_GOAL_DEFEAT,Defeat them all
+REGION_GOAL_GATHER,Gather its Moonleaf
+REGION_GOAL_CACHE,Open the cache
+REGION_GOAL_SHRINE,Rest here (heals you)
+OBJ_REGIONS,Sites cleared
+OBJ_EXPEDITION_DESC,"Whisperwood is full of sites: goblin camps, herb patches, puffcap rings, tusker wallows, hunters' caches, old watchtowers and standing stones, different every time. Clear any 8 to win (rewards x1.5); the farther from camp, the tougher. The compass points to the nearest. The cart at base camp takes you home early with what you collected, but that isn't a win."
+MAP_WHISPERWOOD_DESC,"A huge old forest under the mountains: a river, a high ridge, ruins and dark woods, joined by narrow passes, and something new behind every tree."
+SITE_GOBLIN_CAMP,Goblin Camp
+SITE_HERB_PATCH,Herb Patch
+SITE_PUFFCAP_RING,Puffcap Ring
+SITE_TUSKER_WALLOW,Tusker Wallow
+SITE_HUNTERS_CACHE,Hunter's Cache
+SITE_WATCHTOWER,Old Watchtower
+SITE_STANDING_STONES,Standing Stones
+UI_CACHE,Open the cache
+UI_SHRINE,Rest at the stones

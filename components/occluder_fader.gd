@@ -9,7 +9,12 @@ extends Node
 
 const SEE_THROUGH: float = 0.7 ## 0 = solid, 1 = invisible.
 const AIM_HEIGHT: float = 1.2 ## Aim at the hero's chest, not their feet.
+const MAX_SIZE: float = 30.0 ## Metres. Anything wider (a floor, a whole map) is never faded.
 const NEAR_HERO: float = 0.6 ## Stop the line this far short of the hero, so what they stand beside stays solid.
+
+## The map to watch (set by RetroView). Scanning this, not "the first hero's viewport", means a map
+## that's still being freed during a scene change can never be scanned by mistake.
+var world: Node
 
 var _candidates: Array = [] # [root Node3D, AABB in world space]
 var _scanned: bool = false
@@ -17,12 +22,14 @@ var _faded: Dictionary = {} # Node3D -> true
 
 
 func _physics_process(_delta: float) -> void:
-	var player: Node3D = get_tree().get_first_node_in_group("players") as Node3D
+	if not is_instance_valid(world) or not world.is_inside_tree():
+		return
+	var player: Node3D = _player()
 	var camera: Camera3D = player.get_viewport().get_camera_3d() if player else null
 	if camera == null:
 		return
 	if not _scanned:
-		_scan(player.get_viewport())
+		_scan(world)
 	var from: Vector3 = camera.global_position
 	var to: Vector3 = player.global_position + Vector3.UP * AIM_HEIGHT
 	to -= (to - from).normalized() * NEAR_HERO
@@ -40,17 +47,26 @@ func _physics_process(_delta: float) -> void:
 	_faded = now
 
 
-## Every solid thing in the game world that can be faded, with its box.
-func _scan(viewport: Viewport) -> void:
+## This map's hero (not one from a map that's being unloaded).
+func _player() -> Node3D:
+	for node: Node in get_tree().get_nodes_in_group("players"):
+		if world.is_ancestor_of(node):
+			return node as Node3D
+	return null
+
+
+## Every solid thing on the map that can be faded, with its box.
+func _scan(map: Node) -> void:
 	_scanned = true
 	var seen: Dictionary = {}
-	for node: Node in viewport.find_children("*", "CollisionObject3D", true, false) + viewport.find_children("*", "CSGShape3D", true, false):
+	for node: Node in map.find_children("*", "CollisionObject3D", true, false) + map.find_children("*", "CSGShape3D", true, false):
 		var root: Node3D = _fade_root(node)
 		if root == null or seen.has(root):
 			continue
 		seen[root] = true
 		var box: AABB = _visual_box(root)
-		if box.size != Vector3.ZERO:
+		# Floors and whole maps never count: a map's invisible Bounds would otherwise fade the entire map.
+		if box.size != Vector3.ZERO and box.size.x <= MAX_SIZE and box.size.z <= MAX_SIZE:
 			_candidates.append([root, box])
 
 
@@ -67,8 +83,15 @@ func _fade_root(node: Node) -> Node3D:
 	for child: Node in node.get_children():
 		if child is GeometryInstance3D:
 			return node as Node3D
+	# A body with no meshes of its own: fade the prop around it, but only if that prop has meshes
+	# itself (camp-style props). Invisible walls (Bounds) fade nothing.
 	var parent: Node3D = node.get_parent() as Node3D
-	return null if parent == null or parent.is_in_group("no_fade") else parent
+	if parent == null or parent.is_in_group("no_fade"):
+		return null
+	for sibling: Node in parent.get_children():
+		if sibling is GeometryInstance3D:
+			return parent
+	return null
 
 
 func _visual_box(root: Node3D) -> AABB:

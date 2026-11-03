@@ -1,0 +1,236 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/maps/map_region.gd" id="s_region"]
+[ext_resource type="Script" path="res://components/wave_spawner.gd" id="s_spawner"]
+[ext_resource type="Script" path="res://scripts/spawn_entry.gd" id="s_entry"]
+[ext_resource type="Script" path="res://scripts/material_cost.gd" id="s_cost"]
+[ext_resource type="PackedScene" path="res://scenes/maps/interactable.tscn" id="p_interact"]
+[ext_resource type="PackedScene" path="res://scenes/maps/gather_node.tscn" id="p_gather"]
+[ext_resource type="Resource" path="res://resources/materials/moonleaf.tres" id="r_moonleaf"]
+[ext_resource type="Resource" path="res://resources/materials/goblin_ear.tres" id="r_ear"]
+[ext_resource type="Resource" path="res://resources/materials/sunbloom.tres" id="r_sunbloom"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_tent.tscn" id="p_tent"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_tent_red.tscn" id="p_tent_red"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/camp_hay.tscn" id="p_hay"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/bush.tscn" id="p_bush"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/rock.tscn" id="p_rock"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/ruin_pillar.tscn" id="p_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/ruin_wall.tscn" id="p_wall"]
+[ext_resource type="PackedScene" path="res://scenes/maps/props/bones.tscn" id="p_bones"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/puffcap.tscn" id="p_puffcap"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/tusker.tscn" id="p_tusker"]
+
+[sub_resource type="CylinderShape3D" id="Area"]
+height = 8.0
+radius = 8.0
+
+[sub_resource type="StandardMaterial3D" id="AshMat"]
+albedo_color = Color(0.25, 0.23, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="MudMat"]
+albedo_color = Color(0.33, 0.25, 0.17, 1)
+
+[sub_resource type="StandardMaterial3D" id="WoodMat"]
+albedo_color = Color(0.5, 0.35, 0.21, 1)
+
+[sub_resource type="StandardMaterial3D" id="PlankMat"]
+albedo_color = Color(0.62, 0.47, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="IronMat"]
+albedo_color = Color(0.3, 0.3, 0.33, 1)
+
+[sub_resource type="StandardMaterial3D" id="StemMat"]
+albedo_color = Color(0.9, 0.86, 0.76, 1)
+
+[sub_resource type="StandardMaterial3D" id="CapRedMat"]
+albedo_color = Color(0.78, 0.25, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="CapPurpleMat"]
+albedo_color = Color(0.55, 0.32, 0.62, 1)
+
+[sub_resource type="StandardMaterial3D" id="SpotMat"]
+albedo_color = Color(0.97, 0.95, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="AltarMat"]
+albedo_color = Color(0.58, 0.56, 0.52, 1)
+
+[sub_resource type="StandardMaterial3D" id="MossMat"]
+albedo_color = Color(0.3, 0.5, 0.26, 1)
+
+[sub_resource type="StandardMaterial3D" id="GlowMat"]
+shading_mode = 0
+albedo_color = Color(0.65, 0.95, 0.85, 1)
+
+[sub_resource type="SphereMesh" id="OrbMesh"]
+material = SubResource("GlowMat")
+radius = 0.35
+height = 0.7
+radial_segments = 8
+rings = 4
+
+[sub_resource type="CylinderMesh" id="FireMesh"]
+material = SubResource("AshMat")
+top_radius = 0.9
+bottom_radius = 1.0
+height = 0.15
+radial_segments = 10
+rings = 1
+
+[sub_resource type="CylinderMesh" id="LogMesh"]
+material = SubResource("WoodMat")
+top_radius = 0.22
+bottom_radius = 0.22
+height = 2.4
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="MudMesh"]
+material = SubResource("MudMat")
+top_radius = 3.6
+bottom_radius = 3.6
+height = 0.06
+radial_segments = 14
+rings = 1
+
+[sub_resource type="BoxMesh" id="PlankMesh"]
+material = SubResource("PlankMat")
+size = Vector3(2.6, 0.12, 2.0)
+
+[sub_resource type="CylinderMesh" id="PostMesh"]
+material = SubResource("WoodMat")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 1.8
+radial_segments = 6
+rings = 1
+
+[sub_resource type="BoxMesh" id="ChestMesh"]
+material = SubResource("WoodMat")
+size = Vector3(1.1, 0.6, 0.7)
+
+[sub_resource type="BoxMesh" id="LidMesh"]
+material = SubResource("PlankMat")
+size = Vector3(1.15, 0.2, 0.75)
+
+[sub_resource type="BoxMesh" id="BandMesh"]
+material = SubResource("IronMat")
+size = Vector3(0.1, 0.82, 0.76)
+
+[sub_resource type="CylinderMesh" id="StemMesh"]
+material = SubResource("StemMat")
+top_radius = 0.22
+bottom_radius = 0.3
+height = 1.2
+radial_segments = 6
+rings = 1
+
+[sub_resource type="SphereMesh" id="CapRedMesh"]
+material = SubResource("CapRedMat")
+radius = 0.85
+height = 0.8
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereMesh" id="CapPurpleMesh"]
+material = SubResource("CapPurpleMat")
+radius = 0.7
+height = 0.65
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereMesh" id="SpotMesh"]
+material = SubResource("SpotMat")
+radius = 0.12
+height = 0.1
+radial_segments = 5
+rings = 2
+
+[sub_resource type="BoxMesh" id="AltarMesh"]
+material = SubResource("AltarMat")
+size = Vector3(1.4, 0.8, 1.0)
+
+[sub_resource type="BoxMesh" id="MossMesh"]
+material = SubResource("MossMat")
+size = Vector3(1.5, 0.08, 1.1)
+
+[node name="HerbPatch" type="Area3D"]
+script = ExtResource("s_region")
+name_key = "SITE_HERB_PATCH"
+goal = 1
+enemy_count = 3
+level_bonus = 0
+sign_height = 5.5
+sign_range = 40.0
+gather_material = ExtResource("r_moonleaf")
+gather_amount = 4
+gather_node_scene = ExtResource("p_gather")
+
+[node name="Area" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("Area")
+
+[node name="WaveSpawner" type="Node3D" parent="."]
+script = ExtResource("s_spawner")
+autostart = false
+health_growth_per_wave = 0.15
+min_player_distance = 4.0
+
+[node name="SpawnPoint1" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07, 0.1, 2.14)
+
+[node name="SpawnPoint2" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68, 0.1, 5.46)
+
+[node name="SpawnPoint3" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39, 0.1, 3.32)
+
+[node name="SpawnPoint4" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.07, 0.1, -2.14)
+
+[node name="SpawnPoint5" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68, 0.1, -5.46)
+
+[node name="SpawnPoint6" type="Marker3D" parent="WaveSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.39, 0.1, -3.32)
+
+[node name="GatherPoints" type="Node3D" parent="."]
+
+[node name="GatherPoint1" type="Marker3D" parent="GatherPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.62, 0, 2.04)
+
+[node name="GatherPoint2" type="Marker3D" parent="GatherPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.57, 0, 0.38)
+
+[node name="GatherPoint3" type="Marker3D" parent="GatherPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.96, 0, -2.42)
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Bush1" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(0.2194, 0, 1.0779, 0, 1.1000, 0, -1.0779, 0, 0.2194, 5.10, 0.00, 1.03)
+
+[node name="Bush2" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(0.8609, 0, 0.6847, 0, 1.1000, 0, -0.6847, 0, 0.8609, 3.24, 0.00, 4.07)
+
+[node name="Bush4" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(0.8238, 0, -0.7289, 0, 1.1000, 0, 0.7289, 0, 0.8238, -3.44, 0.00, 3.90)
+
+[node name="Bush5" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(0.1626, 0, -1.0879, 0, 1.1000, 0, 1.0879, 0, 0.1626, -5.14, 0.00, 0.77)
+
+[node name="Bush6" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(-0.5747, 0, -0.9379, 0, 1.1000, 0, 0.9379, 0, -0.5747, -4.44, 0.00, -2.71)
+
+[node name="Bush8" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(-1.0235, 0, 0.4031, 0, 1.1000, 0, -0.4031, 0, -1.0235, 1.90, 0.00, -4.84)
+
+[node name="Bush9" parent="Props" instance=ExtResource("p_bush")]
+transform = Transform3D(-0.5250, 0, 0.9667, 0, 1.1000, 0, -0.9667, 0, -0.5250, 4.57, 0.00, -2.49)
+
+[node name="Moss1" type="MeshInstance3D" parent="Props"]
+transform = Transform3D(0.9211, 0, 0.3894, 0, 1.0000, 0, -0.3894, 0, 0.9211, -1.00, 0.05, 1.20)
+mesh = SubResource("MossMesh")
+
+[node name="Moss2" type="MeshInstance3D" parent="Props"]
+transform = Transform3D(0.3624, 0, 0.9320, 0, 1.0000, 0, -0.9320, 0, 0.3624, 1.40, 0.05, -1.30)
+mesh = SubResource("MossMesh")

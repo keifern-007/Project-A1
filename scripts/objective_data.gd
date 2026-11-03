@@ -37,6 +37,9 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASS
 @export var scout_boss: EnemyData ## What the Mission Board's scouting report describes. Empty = no report.
 @export var hazard: HazardData ## Lasting danger once the boss appears. Empty = none.
 
+@export_group("Expedition") ## Big maps.
+@export var sites_to_clear: int = 0 ## Sites to finish to win. 0 = every site on the map.
+
 @export_group("Game Mode") ## Endless Boss and Classic: a run made of several steps. See ModeRun.
 @export var boss_sequence: Array[ObjectiveData] = [] ## In order. Each boss's only_on_map is where it's fought.
 @export var stage_objective: ObjectiveData ## The survival stages before each boss.

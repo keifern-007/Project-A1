@@ -21,12 +21,20 @@
 [ext_resource type="PackedScene" path="res://scenes/maps/props/camp_hay.tscn" id="p_hay"]
 [ext_resource type="PackedScene" path="res://scenes/maps/interactable.tscn" id="p_interact"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/goblin.tscn" id="p_goblin"]
+[ext_resource type="Shader" path="res://shaders/mountain_sky.gdshader" id="sh_sky"]
+[ext_resource type="Script" path="res://scenes/maps/site_scatter.gd" id="s_scatter"]
+[ext_resource type="Script" path="res://scripts/site_entry.gd" id="s_site"]
+[ext_resource type="Script" path="res://scenes/maps/ground_cover.gd" id="s_cover"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_goblin_camp.tscn" id="site_goblin_camp"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_herb_patch.tscn" id="site_herb_patch"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_puffcap_ring.tscn" id="site_puffcap_ring"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_tusker_wallow.tscn" id="site_tusker_wallow"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_hunters_cache.tscn" id="site_hunters_cache"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_watchtower.tscn" id="site_watchtower"]
+[ext_resource type="PackedScene" path="res://scenes/maps/site_standing_stones.tscn" id="site_standing_stones"]
 
-[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
-sky_top_color = Color(0.38, 0.58, 0.78, 1)
-sky_horizon_color = Color(0.74, 0.82, 0.7, 1)
-ground_bottom_color = Color(0.2, 0.28, 0.16, 1)
-ground_horizon_color = Color(0.74, 0.82, 0.7, 1)
+[sub_resource type="ShaderMaterial" id="SkyMat"]
+shader = ExtResource("sh_sky")
 
 [sub_resource type="Sky" id="Sky"]
 sky_material = SubResource("SkyMat")
@@ -121,25 +129,54 @@ rings = 1
 material = SubResource("WaterMat")
 size = Vector2(122.0, 14.0)
 
-[sub_resource type="CylinderShape3D" id="ForestEdgeArea"]
-height = 16.0
-radius = 20.0
+[sub_resource type="Resource" id="Site_goblin_camp"]
+script = ExtResource("s_site")
+scene = ExtResource("site_goblin_camp")
+weight = 1.4
+max_count = 6
+allowed_tags = PackedStringArray("land", "ridge")
 
-[sub_resource type="CylinderShape3D" id="RiverBendArea"]
-height = 16.0
-radius = 17.0
+[sub_resource type="Resource" id="Site_herb_patch"]
+script = ExtResource("s_site")
+scene = ExtResource("site_herb_patch")
+weight = 1.0
+max_count = 4
+allowed_tags = PackedStringArray("land")
 
-[sub_resource type="CylinderShape3D" id="HighRidgeArea"]
-height = 16.0
-radius = 17.0
+[sub_resource type="Resource" id="Site_puffcap_ring"]
+script = ExtResource("s_site")
+scene = ExtResource("site_puffcap_ring")
+weight = 0.8
+max_count = 3
+allowed_tags = PackedStringArray("land")
 
-[sub_resource type="CylinderShape3D" id="OldRuinsArea"]
-height = 16.0
-radius = 20.0
+[sub_resource type="Resource" id="Site_tusker_wallow"]
+script = ExtResource("s_site")
+scene = ExtResource("site_tusker_wallow")
+weight = 0.8
+max_count = 3
+allowed_tags = PackedStringArray("land")
 
-[sub_resource type="CylinderShape3D" id="DeepWoodsArea"]
-height = 16.0
-radius = 20.0
+[sub_resource type="Resource" id="Site_hunters_cache"]
+script = ExtResource("s_site")
+scene = ExtResource("site_hunters_cache")
+weight = 0.7
+max_count = 3
+allowed_tags = PackedStringArray("land", "ridge")
+
+[sub_resource type="Resource" id="Site_watchtower"]
+script = ExtResource("s_site")
+scene = ExtResource("site_watchtower")
+weight = 0.7
+max_count = 3
+allowed_tags = PackedStringArray("land", "ridge")
+
+[sub_resource type="Resource" id="Site_standing_stones"]
+script = ExtResource("s_site")
+scene = ExtResource("site_standing_stones")
+weight = 0.5
+max_count = 2
+allowed_tags = PackedStringArray("land", "ridge")
 
 [node name="Whisperwood" type="Node3D"]
 
@@ -1247,134 +1284,35 @@ transform = Transform3D(-0.00722, 0.00000, -1.59998, 0.00000, 1.60000, 0.00000, 
 [node name="Bones6" parent="Props" instance=ExtResource("p_bones")]
 transform = Transform3D(-1.57675, 0.00000, 0.27177, 0.00000, 1.60000, 0.00000, -0.27177, 0.00000, -1.57675, -49.544, 0.000, -68.097)
 
-[node name="Tree251" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-0.53105, 0.00000, 1.05187, 0.00000, 1.13651, 0.00000, -1.05187, 0.00000, -0.53105, -69.833, 0.000, 36.847)
-
 [node name="Rock18" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.10533, 0.00000, -1.36459, 0.00000, 1.27413, 0.00000, 1.36459, 0.00000, 0.10533, 49.329, 0.000, -10.608)
+transform = Transform3D(0.81977, 0.00000, 1.09068, 0.00000, 1.29856, 0.00000, -1.09068, 0.00000, 0.81977, -48.234, 0.000, 65.656)
+
+[node name="Tree251" parent="Props" instance=ExtResource("p_pine")]
+transform = Transform3D(0.94031, 0.00000, -0.48175, 0.00000, 1.08319, 0.00000, 0.48175, 0.00000, 0.94031, 28.517, 0.000, -87.746)
 
 [node name="Rock19" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.60802, 0.00000, 0.53562, 0.00000, 0.91756, 0.00000, -0.53562, 0.00000, -0.60802, -13.503, 0.000, -18.865)
-
-[node name="Tree252" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-0.62333, 0.00000, 0.74975, 0.00000, 1.03811, 0.00000, -0.74975, 0.00000, -0.62333, -34.872, 0.000, 77.088)
-
-[node name="Tree253" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(0.46166, 0.00000, 1.22787, 0.00000, 1.43688, 0.00000, -1.22787, 0.00000, 0.46166, 68.951, 0.000, 56.678)
+transform = Transform3D(-0.59536, 0.00000, 0.64408, 0.00000, 0.84554, 0.00000, -0.64408, 0.00000, -0.59536, -74.147, 0.000, 32.078)
 
 [node name="Rock20" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.39912, 0.00000, 0.84679, 0.00000, 0.97283, 0.00000, -0.84679, 0.00000, -0.39912, 91.971, 0.000, 82.850)
+transform = Transform3D(-0.06680, 0.00000, 1.05163, 0.00000, 1.18369, 0.00000, -1.05163, 0.00000, -0.06680, -63.302, 0.000, 38.934)
 
 [node name="Rock21" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.64352, 0.00000, -0.65379, 0.00000, 1.01860, 0.00000, 0.65379, 0.00000, 0.64352, 67.583, 0.000, -18.401)
+transform = Transform3D(0.85581, 0.00000, 0.03797, 0.00000, 0.77616, 0.00000, -0.03797, 0.00000, 0.85581, 93.902, 0.000, -5.085)
 
 [node name="Rock22" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-1.14892, 0.00000, -0.42900, 0.00000, 1.12337, 0.00000, 0.42900, 0.00000, -1.14892, -23.075, 0.000, 27.823)
+transform = Transform3D(0.14509, 0.00000, -0.84434, 0.00000, 0.92238, 0.00000, 0.84434, 0.00000, 0.14509, -80.014, 0.000, 3.252)
 
 [node name="Rock23" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.76484, 0.00000, 0.64822, 0.00000, 0.93829, 0.00000, -0.64822, 0.00000, 0.76484, 10.256, 0.000, 85.769)
-
-[node name="Tree254" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-1.05999, 0.00000, -0.46149, 0.00000, 1.10185, 0.00000, 0.46149, 0.00000, -1.05999, -42.697, 0.000, -27.957)
-
-[node name="Tree255" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(0.95077, 0.00000, -0.90167, 0.00000, 1.32905, 0.00000, 0.90167, 0.00000, 0.95077, -52.955, 0.000, 91.904)
-
-[node name="Tree256" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(1.00025, 0.00000, 0.38071, 0.00000, 1.02037, 0.00000, -0.38071, 0.00000, 1.00025, -20.748, 0.000, 9.647)
+transform = Transform3D(-0.21593, 0.00000, 0.91584, 0.00000, 0.88623, 0.00000, -0.91584, 0.00000, -0.21593, 19.004, 0.000, -87.130)
 
 [node name="Rock24" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.37065, 0.00000, -0.79983, 0.00000, 0.90896, 0.00000, 0.79983, 0.00000, -0.37065, -12.150, 0.000, -10.563)
-
-[node name="Tree257" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(0.36829, 0.00000, 1.03901, 0.00000, 1.09061, 0.00000, -1.03901, 0.00000, 0.36829, 76.679, 0.000, 7.200)
+transform = Transform3D(-0.96746, 0.00000, 0.09881, 0.00000, 0.94589, 0.00000, -0.09881, 0.00000, -0.96746, -0.366, 0.000, 77.804)
 
 [node name="Rock25" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.11086, 0.00000, -0.83180, 0.00000, 0.77477, 0.00000, 0.83180, 0.00000, 0.11086, -53.991, 0.000, 77.323)
-
-[node name="Tree258" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(0.35471, 0.00000, 1.05594, 0.00000, 1.21410, 0.00000, -1.05594, 0.00000, 0.35471, 56.668, 0.000, 94.436)
-
-[node name="Tree259" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-0.16377, 0.00000, 1.13723, 0.00000, 1.28830, 0.00000, -1.13723, 0.00000, -0.16377, 27.845, 0.000, -83.054)
-
-[node name="Tree260" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-0.55018, 0.00000, 1.05260, 0.00000, 1.28614, 0.00000, -1.05260, 0.00000, -0.55018, -10.016, 0.000, -76.549)
-
-[node name="Tree261" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-1.00208, 0.00000, 0.09004, 0.00000, 1.13115, 0.00000, -0.09004, 0.00000, -1.00208, 36.020, 4.000, -65.108)
+transform = Transform3D(-0.17685, 0.00000, 0.80251, 0.00000, 0.80208, 0.00000, -0.80251, 0.00000, -0.17685, 79.011, 0.000, 66.431)
 
 [node name="Rock26" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.14821, 0.00000, -1.28472, 0.00000, 1.23618, 0.00000, 1.28472, 0.00000, 0.14821, -83.522, 0.000, 4.450)
-
-[node name="Rock27" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(1.10188, 0.00000, 0.81660, 0.00000, 1.55825, 0.00000, -0.81660, 0.00000, 1.10188, 26.750, 0.000, -17.688)
-
-[node name="Rock28" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(1.30895, 0.00000, 0.35414, 0.00000, 1.30893, 0.00000, -0.35414, 0.00000, 1.30895, 28.564, 0.000, -46.816)
-
-[node name="Rock29" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.80339, 0.00000, 0.59202, 0.00000, 1.06332, 0.00000, -0.59202, 0.00000, 0.80339, -19.361, 0.000, 81.553)
-
-[node name="Tree262" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-1.24561, 0.00000, -0.17402, 0.00000, 1.18466, 0.00000, 0.17402, 0.00000, -1.24561, 41.969, 0.000, -30.438)
-
-[node name="Tree263" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-0.22197, 0.00000, -1.24993, 0.00000, 1.35056, 0.00000, 1.24993, 0.00000, -0.22197, 43.553, 0.000, -88.033)
-
-[node name="Rock30" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.79273, 0.00000, -0.71833, 0.00000, 1.05753, 0.00000, 0.71833, 0.00000, 0.79273, -20.593, 0.000, 84.952)
-
-[node name="Rock31" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.23887, 0.00000, -1.29739, 0.00000, 1.44452, 0.00000, 1.29739, 0.00000, -0.23887, 74.260, 0.000, -8.986)
-
-[node name="Tree264" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(0.99581, 0.00000, -0.07811, 0.00000, 1.04050, 0.00000, 0.07811, 0.00000, 0.99581, -77.117, 0.000, -50.618)
-
-[node name="Tree265" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-0.03732, 0.00000, -1.27571, 0.00000, 1.19363, 0.00000, 1.27571, 0.00000, -0.03732, -60.239, 0.000, -37.955)
-
-[node name="Tree266" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(0.46000, 0.00000, -1.23287, 0.00000, 1.20207, 0.00000, 1.23287, 0.00000, 0.46000, 82.403, 0.000, -42.878)
-
-[node name="Tree267" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-1.05594, 0.00000, -0.38240, 0.00000, 1.13120, 0.00000, 0.38240, 0.00000, -1.05594, 5.811, 0.000, -37.193)
-
-[node name="Rock32" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.82951, 0.00000, 0.32177, 0.00000, 0.94878, 0.00000, -0.32177, 0.00000, -0.82951, -46.788, 0.000, 29.783)
-
-[node name="Tree268" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-1.01856, 0.00000, -0.79132, 0.00000, 1.34796, 0.00000, 0.79132, 0.00000, -1.01856, 18.316, 0.000, -53.397)
-
-[node name="Rock33" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.62342, 0.00000, 0.52503, 0.00000, 0.82518, 0.00000, -0.52503, 0.00000, -0.62342, -75.192, 0.000, 72.004)
-
-[node name="Tree269" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(1.00643, 0.00000, 0.20698, 0.00000, 1.14671, 0.00000, -0.20698, 0.00000, 1.00643, -88.705, 0.000, -21.145)
-
-[node name="Tree270" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(0.42291, 0.00000, 1.16381, 0.00000, 1.27714, 0.00000, -1.16381, 0.00000, 0.42291, -76.021, 0.000, 83.195)
-
-[node name="Tree271" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(-0.28991, 0.00000, -1.26481, 0.00000, 1.25485, 0.00000, 1.26481, 0.00000, -0.28991, -8.715, 0.000, 27.514)
-
-[node name="Rock34" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(-0.61204, 0.00000, 1.08579, 0.00000, 1.27784, 0.00000, -1.08579, 0.00000, -0.61204, -7.060, 0.000, 12.637)
-
-[node name="Tree272" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(-0.97860, 0.00000, -0.01283, 0.00000, 0.94475, 0.00000, 0.01283, 0.00000, -0.97860, -72.651, 0.000, -91.430)
-
-[node name="Tree273" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(0.95662, 0.00000, 0.80783, 0.00000, 1.16869, 0.00000, -0.80783, 0.00000, 0.95662, 25.883, 0.000, -26.653)
-
-[node name="Tree274" parent="Props" instance=ExtResource("p_pine")]
-transform = Transform3D(0.51243, 0.00000, 0.85385, 0.00000, 1.13249, 0.00000, -0.85385, 0.00000, 0.51243, -88.060, 0.000, -79.220)
-
-[node name="Tree275" parent="Props" instance=ExtResource("p_tree")]
-transform = Transform3D(0.29858, 0.00000, -1.22047, 0.00000, 1.26324, 0.00000, 1.22047, 0.00000, 0.29858, 19.478, 0.000, -10.722)
-
-[node name="Rock35" parent="Props" instance=ExtResource("p_rock")]
-transform = Transform3D(0.91377, 0.00000, 0.31771, 0.00000, 1.06825, 0.00000, -0.31771, 0.00000, 0.91377, 77.093, 0.000, -7.916)
+transform = Transform3D(1.19620, 0.00000, 0.46797, 0.00000, 1.22884, 0.00000, -0.46797, 0.00000, 1.19620, -93.525, 0.000, -87.357)
 
 [node name="CampTent1" parent="Props" instance=ExtResource("p_tent")]
 transform = Transform3D(0.42172, 0.00000, 0.73801, 0.00000, 0.85000, 0.00000, -0.73801, 0.00000, 0.42172, 69.000, 0.000, 76.000)
@@ -1404,233 +1342,25 @@ transform = Transform3D(0.82534, 0.00000, 0.56464, 0.00000, 1.00000, 0.00000, -0
 transform = Transform3D(0.85980, 0.00000, 0.26597, 0.00000, 0.90000, 0.00000, -0.26597, 0.00000, 0.85980, 86.000, 0.000, 78.000)
 
 [node name="Wanderer1" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(0.91869, 0.00000, -0.39499, 0.00000, 1.00000, 0.00000, 0.39499, 0.00000, 0.91869, 30.000, 0.100, 12.000)
+transform = Transform3D(0.56622, 0.00000, -0.82425, 0.00000, 1.00000, 0.00000, 0.82425, 0.00000, 0.56622, 30.000, 0.100, 12.000)
 
 [node name="Wanderer2" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(0.69152, 0.00000, 0.72235, 0.00000, 1.00000, 0.00000, -0.72235, 0.00000, 0.69152, 33.000, 0.100, 14.000)
+transform = Transform3D(0.91838, 0.00000, -0.39569, 0.00000, 1.00000, 0.00000, 0.39569, 0.00000, 0.91838, 33.000, 0.100, 14.000)
 
 [node name="Wanderer3" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(-0.67207, 0.00000, 0.74049, 0.00000, 1.00000, 0.00000, -0.74049, 0.00000, -0.67207, -8.000, 0.100, 2.000)
+transform = Transform3D(-0.74154, 0.00000, 0.67091, 0.00000, 1.00000, 0.00000, -0.67091, 0.00000, -0.74154, -8.000, 0.100, 2.000)
 
 [node name="Wanderer4" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(0.90868, 0.00000, 0.41749, 0.00000, 1.00000, 0.00000, -0.41749, 0.00000, 0.90868, -30.000, 0.100, 30.000)
+transform = Transform3D(-0.54450, 0.00000, 0.83876, 0.00000, 1.00000, 0.00000, -0.83876, 0.00000, -0.54450, -30.000, 0.100, 30.000)
 
 [node name="Wanderer5" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(0.37167, 0.00000, 0.92837, 0.00000, 1.00000, 0.00000, -0.92837, 0.00000, 0.37167, 40.000, 4.100, -60.000)
+transform = Transform3D(-0.82610, 0.00000, 0.56352, 0.00000, 1.00000, 0.00000, -0.56352, 0.00000, -0.82610, 40.000, 4.100, -60.000)
 
 [node name="Wanderer6" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(-0.96645, 0.00000, -0.25686, 0.00000, 1.00000, 0.00000, 0.25686, 0.00000, -0.96645, -33.000, 0.100, -30.000)
+transform = Transform3D(-0.34697, 0.00000, -0.93788, 0.00000, 1.00000, 0.00000, 0.93788, 0.00000, -0.34697, -33.000, 0.100, -30.000)
 
 [node name="Wanderer7" parent="." instance=ExtResource("p_goblin")]
-transform = Transform3D(0.85303, 0.00000, -0.52185, 0.00000, 1.00000, 0.00000, 0.52185, 0.00000, 0.85303, -60.000, 0.100, 30.000)
-
-[node name="ForestEdge" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.0, 0, 22.0)
-script = ExtResource("s_region")
-name_key = "REGION_FOREST_EDGE"
-goal = 1
-level = 2
-enemy_count = 5
-sign_height = 10.0
-gather_material = ExtResource("r_moonleaf")
-gather_amount = 8
-gather_node_scene = ExtResource("p_gather")
-
-[node name="Area" type="CollisionShape3D" parent="ForestEdge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("ForestEdgeArea")
-
-[node name="WaveSpawner" type="Node3D" parent="ForestEdge"]
-script = ExtResource("s_spawner")
-autostart = false
-health_growth_per_wave = 0.15
-min_player_distance = 6.0
-
-[node name="SpawnPoint1" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.14, 0.10, 2.16)
-
-[node name="SpawnPoint2" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.90, 0.10, -4.90)
-
-[node name="SpawnPoint3" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.77, 0.10, -5.92)
-
-[node name="SpawnPoint4" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.41, 0.10, 5.67)
-
-[node name="SpawnPoint5" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.61, 0.10, -10.06)
-
-[node name="SpawnPoint6" type="Marker3D" parent="ForestEdge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.20, 0.10, 3.82)
-
-[node name="GatherPoints" type="Node3D" parent="ForestEdge"]
-
-[node name="GatherPoint1" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.02, 0.00, -4.06)
-
-[node name="GatherPoint2" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.56, 0.00, 4.54)
-
-[node name="GatherPoint3" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.44, 0.00, -14.00)
-
-[node name="GatherPoint4" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.87, 0.00, -5.45)
-
-[node name="GatherPoint5" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.43, 0.00, -6.40)
-
-[node name="GatherPoint6" type="Marker3D" parent="ForestEdge/GatherPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.60, 0.00, -8.48)
-
-[node name="RiverBend" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.0, 0, 53.0)
-script = ExtResource("s_region")
-name_key = "REGION_RIVER_BEND"
-goal = 0
-level = 2
-enemy_count = 8
-sign_height = 10.0
-
-[node name="Area" type="CollisionShape3D" parent="RiverBend"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("RiverBendArea")
-
-[node name="WaveSpawner" type="Node3D" parent="RiverBend"]
-script = ExtResource("s_spawner")
-autostart = false
-health_growth_per_wave = 0.15
-min_player_distance = 6.0
-
-[node name="SpawnPoint1" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.95, -1.40, 1.59)
-
-[node name="SpawnPoint2" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.70, -1.40, 3.96)
-
-[node name="SpawnPoint3" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.96, 0.10, -10.88)
-
-[node name="SpawnPoint4" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.32, -1.40, -6.56)
-
-[node name="SpawnPoint5" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.12, -1.40, -5.55)
-
-[node name="SpawnPoint6" type="Marker3D" parent="RiverBend/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.99, 0.10, -12.64)
-
-[node name="HighRidge" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.0, 0, -55.0)
-script = ExtResource("s_region")
-name_key = "REGION_HIGH_RIDGE"
-goal = 0
-level = 3
-enemy_count = 10
-sign_height = 10.0
-
-[node name="Area" type="CollisionShape3D" parent="HighRidge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("HighRidgeArea")
-
-[node name="WaveSpawner" type="Node3D" parent="HighRidge"]
-script = ExtResource("s_spawner")
-autostart = false
-health_growth_per_wave = 0.15
-min_player_distance = 6.0
-
-[node name="SpawnPoint1" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.45, 4.10, -13.29)
-
-[node name="SpawnPoint2" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.27, 4.10, 10.76)
-
-[node name="SpawnPoint3" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.53, 4.10, -10.32)
-
-[node name="SpawnPoint4" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.78, 4.10, 14.00)
-
-[node name="SpawnPoint5" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.15, 4.10, 0.62)
-
-[node name="SpawnPoint6" type="Marker3D" parent="HighRidge/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.01, 4.10, 11.92)
-
-[node name="OldRuins" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.0, 0, 5.0)
-script = ExtResource("s_region")
-name_key = "REGION_OLD_RUINS"
-goal = 0
-level = 3
-enemy_count = 10
-sign_height = 10.0
-
-[node name="Area" type="CollisionShape3D" parent="OldRuins"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("OldRuinsArea")
-
-[node name="WaveSpawner" type="Node3D" parent="OldRuins"]
-script = ExtResource("s_spawner")
-autostart = false
-health_growth_per_wave = 0.15
-min_player_distance = 6.0
-
-[node name="SpawnPoint1" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.90, 0.10, 9.46)
-
-[node name="SpawnPoint2" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.45, 0.10, -10.96)
-
-[node name="SpawnPoint3" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.49, 0.10, -7.54)
-
-[node name="SpawnPoint4" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.73, 0.10, 11.13)
-
-[node name="SpawnPoint5" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.82, 0.10, 15.42)
-
-[node name="SpawnPoint6" type="Marker3D" parent="OldRuins/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.93, 0.10, -0.04)
-
-[node name="DeepWoods" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.0, 0, -72.0)
-script = ExtResource("s_region")
-name_key = "REGION_DEEP_WOODS"
-goal = 0
-level = 5
-enemy_count = 14
-sign_height = 10.0
-
-[node name="Area" type="CollisionShape3D" parent="DeepWoods"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("DeepWoodsArea")
-
-[node name="WaveSpawner" type="Node3D" parent="DeepWoods"]
-script = ExtResource("s_spawner")
-autostart = false
-health_growth_per_wave = 0.15
-min_player_distance = 6.0
-
-[node name="SpawnPoint1" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.39, 0.10, 8.76)
-
-[node name="SpawnPoint2" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0.10, 11.48)
-
-[node name="SpawnPoint3" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.64, 0.10, 10.06)
-
-[node name="SpawnPoint4" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.24, 0.10, -11.76)
-
-[node name="SpawnPoint5" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.57, 0.10, 7.45)
-
-[node name="SpawnPoint6" type="Marker3D" parent="DeepWoods/WaveSpawner"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.97, 0.10, -5.96)
+transform = Transform3D(-0.98473, 0.00000, -0.17406, 0.00000, 1.00000, 0.00000, 0.17406, 0.00000, -0.98473, -60.000, 0.100, 30.000)
 
 [node name="HuntStart" type="Marker3D" parent="." groups=["boss_spawns"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.0, 0.2, -72.0)
@@ -1651,6 +1381,112 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.0, 0.2, 5.0)
 
 [node name="RoamDeepWoods" type="Marker3D" parent="RoamPoints" groups=["roam_points"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.0, 0.2, -72.0)
+
+[node name="Sites" type="Node3D" parent="."]
+script = ExtResource("s_scatter")
+sites = Array[ExtResource("s_site")]([SubResource("Site_goblin_camp"), SubResource("Site_herb_patch"), SubResource("Site_puffcap_ring"), SubResource("Site_tusker_wallow"), SubResource("Site_hunters_cache"), SubResource("Site_watchtower"), SubResource("Site_standing_stones")])
+origin = Vector3(76.0, 0, 80.0)
+
+[node name="Slot1" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.77, 0.00, 88.23)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot2" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.06, 0.00, -30.12)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot3" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.98, 0.00, -12.89)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot4" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -81.46, 0.00, 22.85)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot5" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64.61, 0.00, -26.62)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot6" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67.95, 0.00, 80.39)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot7" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.18, 0.00, 75.13)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot8" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.08, 0.00, 90.16)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot9" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.90, 0.00, -89.75)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot10" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.65, 0.00, -24.49)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot11" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.01, 0.00, 21.79)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot12" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.87, 0.00, 78.55)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot13" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42, 0.00, 90.47)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot14" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.59, 0.00, -77.84)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot15" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.67, 0.00, -28.97)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot16" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.50, 0.00, -11.55)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot17" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.96, 0.00, 48.00)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot18" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.02, 0.00, 89.06)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot19" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.28, 0.00, -81.56)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot20" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.11, 0.00, 61.62)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot21" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78.20, 0.00, -80.94)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot22" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.34, 0.00, -26.71)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot23" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88.37, 0.00, 22.31)
+metadata/tags = PackedStringArray("land")
+
+[node name="Slot24" type="Marker3D" parent="Sites"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89.69, 0.00, 54.25)
+metadata/tags = PackedStringArray("land")
+
+[node name="GroundCover" type="Node3D" parent="."]
+script = ExtResource("s_cover")
+half_size = 99.0
+clearings = Array[Vector3]([Vector3(76.0, 80.0, 12)])
 
 [node name="Scenery" type="Node3D" parent="."]
 script = ExtResource("s_scenery")
