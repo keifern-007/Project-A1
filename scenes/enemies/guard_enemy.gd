@@ -94,6 +94,10 @@ func _process_chase(delta: float) -> void:
 
 
 func _change_state(new_state: State) -> void:
+	# A guard break is deferred, and the same hit may have killed us. Animating now would cancel
+	# the death tween that removes the body, leaving a corpse that never lets the wave end.
+	if dead:
+		return
 	if state == State.SHOVE:
 		shove_hitbox.active = false
 	if state == State.STAGGER:
