@@ -1,6 +1,7 @@
 extends Control
-## The Mission Board panel (opened from the camp): pick a map, an objective and a difficulty,
-## then start the run.
+## The Mission Board panel (opened from the camp). First page: Rogue or Expeditions (MapData.category,
+## see MissionCategoryView). Then pick one of that page's maps, an objective (grouped by type, each with
+## a tag naming it: ObjectiveTag) and a difficulty, and start the run.
 ## Remembers the last choice (GameState keeps it).
 
 signal closed
@@ -17,6 +18,9 @@ const BUTTON_SIZE: Vector2 = Vector2(280, 38) ## All the objectives and modes mu
 var _map: MapData
 var _objective: ObjectiveData
 var _challenge: ChallengeData
+var _category: MapData.Category = MapData.Category.ROGUE
+var _category_view: MissionCategoryView
+var _map_buttons: Array[Button] = []
 var _objective_buttons: Array[Button] = []
 var _abandon_button: Button
 var _abandon_armed: bool = false
@@ -27,30 +31,76 @@ var _abandon_armed: bool = false
 @onready var details: Label = %Details
 @onready var start_button: Button = %StartButton
 @onready var back_button: Button = %BackButton
+@onready var title: Label = $Margin/VBox/Title
+@onready var board: Array[Control] = [$Margin/VBox/ColumnsScroll, $Margin/VBox/DetailsScroll, $Margin/VBox/Buttons]
 
 
 func _ready() -> void:
-	var map_buttons: Array[Button] = _fill_list(map_list, maps, _select_map)
-	_objective_buttons = _fill_list(objective_list, objectives, _select_objective)
+	objectives = ObjectiveTag.grouped(objectives)
+	_map_buttons = _fill_list(map_list, maps, _select_map)
+	_objective_buttons = _fill_list(objective_list, objectives, _select_objective, true)
 	var challenge_buttons: Array[Button] = _fill_list(challenge_list, challenges, _select_challenge)
 	start_button.pressed.connect(_start)
-	back_button.pressed.connect(closed.emit)
-	_preselect(map_buttons, maps, GameState.map, _select_map)
+	back_button.pressed.connect(_show_categories)
+	_preselect(_map_buttons, maps, GameState.map, _select_map)
 	_preselect(_objective_buttons, objectives, GameState.objective, _select_objective)
 	_preselect(challenge_buttons, challenges, GameState.challenge, _select_challenge)
 	_refresh_objectives()
-	if not _objective_buttons.is_empty():
-		_objective_buttons[0].grab_focus()
+	_category_view = MissionCategoryView.new()
+	_category_view.chosen.connect(_open_category)
+	_category_view.back.connect(closed.emit)
+	$Margin/VBox.add_child(_category_view)
+	$Margin/VBox.move_child(_category_view, title.get_index() + 2)
+	if _map:
+		_category = _map.category
+	_show_categories()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		closed.emit()
+		if _category_view.visible:
+			closed.emit()
+		else:
+			_show_categories()
+
+
+## The first page. Focus starts on the page you used last.
+func _show_categories() -> void:
+	title.text = tr("UI_MISSION_BOARD")
+	_category_view.visible = true
+	for part: Control in board:
+		part.visible = false
+	_category_view.focus(_category)
+
+
+## A page of maps: only that category's maps are listed. Keeps the selected map if it's on this page.
+func _open_category(category: MapData.Category) -> void:
+	_category = category
+	title.text = "%s  —  %s" % [tr("UI_MISSION_BOARD"), tr("UI_ROGUE" if category == MapData.Category.ROGUE else "UI_EXPEDITIONS")]
+	_category_view.visible = false
+	for part: Control in board:
+		part.visible = true
+	var first: int = -1
+	for i: int in maps.size():
+		var on_page: bool = maps[i].category == category
+		_map_buttons[i].visible = on_page
+		if on_page and first < 0:
+			first = i
+	if first >= 0 and (_map == null or _map.category != category):
+		_map_buttons[first].button_pressed = true
+		_select_map(maps[first])
+	for button: Button in _objective_buttons:
+		if button.button_pressed and button.is_visible_in_tree():
+			button.grab_focus()
+			return
+	if first >= 0:
+		_map_buttons[first].grab_focus()
 
 
 ## One toggle button per entry; a ButtonGroup makes them behave like radio buttons.
-func _fill_list(list: VBoxContainer, entries: Array, on_select: Callable) -> Array[Button]:
+## tagged = objectives: each button sits in a row behind a tag naming its type.
+func _fill_list(list: VBoxContainer, entries: Array, on_select: Callable, tagged: bool = false) -> Array[Button]:
 	var group: ButtonGroup = ButtonGroup.new()
 	var buttons: Array[Button] = []
 	for entry: Resource in entries:
@@ -68,7 +118,14 @@ func _fill_list(list: VBoxContainer, entries: Array, on_select: Callable) -> Arr
 		button.custom_minimum_size = BUTTON_SIZE
 		button.add_theme_font_size_override("font_size", BUTTON_FONT_SIZE)
 		button.pressed.connect(on_select.bind(entry))
-		list.add_child(button)
+		if tagged:
+			var row: HBoxContainer = HBoxContainer.new()
+			row.add_theme_constant_override("separation", 8)
+			row.add_child(ObjectiveTag.make((entry as ObjectiveData).type))
+			row.add_child(button)
+			list.add_child(row)
+		else:
+			list.add_child(button)
 		buttons.append(button)
 	return buttons
 
@@ -93,7 +150,7 @@ func _refresh_objectives() -> void:
 	var first_available: int = -1
 	for i: int in objectives.size():
 		var available: bool = objectives[i].available_on(_map)
-		_objective_buttons[i].visible = available
+		_objective_buttons[i].get_parent().visible = available # The row, with its tag.
 		if available and first_available < 0:
 			first_available = i
 	if _objective != null and not _objective.available_on(_map) and first_available >= 0:

@@ -46,6 +46,7 @@ script = ExtResource("1_data")
 name_key = "MAP_FROSTVEIN"
 description_key = "MAP_FROSTVEIN_DESC"
 required_rank = 7
+category = 1
 own_objectives_only = true
 biome = ExtResource("3_biome")
 scene = ExtResource("2_scene")
