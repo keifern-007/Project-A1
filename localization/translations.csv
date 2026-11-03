@@ -639,3 +639,39 @@ UI_TAG_HUNT,HUNT
 UI_TAG_ENDLESS,ENDLESS
 UI_TAG_CLASSIC,CLASSIC
 UI_TAG_OTHER,OTHER
+UI_MARKETPLACE,Marketplace
+UI_COINS_OWNED,Coins: %d
+UI_COINS_EARNED,+%d Coins  (%d total)
+UI_MARKET_BUY,Buy
+UI_MARKET_SELL,Sell
+UI_MARKET_BUY_HINT,Potions only for now. Bought potions go to camp: pack them at the Gear Rack's Inventory.
+UI_MARKET_BUY_INFO,%s  |  %d owned
+UI_MARKET_BUY_BUTTON,Buy (%d)
+UI_MARKET_NO_COINS,Not enough coins
+UI_MARKET_MATERIALS,Materials
+UI_MARKET_ITEMS,Equipment and potions
+UI_MARKET_NOTHING,Nothing to sell here.
+UI_MARKET_SELL_INFO,%d owned  |  %d coins each
+UI_MARKET_IN_USE,(%d worn or packed)
+UI_MARKET_ALL_IN_USE,All in use
+UI_MARKET_SELL_ONE,Sell 1 (+%d)
+UI_MARKET_SELL_ALL,Sell all (+%d)
+UI_MARKET_CONFIRM,Press again to sell all
+UI_MARKET_BOUGHT,Bought %s for %d coins.
+UI_MARKET_SOLD,Sold %d for %d coins.
+UI_COINS_REWARD,Coins: %s
+UI_COINS_IF_WON,%d if won
+UI_COINS_PER_WAVE,%d per wave reached
+UI_COINS_PER_BOSS,%d per boss beaten
+WEATHER_COLD,Cold
+WEATHER_COLD_EFFECT,stamina refills 40% slower
+WEATHER_HEAT,Heat
+WEATHER_HEAT_EFFECT,every stamina cost is 30% higher
+STAT_COLD_PROTECTION,Cold protection
+STAT_HEAT_PROTECTION,Heat protection
+HUD_WEATHER_PROTECTED,(%d%% protected)
+HUD_WEATHER_IMMUNE,fully protected by your gear
+HUD_WEATHER_ENTER,%s %s weather
+HUD_WEATHER_LEAVE,Out of the %s
+UI_WEATHER_MAP,%s %s over the whole map: %s. Your gear: %d%% %s.
+UI_WEATHER_AREAS,%s %s in some areas: %s. Your gear: %d%% %s.

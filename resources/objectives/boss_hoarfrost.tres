@@ -12,6 +12,7 @@
 
 [resource]
 script = ExtResource("1_data")
+coin_reward = 110
 hazard = ExtResource("8_hazard")
 scout_boss = ExtResource("7_scout")
 name_key = "OBJ_BOSS_HOARFROST"

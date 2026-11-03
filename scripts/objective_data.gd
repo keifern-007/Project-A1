@@ -14,6 +14,14 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASS
 @export var only_on_map: MapData
 ## Materials and XP are multiplied by this when the mission is won (an Expedition's bonus). 1 = none.
 @export var victory_reward_multiplier: float = 1.0
+## True = the map biome's weather (BiomeData.weather: cold on snow, heat on desert) lasts the whole mission.
+## Big maps don't use it: their weather is in WeatherZones.
+@export var biome_weather: bool = false
+
+@export_group("Coins") ## See Market. Challenge and Expedition bonuses multiply these too.
+@export var coin_reward: int = 0 ## Paid when the mission is won.
+## Paid however it ends, per wave reached (Endless Survival) or boss beaten (Endless Boss, Classic).
+@export var coins_per_progress: int = 0
 
 @export_group("Horde")
 @export var waves_to_survive: int = 5

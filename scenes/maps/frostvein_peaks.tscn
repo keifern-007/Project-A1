@@ -24,6 +24,8 @@
 [ext_resource type="PackedScene" path="res://scenes/maps/site_hunters_cache.tscn" id="site_hunters_cache"]
 [ext_resource type="PackedScene" path="res://scenes/maps/site_watchtower.tscn" id="site_watchtower"]
 [ext_resource type="PackedScene" path="res://scenes/maps/site_standing_stones.tscn" id="site_standing_stones"]
+[ext_resource type="Script" path="res://scenes/maps/weather_zone.gd" id="s_weather_zone"]
+[ext_resource type="Resource" path="res://resources/weather/cold.tres" id="r_weather"]
 
 [sub_resource type="ShaderMaterial" id="SkyMat"]
 shader = ExtResource("sh_sky")
@@ -6332,3 +6334,47 @@ palette = 1
 flowers = false
 camp_half_size = 143.0
 extent = 175.0
+
+[node name="WeatherZones" type="Node3D" parent="."]
+
+[node name="CrystalCavern" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(22.88, 35.2, 35.2, 19.8, 52.8, 25.52, 62.48, 39.6, 58.08, 61.6, 39.6, 70.4, 24.64, 58.08)
+min_height = -2.0
+max_height = 6.0
+
+[node name="HighShelfWest" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(-38.72, -88, -22, -97.68, 11, -92.4, 14.08, -61.6, 2.2, -40.48, -17.6, -37.4, -31.68, -47.52, -35.2, -61.6)
+min_height = 3.0
+max_height = 12.0
+
+[node name="HighShelfNorth" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(14.08, -122.32, 26.4, -129.8, 44, -128.48, 53.68, -117.92, 46.2, -105.6, 22.88, -104.72, 14.08, -111.76)
+min_height = 3.0
+max_height = 12.0
+
+[node name="ShelfPass1" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(-27.9113, -84.586, -18.4156, -106.743, -25.7687, -109.894, -35.2644, -87.7374)
+min_height = 3.0
+max_height = 12.0
+
+[node name="ShelfPass2" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(-21.4658, -102.237, -4.55736, -119.146, -10.2142, -124.803, -27.1226, -107.894)
+min_height = 3.0
+max_height = 12.0
+
+[node name="ShelfPass3" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(-11.1881, -116.779, 19.1921, -113.741, 19.9881, -121.701, -10.3921, -124.739)
+min_height = 3.0
+max_height = 12.0

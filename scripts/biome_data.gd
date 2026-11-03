@@ -6,3 +6,5 @@ extends Resource
 @export var name_key: String = ""
 ## Weather for stormy missions here (blizzard, sandstorm). Empty = the mood's own weather (rain).
 @export var storm_weather: PackedScene
+## Hot or cold, over the whole map, on missions that ask for it (ObjectiveData.biome_weather). Empty = mild.
+@export var weather: WeatherData

@@ -51,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_ward_left = maxf(_ward_left - delta, 0.0)
 	var slowed: bool = hazard.kind == HazardData.Kind.SLOW_STAMINA and not is_warded()
-	stamina.regen_scale = hazard.stamina_regen_scale if slowed else 1.0
+	stamina.set_regen_modifier(&"hazard", hazard.stamina_regen_scale if slowed else 1.0)
 	if hazard.kind != HazardData.Kind.SHRINK_MAX_HP or is_warded():
 		return
 	_tick_left -= delta
@@ -72,7 +72,7 @@ func _end() -> void:
 	hazard = null
 	_ward_left = 0.0
 	_shrunk = 0.0
-	stamina.regen_scale = 1.0
+	stamina.set_regen_modifier(&"hazard", 1.0)
 	_apply_max_health()
 
 

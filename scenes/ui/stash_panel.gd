@@ -14,7 +14,8 @@ func _ready() -> void:
 	back_button.pressed.connect(closed.emit)
 	back_button.grab_focus()
 	var stats: Dictionary = SaveManager.profile["stats"]
-	stats_label.text = tr("UI_STASH_STATS") % [stats["runs_played"], stats["runs_won"]]
+	stats_label.text = tr("UI_STASH_STATS") % [stats["runs_played"], stats["runs_won"]] + "
+" + tr("UI_COINS_OWNED") % Market.coins()
 	var materials: Dictionary = SaveManager.profile["materials"]
 	if materials.is_empty():
 		list.add_child(_make_label(tr("UI_STASH_EMPTY")))

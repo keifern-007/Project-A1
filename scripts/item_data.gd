@@ -38,12 +38,17 @@ enum Style { ANY, PHYSICAL, MAGIC }
 @export var fire_power: int = 0
 @export var ice_power: int = 0
 @export var poison_power: int = 0
+## Percent of cold / hot weather blocked (added over everything worn, at most 100).
+@export var cold_protection: int = 0
+@export var heat_protection: int = 0
 
 @export_group("Consumable")
 ## Potions, carried in the Inventory: what drinking/using it does. One copy is used up each time.
 @export var use_effect: BoosterData
 @export var use_cooldown: float = 10.0 ## Seconds before any potion can be used again.
 @export var stack_size: int = 3 ## Most copies in one Inventory slot. Stronger potions stack smaller.
+## Coins to buy one at the Marketplace. 0 = not sold there. (Gear and potions all sell for Market.item_price.)
+@export var shop_price: int = 0
 
 @export_group("Recipe")
 @export var cost: Array[MaterialCost] = []
@@ -78,7 +83,8 @@ func stat_rows() -> Array[Dictionary]:
 			[max_stamina, "STAT_STAMINA"], [max_mana, "STAT_MANA"]]:
 		if stat[0] != 0:
 			rows.append({"text": "%+d %s" % [stat[0], TranslationServer.translate(stat[1])], "good": stat[0] > 0})
-	for stat: Array in [[fire_power, "STAT_FIRE_POWER"], [ice_power, "STAT_ICE_POWER"], [poison_power, "STAT_POISON_POWER"]]:
+	for stat: Array in [[fire_power, "STAT_FIRE_POWER"], [ice_power, "STAT_ICE_POWER"], [poison_power, "STAT_POISON_POWER"],
+			[cold_protection, "STAT_COLD_PROTECTION"], [heat_protection, "STAT_HEAT_PROTECTION"]]:
 		if stat[0] != 0:
 			rows.append({"text": "%+d%% %s" % [stat[0], TranslationServer.translate(stat[1])], "good": stat[0] > 0})
 	return rows

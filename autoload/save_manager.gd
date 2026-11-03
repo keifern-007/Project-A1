@@ -74,7 +74,7 @@ func save_profile() -> void:
 		push_error("SaveManager: can't replace %s (%s)" % [SAVE_PATH, error_string(err)])
 
 
-## Adds a finished run's rewards (materials + XP) to the profile and saves. Call once per run.
+## Adds a finished run's rewards (materials, XP, coins) to the profile and saves. Call once per run.
 ## Every track's XP feeds Rank. Returns the Rank-ups: [{ "level": n, "points": skill points }, ...].
 func commit_run(run_rewards: Dictionary, victory: bool) -> Array[Dictionary]:
 	var keep: float = 1.0 if victory else DEFEAT_KEEP_FRACTION
@@ -85,6 +85,7 @@ func commit_run(run_rewards: Dictionary, victory: bool) -> Array[Dictionary]:
 	var xp: Dictionary = run_rewards.get("xp", {})
 	for track: Variant in xp:
 		level_ups.append_array(add_rank_xp(floori(xp[track] * keep)))
+	profile["currency"] = int(profile["currency"]) + int(run_rewards.get("coins", 0)) # Only paid when earned (see Market).
 	var stats: Dictionary = profile["stats"]
 	stats["runs_played"] += 1
 	if victory:

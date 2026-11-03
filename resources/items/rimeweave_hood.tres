@@ -17,6 +17,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_item")
+cold_protection = 25
 armor_weight = 0.05
 id = &"rimeweave_hood"
 name_key = "ITEM_RIMEWEAVE_HOOD"

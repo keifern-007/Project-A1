@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_data")
+sell_price = 50
 id = &"crown_shard"
 name_key = "MAT_CROWN_SHARD"
 color = Color(0.95, 0.75, 0.25, 1)

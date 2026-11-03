@@ -8,6 +8,8 @@
 
 [resource]
 script = ExtResource("1_data")
+coins_per_progress = 30
+coin_reward = 250
 name_key = "OBJ_CLASSIC"
 description_key = "OBJ_CLASSIC_DESC"
 type = 6

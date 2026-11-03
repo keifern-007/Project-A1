@@ -70,12 +70,14 @@ func apply_challenge_bonus(victory: bool) -> float:
 	return challenge.reward_multiplier
 
 
-## Multiplies this run's materials and XP (rounded up). Call before saving.
+## Multiplies this run's materials, XP and coins (rounded up). Call before saving.
 func multiply_rewards(multiplier: float) -> void:
 	for key: String in ["materials", "xp"]:
 		var rewards: Dictionary = run_rewards.get(key, {})
 		for id: Variant in rewards:
 			rewards[id] = ceili(rewards[id] * multiplier)
+	if run_rewards.has("coins"):
+		run_rewards["coins"] = ceili(run_rewards["coins"] * multiplier)
 
 
 func end_run(victory: bool) -> void:

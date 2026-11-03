@@ -174,6 +174,7 @@ func _show_results(victory: bool, left_mission: bool = false, title_key: String 
 	hud.hide() # The results screen says it all; avoids a frozen banner or skill box underneath.
 	var mode_run: ModeRun = GameState.mode_run
 	var mode: ObjectiveData = mode_run.mode if mode_run else GameState.objective
+	Market.add_run_coins(mode, mode_run, victory) # Before the bonuses below, which multiply it.
 	var summary: String = RunSummary.finish(mode, mode_run, victory)
 	if mode.type == ObjectiveData.Type.CLASSIC:
 		SaveManager.profile["classic_run"] = {} # Saved with the rewards below: this run is over.
@@ -235,6 +236,9 @@ func _xp_lines(level_ups: Array[Dictionary], bonus: float) -> Array[String]:
 	var lines: Array[String] = []
 	if bonus > 1.0:
 		lines.append(tr("UI_CHALLENGE_BONUS") % [tr(GameState.challenge.name_key), bonus])
+	var coins: int = int(GameState.run_rewards.get("coins", 0))
+	if coins > 0:
+		lines.append(tr("UI_COINS_EARNED") % [coins, Market.coins()])
 	var xp: Dictionary = GameState.run_rewards.get("xp", {})
 	for track: String in xp:
 		lines.append(tr("UI_XP_ROW") % [Progression.display_name(track), xp[track]])

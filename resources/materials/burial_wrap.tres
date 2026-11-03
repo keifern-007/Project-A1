@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_data")
+sell_price = 6
 id = &"burial_wrap"
 name_key = "MAT_BURIAL_WRAP"
 color = Color(0.8, 0.72, 0.55, 1)

@@ -26,6 +26,8 @@
 [ext_resource type="PackedScene" path="res://scenes/maps/site_hunters_cache.tscn" id="site_hunters_cache"]
 [ext_resource type="PackedScene" path="res://scenes/maps/site_watchtower.tscn" id="site_watchtower"]
 [ext_resource type="PackedScene" path="res://scenes/maps/site_standing_stones.tscn" id="site_standing_stones"]
+[ext_resource type="Script" path="res://scenes/maps/weather_zone.gd" id="s_weather_zone"]
+[ext_resource type="Resource" path="res://resources/weather/heat.tres" id="r_weather"]
 
 [sub_resource type="ShaderMaterial" id="SkyMat"]
 shader = ExtResource("sh_sky")
@@ -1183,3 +1185,12 @@ palette = 2
 flowers = false
 camp_half_size = 110.0
 extent = 140.0
+
+[node name="WeatherZones" type="Node3D" parent="."]
+
+[node name="TheCrown" type="Node3D" parent="WeatherZones"]
+script = ExtResource("s_weather_zone")
+weather = ExtResource("r_weather")
+outline = PackedVector2Array(-46, -44, -14, -48, 14, -40, 26, -24, 26, 10, 18, 34, 0, 44, -22, 42, -44, 34, -62, 18, -64, -10, -58, -32)
+min_height = 2.0
+max_height = 20.0

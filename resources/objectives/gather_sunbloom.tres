@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("1_data")
+coin_reward = 50
 name_key = "OBJ_GATHER_SUNBLOOM"
 description_key = "OBJ_GATHER_SUNBLOOM_DESC"
 type = 2

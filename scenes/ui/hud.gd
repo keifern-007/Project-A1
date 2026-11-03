@@ -10,6 +10,8 @@ var _skill_caster: SkillCasterComponent
 var _boosters: BoosterComponent
 var _passives: PassiveComponent
 var _hazards: HazardComponent
+var _weather: WeatherComponent
+var _last_weather: WeatherData = null
 var _slots: Array[SkillSlot] = []
 var _consumables: ConsumableComponent
 var _consumable_slot: SkillSlot
@@ -74,6 +76,11 @@ func bind_player(player: Player) -> void:
 	_boosters = player.boosters
 	_passives = player.passives
 	_hazards = player.hazards
+	_weather = player.weather
+	if _weather:
+		_weather.weather_changed.connect(_on_weather_changed)
+		if _weather.weather: # The whole mission is hot or cold: say so at the start.
+			_on_weather_changed(_weather.weather)
 
 	_skill_caster = player.skill_caster
 	for child: Node in skill_row.get_children():
@@ -108,6 +115,8 @@ func _process(delta: float) -> void:
 		lines.append(_passives.status_text())
 	if _hazards and _hazards.status_text() != "":
 		lines.append(_hazards.status_text())
+	if _weather and _weather.status_text() != "":
+		lines.append(_weather.status_text())
 	if _skill_caster:
 		lines.append_array(_skill_caster.status_lines())
 	boost_label.text = "\n".join(lines)
@@ -231,3 +240,12 @@ func _on_objective_progress(name_key: String, current: int, target: int) -> void
 static func format_time(seconds: float) -> String:
 	var total: int = floori(seconds)
 	return "%02d:%02d" % [floori(total / 60.0), total % 60]
+
+
+## "Entering a Cold area" / "Leaving the Cold area": a banner, as well as the status line.
+func _on_weather_changed(weather: WeatherData) -> void:
+	if weather:
+		show_banner(tr("HUD_WEATHER_ENTER") % [weather.symbol, tr(weather.name_key)])
+	elif _last_weather:
+		show_banner(tr("HUD_WEATHER_LEAVE") % tr(_last_weather.name_key))
+	_last_weather = weather

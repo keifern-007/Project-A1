@@ -17,6 +17,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_data")
+cold_protection = 15
 max_stamina = 10
 armor_weight = 0.1
 id = &"ogrehide_girdle"

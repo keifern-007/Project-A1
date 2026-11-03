@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_data")
+coin_reward = 60
 name_key = "OBJ_EXPEDITION"
 description_key = "OBJ_EXPEDITION_DESC"
 type = 7

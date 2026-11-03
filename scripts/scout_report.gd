@@ -40,6 +40,24 @@ static func text(objective: ObjectiveData, character: CharacterData) -> String:
 	return "\n".join(lines)
 
 
+## The weather line for the Mission Board: what it does and how much this hero's gear blocks.
+## Rogue missions with biome_weather: the whole map. Big maps: only some areas. "" = mild.
+static func weather_text(objective: ObjectiveData, map: MapData, character: CharacterData) -> String:
+	var found: Array[WeatherData] = []
+	var whole_map: bool = objective.biome_weather and map.biome != null and map.biome.weather != null
+	if whole_map:
+		found.append(map.biome.weather)
+	else:
+		found.append_array(map.zone_weather)
+	var items: Array[ItemData] = SaveManager.equipped_items(str(character.id)) if character else []
+	var lines: Array[String] = []
+	for weather: WeatherData in found:
+		var protected: int = roundi(EquipmentComponent.weather_protection(items, weather.kind) * 100.0)
+		lines.append(_t("UI_WEATHER_MAP" if whole_map else "UI_WEATHER_AREAS") % [weather.symbol, _t(weather.name_key),
+			_t(weather.effect_key), protected, _t(weather.protection_key())])
+	return "\n".join(lines)
+
+
 ## Names this hero's skills that would heal the boss, so a player can plan around them.
 static func _skill_warning(boss: EnemyData, character: CharacterData) -> String:
 	if boss.absorbs == Element.Type.PHYSICAL or character == null:

@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_data")
+sell_price = 25
 id = &"ogre_tusk"
 name_key = "MAT_OGRE_TUSK"
 color = Color(0.95, 0.92, 0.8, 1)

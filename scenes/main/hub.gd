@@ -1,7 +1,7 @@
 extends Control
 ## The camp between runs: a walkable 3D hub. Walk up to a station and interact:
 ## Mission Board (pick and start a mission), Forge (craft gear), Gear Rack (equip it),
-## Skill Shrine (spend skill points on tracks), Stash (what you own).
+## Skill Shrine (spend skill points on tracks), Stash (what you own), Marketplace (coins: buy potions, sell spares).
 ## Every hero lives here too (CampHeroes). First visit after the title screen: the camera glides
 ## from hero to hero while you browse their cards and pick who to play. Later, walk up to
 ## (or click) another hero to switch.
@@ -12,6 +12,7 @@ const STASH_PANEL: PackedScene = preload("res://scenes/ui/stash_panel.tscn")
 const FORGE_PANEL: PackedScene = preload("res://scenes/ui/forge_panel.tscn")
 const LOADOUT_PANEL: PackedScene = preload("res://scenes/ui/loadout_panel.tscn")
 const SHRINE_PANEL: PackedScene = preload("res://scenes/ui/shrine_panel.tscn")
+const MARKET_PANEL: PackedScene = preload("res://scenes/ui/market_panel.tscn")
 const HERO_CARD: PackedScene = preload("res://scenes/ui/hero_card.tscn")
 const OPTIONS_PANEL: PackedScene = preload("res://scenes/ui/options_panel.tscn")
 const TUTORIAL_PROMPT: PackedScene = preload("res://scenes/ui/tutorial_prompt.tscn")
@@ -150,6 +151,8 @@ func _on_station_interacted(_by: Player, station: Interactable) -> void:
 			_open(LOADOUT_PANEL.instantiate())
 		&"skills":
 			_open(SHRINE_PANEL.instantiate())
+		&"market":
+			_open(MARKET_PANEL.instantiate())
 		&"tutorial":
 			_open(TUTORIAL_PROMPT.instantiate())
 		_:

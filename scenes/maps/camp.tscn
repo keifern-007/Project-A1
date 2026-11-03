@@ -342,6 +342,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, -6.4)
 [node name="MarketStall" parent="." instance=ExtResource("p_camp_market_stall")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, -3)
 
+[node name="Interact" parent="MarketStall" instance=ExtResource("3_interact")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.3)
+action = &"market"
+prompt_key = "UI_MARKETPLACE"
+
 [node name="Cart" parent="." instance=ExtResource("p_camp_cart")]
 transform = Transform3D(0.8, 0, 0.6, 0, 1, 0, -0.6, 0, 0.8, 15.5, 0, 5.5)
 

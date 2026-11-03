@@ -186,11 +186,17 @@ func _update_details() -> void:
 	start_button.disabled = locked_rank > SaveManager.get_rank()
 	# The scouting report comes first: it's what you need before leaving camp, so it must never need scrolling.
 	var report: String = ScoutReport.text(_objective, SaveManager.get_character())
+	var weather: String = "" if multi_step else ScoutReport.weather_text(_objective, _map, SaveManager.get_character())
+	if weather != "":
+		report = weather + ("\n" + report if report != "" else "")
 	var best: String = RunSummary.best_line(_objective)
 	details.text = "%s%s  —  %s\n%s%s%s\n%s" % ["" if multi_step else tr(_map.name_key) + "  —  ", tr(_objective.name_key), tr(_challenge.name_key),
 		report + "\n\n" if report != "" else "",
 		"" if multi_step else tr(_map.description_key) + "\n",
 		tr(_objective.description_key), _challenge.describe()]
+	var coins: String = Market.reward_text(_objective)
+	if coins != "":
+		details.text += "\n" + coins
 	if best != "":
 		details.text += "\n" + best
 	if start_button.disabled:

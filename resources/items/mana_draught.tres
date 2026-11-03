@@ -24,6 +24,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_item")
+shop_price = 35
 id = &"mana_draught"
 name_key = "ITEM_MANA_DRAUGHT"
 description_key = "ITEM_MANA_DRAUGHT_DESC"

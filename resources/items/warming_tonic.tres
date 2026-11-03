@@ -21,6 +21,7 @@ amount = 3
 
 [resource]
 script = ExtResource("1_item")
+shop_price = 45
 id = &"warming_tonic"
 name_key = "ITEM_WARMING_TONIC"
 description_key = "ITEM_WARMING_TONIC_DESC"

@@ -93,3 +93,11 @@ static func totals(max_health: int, attack_power: int, defense: int, items: Arra
 		"attack_power": maxi(attack_power, 0),
 		"defense": defense,
 	}
+
+
+## Share of this weather kind blocked by what's worn (0..1).
+static func weather_protection(items: Array[ItemData], kind: WeatherData.Kind) -> float:
+	var total: int = 0
+	for item: ItemData in items:
+		total += item.cold_protection if kind == WeatherData.Kind.COLD else item.heat_protection
+	return clampf(total / 100.0, 0.0, 1.0)

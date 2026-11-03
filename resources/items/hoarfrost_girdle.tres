@@ -17,6 +17,7 @@ amount = 3
 
 [resource]
 script = ExtResource("1_data")
+cold_protection = 25
 ice_power = 5
 armor_weight = 0.15
 id = &"hoarfrost_girdle"

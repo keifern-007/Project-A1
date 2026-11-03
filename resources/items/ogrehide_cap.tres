@@ -17,6 +17,7 @@ amount = 3
 
 [resource]
 script = ExtResource("1_data")
+cold_protection = 15
 max_stamina = 5
 max_mana = -5
 armor_weight = 0.15

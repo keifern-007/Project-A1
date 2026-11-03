@@ -9,3 +9,5 @@ extends Resource
 ## Gathering track trained by harvesting this from nodes (e.g. &"herbalism"). Empty = not gatherable.
 @export var gather_skill: StringName = &""
 @export var tier: int = 1 ## Gathering it needs the gather skill at Progression.level_needed(tier).
+## Coins the Marketplace pays for one. 0 = Market.DEFAULT_PRICE_PER_TIER x tier.
+@export var sell_price: int = 0

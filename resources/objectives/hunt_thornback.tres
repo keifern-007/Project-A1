@@ -8,6 +8,7 @@
 
 [resource]
 script = ExtResource("1_data")
+coin_reward = 200
 name_key = "OBJ_HUNT_THORNBACK"
 description_key = "OBJ_HUNT_THORNBACK_DESC"
 type = 8

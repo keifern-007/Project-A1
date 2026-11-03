@@ -151,7 +151,7 @@ func cancel_cast(refund: bool = true) -> void:
 		return
 	var skill: SkillData = _cast["skill"]
 	if refund and meter_for(skill):
-		meter_for(skill).restore(skill.cost)
+		meter_for(skill).refund(skill.cost)
 	_cast = {}
 	cast_ended.emit(false)
 

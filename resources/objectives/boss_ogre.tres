@@ -9,6 +9,7 @@
 
 [resource]
 script = ExtResource("1_data")
+coin_reward = 80
 name_key = "OBJ_BOSS_OGRE"
 description_key = "OBJ_BOSS_OGRE_DESC"
 type = 1

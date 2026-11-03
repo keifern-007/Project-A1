@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1_data")
+biome_weather = true
+coins_per_progress = 8
 name_key = "OBJ_ENDLESS_SURVIVAL"
 description_key = "OBJ_ENDLESS_SURVIVAL_DESC"
 type = 4

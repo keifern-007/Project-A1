@@ -56,6 +56,7 @@ var _dodge_stamina_cost: float = 0.0
 var _lean_tween: Tween
 var rig: HeroRig ## The hero's model. Built in _ready from CharacterData.rig.
 var hazards: HazardComponent ## The boss's lasting danger on us, if the mission has one.
+var weather: WeatherComponent ## Hot or cold weather on us. null in camp.
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var input: PlayerInput = $PlayerInput
@@ -86,6 +87,12 @@ func _ready() -> void:
 	hazards.stats = $StatsComponent
 	add_child(hazards)
 	boosters.hazards = hazards
+	if combat_enabled:
+		weather = WeatherComponent.new()
+		weather.stamina = stamina
+		weather.body = self
+		weather.items = SaveManager.equipped_items(str(character.data.id))
+		add_child(weather)
 	if combat_enabled and controlled:
 		_warm_up_effects.call_deferred()
 	skill_caster.set_skills(character.skill_loadout())
@@ -371,7 +378,7 @@ func _windup_refund() -> float:
 
 
 func _cancel_windup() -> void:
-	stamina.restore(_windup_refund())
+	stamina.refund(_windup_refund())
 	skill_caster.cancel_cast()
 	melee.cancel_windup()
 

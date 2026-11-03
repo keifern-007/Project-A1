@@ -11,7 +11,9 @@ signal changed(current: float, maximum: float)
 @export var regen_pause: float = 0.0 ## Seconds after spending before it refills. 0 = no pause.
 
 var current: float = 0.0
-var regen_scale: float = 1.0 ## A boss hazard can slow refilling.
+
+var _regen_mods: Dictionary = {} # source -> multiplier on refilling (a boss hazard, cold weather).
+var _cost_mods: Dictionary = {} # source -> multiplier on every cost (hot weather).
 
 var _pause_left: float = 0.0
 
@@ -33,22 +35,57 @@ func configure(maximum: float, regen: float, kill_refill: float = 0.0) -> void:
 func _physics_process(delta: float) -> void:
 	_pause_left = maxf(_pause_left - delta, 0.0)
 	if _pause_left == 0.0 and current < max_value and regen_per_second > 0.0:
-		restore(regen_per_second * regen_scale * delta)
+		restore(regen_per_second * regen_multiplier() * delta)
+
+
+## Named, so a boss hazard and the weather never overwrite each other. 1.0 = remove.
+func set_regen_modifier(source: StringName, multiplier: float) -> void:
+	if is_equal_approx(multiplier, 1.0):
+		_regen_mods.erase(source)
+	else:
+		_regen_mods[source] = multiplier
+
+
+func regen_multiplier() -> float:
+	var result: float = 1.0
+	for multiplier: float in _regen_mods.values():
+		result *= multiplier
+	return result
+
+
+## Every cost is multiplied by this (has, spend and refund all use it). 1.0 = remove.
+func set_cost_modifier(source: StringName, multiplier: float) -> void:
+	if is_equal_approx(multiplier, 1.0):
+		_cost_mods.erase(source)
+	else:
+		_cost_mods[source] = multiplier
+
+
+## What a base cost really takes right now.
+func cost_of(amount: float) -> float:
+	for multiplier: float in _cost_mods.values():
+		amount *= multiplier
+	return amount
 
 
 ## The small allowance keeps rounding from refusing the last dodge of a bar.
 func has(amount: float) -> bool:
-	return current + 0.001 >= amount
+	return current + 0.001 >= cost_of(amount)
 
 
-## Spends `amount` if there's enough. Returns false (and spends nothing) otherwise.
+## Spends `amount` (a base cost, see cost_of) if there's enough. Returns false (and spends nothing) otherwise.
 func spend(amount: float) -> bool:
 	if not has(amount):
 		return false
-	current = maxf(current - amount, 0.0)
+	current = maxf(current - cost_of(amount), 0.0)
 	_pause_left = regen_pause
 	changed.emit(current, max_value)
 	return true
+
+
+## Gives back a base cost that was spent (a cancelled wind-up), as much as it really took.
+func refund(amount: float) -> void:
+	restore(cost_of(amount))
 
 
 func restore(amount: float) -> void:

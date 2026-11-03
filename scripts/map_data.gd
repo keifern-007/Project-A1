@@ -13,6 +13,8 @@ enum Category { ROGUE, EXPEDITION }
 @export var category: Category = Category.ROGUE
 ## True = only objectives made for this map (only_on_map) are offered on it, e.g. a big map's Expedition.
 @export var own_objectives_only: bool = false
+## Big maps: the weather found in some of its areas (WeatherZones in the scene). Only for the Mission Board's text.
+@export var zone_weather: Array[WeatherData] = []
 ## Which enemies spawn here, how often and from which wave. Empty = the map's WaveSpawner list.
 @export var enemy_pool: Array[SpawnEntry] = []
 ## The map scene: floor/walls, camera, player, WaveSpawner, and markers
