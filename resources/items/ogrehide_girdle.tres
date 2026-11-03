@@ -17,6 +17,7 @@ amount = 2
 
 [resource]
 script = ExtResource("1_data")
+max_stamina = 10
 armor_weight = 0.1
 id = &"ogrehide_girdle"
 name_key = "ITEM_OGREHIDE_GIRDLE"

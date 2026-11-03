@@ -11,6 +11,7 @@ amount = 8
 
 [resource]
 script = ExtResource("1_item")
+ice_power = 15
 id = &"frost_heart"
 name_key = "ITEM_FROST_HEART"
 description_key = "ITEM_FROST_HEART_DESC"

@@ -9,6 +9,7 @@ const DODGE_COST_AT_FULL_LOAD: float = 1.0 ## +100%: a full load halves your dod
 const ATTACK_COST_AT_FULL_LOAD: float = 0.25 ## +25% basic attack stamina: armor only nudges this.
 ## +10% wind-up. Stays well below weapon weight (x0.7 to x1.6), which is what should really decide it.
 const WINDUP_AT_FULL_LOAD: float = 0.1
+const MIN_STAMINA: float = 10.0 ## Gear can lower stamina, but always leaves enough to act.
 
 @export var stats: StatsComponent
 @export var health: HealthComponent
@@ -44,9 +45,41 @@ static func windup_multiplier(load_amount: float) -> float:
 	return 1.0 + load_amount * WINDUP_AT_FULL_LOAD
 
 
-## Whole dodges a full stamina bar pays for. The Gear Rack shows this.
-static func dodges_with(dodges_per_bar: float, load_amount: float) -> int:
-	return floori(dodges_per_bar / dodge_cost_multiplier(load_amount) + 0.001)
+## Whole dodges a full stamina bar pays for. The Gear Rack shows this. A dodge's cost comes from
+## the hero's own stamina, so gear that adds stamina adds dodges.
+static func dodges_with(data: CharacterData, load_amount: float, items: Array[ItemData]) -> int:
+	var bars: float = max_stamina_with(data.max_stamina, items) / data.max_stamina
+	return floori(data.dodges_per_bar * bars / dodge_cost_multiplier(load_amount) + 0.001)
+
+
+static func max_stamina_with(base: float, items: Array[ItemData]) -> float:
+	var total: float = base
+	for item: ItemData in items:
+		total += item.max_stamina
+	return maxf(total, MIN_STAMINA)
+
+
+static func max_mana_with(base: float, items: Array[ItemData]) -> float:
+	var total: float = base
+	for item: ItemData in items:
+		total += item.max_mana
+	return maxf(total, 0.0)
+
+
+## Element.Type -> damage multiplier, added up over everything worn. Missing = 1.0.
+static func element_multipliers(items: Array[ItemData]) -> Dictionary:
+	var fire: int = 0
+	var ice: int = 0
+	var poison: int = 0
+	for item: ItemData in items:
+		fire += item.fire_power
+		ice += item.ice_power
+		poison += item.poison_power
+	return {
+		Element.Type.FIRE: maxf(1.0 + fire / 100.0, 0.0),
+		Element.Type.ICE: maxf(1.0 + ice / 100.0, 0.0),
+		Element.Type.POISON: maxf(1.0 + poison / 100.0, 0.0),
+	}
 
 
 ## Base stats + every item's bonuses. Also used by the Loadout panel to preview totals.

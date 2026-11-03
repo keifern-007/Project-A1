@@ -14,6 +14,8 @@ amount = 4
 
 [resource]
 script = ExtResource("1_item")
+max_stamina = 5
+poison_power = 5
 id = &"goblin_shiv"
 name_key = "ITEM_GOBLIN_SHIV"
 description_key = "ITEM_GOBLIN_SHIV_DESC"

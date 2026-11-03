@@ -162,9 +162,11 @@ func _physics_process(delta: float) -> void:
 func _apply_character(data: CharacterData) -> void:
 	move_speed = data.move_speed * talents.move_speed_multiplier()
 	dodge_cooldown = data.dodge_cooldown
-	stamina.configure(data.max_stamina, data.stamina_regen)
+	var items: Array[ItemData] = SaveManager.equipped_items(str(data.id))
+	stamina.configure(EquipmentComponent.max_stamina_with(data.max_stamina, items), data.stamina_regen)
 	stamina.regen_pause = data.stamina_regen_pause
-	mana.configure(data.max_mana, data.mana_regen, data.mana_per_kill)
+	mana.configure(EquipmentComponent.max_mana_with(data.max_mana, items), data.mana_regen, data.mana_per_kill)
+	skill_caster.element_multipliers = EquipmentComponent.element_multipliers(items)
 	visual.scale = data.body_scale
 	_build_model(data)
 

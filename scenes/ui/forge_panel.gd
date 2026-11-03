@@ -150,11 +150,8 @@ func _refresh_details() -> void:
 ## "+8 Attack" / "-2 Defense". The sign carries the meaning; green/red is only a hint.
 func _stat_lines(item: ItemData) -> Array[String]:
 	var lines: Array[String] = []
-	for stat: Array in [[item.max_health, "STAT_MAX_HEALTH"], [item.attack_power, "STAT_ATTACK"], [item.defense, "STAT_DEFENSE"]]:
-		var value: int = stat[0]
-		if value != 0:
-			var color: String = GOOD_COLOR if value > 0 else BAD_COLOR
-			lines.append("[color=%s]%+d %s[/color]" % [color, value, tr(stat[1])])
+	for row: Dictionary in item.stat_rows():
+		lines.append("[color=%s]%s[/color]" % [GOOD_COLOR if row["good"] else BAD_COLOR, row["text"]])
 	if item.armor_weight > 0.0:
 		lines.append(item.armor_weight_text())
 	if not item.skills.is_empty():

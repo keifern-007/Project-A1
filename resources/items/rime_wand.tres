@@ -20,6 +20,8 @@ amount = 3
 
 [resource]
 script = ExtResource("1_data")
+max_mana = 20
+ice_power = 15
 id = &"rime_wand"
 name_key = "ITEM_RIME_WAND"
 description_key = "ITEM_RIME_WAND_DESC"

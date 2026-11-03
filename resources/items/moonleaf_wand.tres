@@ -20,6 +20,8 @@ amount = 2
 
 [resource]
 script = ExtResource("1_item")
+max_mana = 15
+poison_power = 5
 id = &"moonleaf_wand"
 name_key = "ITEM_MOONLEAF_WAND"
 description_key = "ITEM_MOONLEAF_WAND_DESC"

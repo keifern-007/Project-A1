@@ -147,35 +147,59 @@ func _refresh_item_list() -> void:
 		item_list.add_child(button)
 
 
-## "Max HP 80 (-20)   Attack 23 (+13)   Defense -2 (-2)": base stats + all equipped gear.
+## Base stats + all equipped gear, up to three lines:
+## "Max HP 80 (-20)   Attack 23 (+13)   Defense -2 (-2)"
+## "Stamina 120 (+10)   Mana 70   Dodges 6"
+## "Fire power +30%   Ice power +5%" (only if any).
 func _refresh_totals() -> void:
 	var base: CharacterData = SaveManager.get_character()
-	var totals: Dictionary = EquipmentComponent.totals(base.max_health, base.attack_power, base.defense,
-		SaveManager.equipped_items())
+	var items: Array[ItemData] = SaveManager.equipped_items()
+	var totals: Dictionary = EquipmentComponent.totals(base.max_health, base.attack_power, base.defense, items)
+	var no_items: Array[ItemData] = []
+	var load_amount: float = EquipmentComponent.armor_load(items)
+	var dodges: int = EquipmentComponent.dodges_with(base, load_amount, items)
+	var stamina: int = roundi(EquipmentComponent.max_stamina_with(base.max_stamina, items))
+	var mana: int = roundi(EquipmentComponent.max_mana_with(base.max_mana, items))
+	var lines: Array[String] = [
+		"     ".join([
+			_total_text("%s %d" % [tr("STAT_MAX_HEALTH"), totals["max_health"]], totals["max_health"] - base.max_health),
+			_total_text("%s %d" % [tr("STAT_ATTACK"), totals["attack_power"]], totals["attack_power"] - base.attack_power),
+			_total_text("%s %d" % [tr("STAT_DEFENSE"), totals["defense"]], totals["defense"] - base.defense),
+		]),
+		"     ".join([
+			_total_text("%s %d" % [tr("STAT_STAMINA"), stamina], stamina - roundi(base.max_stamina)),
+			_total_text("%s %d" % [tr("STAT_MANA"), mana], mana - roundi(base.max_mana)),
+			_total_text(tr("UI_TOTAL_DODGES") % dodges, dodges - EquipmentComponent.dodges_with(base, 0.0, no_items)),
+		]),
+	]
+	var powers: Array[String] = _power_totals(items)
+	if not powers.is_empty():
+		lines.append("     ".join(powers))
+	totals_label.text = "\n".join(lines)
+
+
+## A total, with how far gear moved it. The sign carries the meaning; green/red is only a hint.
+func _total_text(text: String, diff: int) -> String:
+	if diff == 0:
+		return text
+	return "%s [color=%s](%+d)[/color]" % [text, GOOD_COLOR if diff > 0 else BAD_COLOR, diff]
+
+
+func _power_totals(items: Array[ItemData]) -> Array[String]:
+	var multipliers: Dictionary = EquipmentComponent.element_multipliers(items)
 	var parts: Array[String] = []
-	for stat: Array in [["max_health", base.max_health, "STAT_MAX_HEALTH"],
-			["attack_power", base.attack_power, "STAT_ATTACK"], ["defense", base.defense, "STAT_DEFENSE"]]:
-		var total: int = totals[stat[0]]
-		var diff: int = total - int(stat[1])
-		var text: String = "%s %d" % [tr(stat[2]), total]
-		if diff != 0:
-			text += " [color=%s](%+d)[/color]" % [GOOD_COLOR if diff > 0 else BAD_COLOR, diff]
-		parts.append(text)
-	var load_amount: float = EquipmentComponent.armor_load(SaveManager.equipped_items())
-	var dodges: int = EquipmentComponent.dodges_with(base.dodges_per_bar, load_amount)
-	var dodge_diff: int = dodges - EquipmentComponent.dodges_with(base.dodges_per_bar, 0.0)
-	var dodge_text: String = tr("UI_TOTAL_DODGES") % dodges
-	if dodge_diff != 0:
-		dodge_text += " [color=%s](%+d)[/color]" % [GOOD_COLOR if dodge_diff > 0 else BAD_COLOR, dodge_diff]
-	parts.append(dodge_text)
-	totals_label.text = "     ".join(parts)
+	for entry: Array in [[Element.Type.FIRE, "STAT_FIRE_POWER"], [Element.Type.ICE, "STAT_ICE_POWER"],
+			[Element.Type.POISON, "STAT_POISON_POWER"]]:
+		var percent: int = roundi((multipliers[entry[0]] - 1.0) * 100.0)
+		if percent != 0:
+			parts.append("[color=%s]%s %+d%%[/color]" % [GOOD_COLOR if percent > 0 else BAD_COLOR, tr(entry[1]), percent])
+	return parts
 
 
 func _short_stats(item: ItemData) -> String:
 	var parts: Array[String] = []
-	for stat: Array in [[item.max_health, "STAT_MAX_HEALTH"], [item.attack_power, "STAT_ATTACK"], [item.defense, "STAT_DEFENSE"]]:
-		if stat[0] != 0:
-			parts.append("%+d %s" % [stat[0], tr(stat[1])])
+	for row: Dictionary in item.stat_rows():
+		parts.append(row["text"])
 	if item.armor_weight > 0.0:
 		parts.append(item.armor_weight_text())
 	if not item.skills.is_empty():

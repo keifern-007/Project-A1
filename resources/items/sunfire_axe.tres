@@ -20,6 +20,7 @@ amount = 4
 
 [resource]
 script = ExtResource("1_data")
+fire_power = 15
 id = &"sunfire_axe"
 name_key = "ITEM_SUNFIRE_AXE"
 description_key = "ITEM_SUNFIRE_AXE_DESC"

@@ -17,6 +17,9 @@ amount = 4
 
 [resource]
 script = ExtResource("1_item")
+max_mana = 20
+max_stamina = -10
+fire_power = 10
 armor_weight = 0.15
 id = &"sunbloom_robe"
 name_key = "ITEM_SUNBLOOM_ROBE"

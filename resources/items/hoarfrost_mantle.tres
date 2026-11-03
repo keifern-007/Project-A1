@@ -17,6 +17,8 @@ amount = 4
 
 [resource]
 script = ExtResource("1_item")
+max_stamina = 10
+max_mana = -10
 armor_weight = 0.4
 id = &"hoarfrost_mantle"
 name_key = "ITEM_HOARFROST_MANTLE"

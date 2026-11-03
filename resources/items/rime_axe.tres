@@ -20,6 +20,7 @@ amount = 3
 
 [resource]
 script = ExtResource("1_data")
+ice_power = 15
 id = &"rime_axe"
 name_key = "ITEM_RIME_AXE"
 description_key = "ITEM_RIME_AXE_DESC"

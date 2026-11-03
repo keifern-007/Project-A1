@@ -28,6 +28,7 @@ var skill_damage_mods: Dictionary = {}
 var skill_cooldown_mods: Dictionary = {}
 var skill_windup_mods: Dictionary = {} ## From the main-hand weapon.
 var armor_windup_multiplier: float = 1.0 ## Armor weight slows every wind-up a little.
+var element_multipliers: Dictionary = {} ## Element.Type -> damage multiplier, from gear (missing = 1.0).
 var guard_break_skills: Dictionary = {} ## skill -> true: a heavy weapon's skills knock shields aside.
 
 var _cooldowns: Array[float] = []
@@ -199,8 +200,9 @@ func _fire(slot: int, skill: SkillData, caster: Node3D, direction: Vector3, worl
 func _spawn(skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -> void:
 	var effect: SkillEffect = skill.effect_scene.instantiate()
 	var attack_power: int = stats.get_attack_power() if stats else 0
-	effect.damage = roundi(attack_power * skill.damage_multiplier * _talent_mod(skill_damage_mods, skill))
 	effect.element = _infusion_element if skill == basic_attack and _infusion_left > 0.0 else skill.element
+	effect.damage = roundi(attack_power * skill.damage_multiplier * _talent_mod(skill_damage_mods, skill)
+		* element_multipliers.get(effect.element, 1.0))
 	effect.direction = direction
 	effect.caster = caster
 	world.add_child(effect)

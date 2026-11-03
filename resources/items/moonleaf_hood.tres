@@ -11,6 +11,7 @@ amount = 4
 
 [resource]
 script = ExtResource("1_item")
+max_mana = 15
 armor_weight = 0.05
 id = &"moonleaf_hood"
 name_key = "ITEM_MOONLEAF_HOOD"

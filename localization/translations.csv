@@ -521,3 +521,30 @@ UI_OPT_CAMERA,Over-the-shoulder camera (off = isometric)
 HUD_CAMERA_HINT,[%s] Switch camera
 HUD_LOCK_ON,[%s] Lock onto boss
 HUD_LOCK_RELEASE,[%s] Release boss lock
+ITEM_SUNBLOOM_HAT,Sunbloom Hat
+ITEM_SUNBLOOM_HAT_DESC,A wide brim of petals that never quite stop smoldering.
+ITEM_SUNBLOOM_SASH,Sunbloom Sash
+ITEM_SUNBLOOM_SASH_DESC,Knotted from stems. Warm against the ribs.
+ITEM_SUNBLOOM_SANDALS,Sunbloom Sandals
+ITEM_SUNBLOOM_SANDALS_DESC,Your footprints dry out the grass.
+ITEM_RIMEWEAVE_HOOD,Rimeweave Hood
+ITEM_RIMEWEAVE_HOOD_DESC,Your breath fogs even at noon.
+ITEM_RIMEWEAVE_SASH,Rimeweave Sash
+ITEM_RIMEWEAVE_SASH_DESC,Stiff as a frozen washing line.
+ITEM_RIMEWEAVE_SANDALS,Rimeweave Sandals
+ITEM_RIMEWEAVE_SANDALS_DESC,The cold starts at the toes. On purpose.
+ITEM_RIMEWEAVE_ROBE,Rimeweave Robe
+ITEM_RIMEWEAVE_ROBE_DESC,Spun from thawed shards. It refuses to stay thawed.
+ITEM_GRAVECLOTH_COWL,Gravecloth Cowl
+ITEM_GRAVECLOTH_COWL_DESC,Whoever wore it last isn't complaining.
+ITEM_GRAVECLOTH_SASH,Gravecloth Sash
+ITEM_GRAVECLOTH_SASH_DESC,Still smells of the embalmer's jars.
+ITEM_GRAVECLOTH_SANDALS,Gravecloth Sandals
+ITEM_GRAVECLOTH_SANDALS_DESC,Soles soaked in what kept the dead fresh.
+ITEM_GRAVECLOTH_ROBE,Gravecloth Robe
+ITEM_GRAVECLOTH_ROBE_DESC,"Burial linen, steeped until it bites back."
+ITEM_SUNSTONE_CHARM,Sunstone Charm
+ITEM_SUNSTONE_CHARM_DESC,A seed of noon on a string. Mind your fingers.
+STAT_FIRE_POWER,Fire power
+STAT_ICE_POWER,Ice power
+STAT_POISON_POWER,Poison power

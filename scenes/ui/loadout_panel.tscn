@@ -5,9 +5,9 @@
 
 [sub_resource type="StyleBoxFlat" id="PanelStyle"]
 content_margin_left = 28.0
-content_margin_top = 20.0
+content_margin_top = 12.0
 content_margin_right = 28.0
-content_margin_bottom = 20.0
+content_margin_bottom = 12.0
 bg_color = Color(0.08, 0.08, 0.1, 0.94)
 border_width_left = 2
 border_width_top = 2
@@ -20,7 +20,7 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="TitleText"]
-font_size = 36
+font_size = 30
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
@@ -85,7 +85,7 @@ columns = 3
 
 [node name="HeroPreview" parent="Center/Panel/VBox/Columns/Equipped" instance=ExtResource("p_preview")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 170)
+custom_minimum_size = Vector2(170, 130)
 layout_mode = 2
 size_flags_horizontal = 4
 

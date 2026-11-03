@@ -11,6 +11,7 @@ amount = 8
 
 [resource]
 script = ExtResource("1_item")
+poison_power = 15
 id = &"burial_talisman"
 name_key = "ITEM_BURIAL_TALISMAN"
 description_key = "ITEM_BURIAL_TALISMAN_DESC"

@@ -32,6 +32,12 @@ enum Style { ANY, PHYSICAL, MAGIC }
 @export var max_health: int = 0
 @export var attack_power: int = 0
 @export var defense: int = 0
+@export var max_stamina: int = 0
+@export var max_mana: int = 0
+## Percent more damage from skills of that element, status effects included (15 = +15%).
+@export var fire_power: int = 0
+@export var ice_power: int = 0
+@export var poison_power: int = 0
 
 @export_group("Consumable")
 ## Potions, carried in the Inventory: what drinking/using it does. One copy is used up each time.
@@ -63,6 +69,19 @@ func can_go_in(target: Slot) -> bool:
 		return true
 	# Dual-wield: a one-handed weapon can be held in the off hand too.
 	return target == Slot.OFF_HAND and slot == Slot.MAIN_HAND and not two_handed
+
+
+## Every stat this item changes, for the Forge and Gear Rack: {text: "+8 Attack", good: true}.
+func stat_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for stat: Array in [[max_health, "STAT_MAX_HEALTH"], [attack_power, "STAT_ATTACK"], [defense, "STAT_DEFENSE"],
+			[max_stamina, "STAT_STAMINA"], [max_mana, "STAT_MANA"]]:
+		if stat[0] != 0:
+			rows.append({"text": "%+d %s" % [stat[0], TranslationServer.translate(stat[1])], "good": stat[0] > 0})
+	for stat: Array in [[fire_power, "STAT_FIRE_POWER"], [ice_power, "STAT_ICE_POWER"], [poison_power, "STAT_POISON_POWER"]]:
+		if stat[0] != 0:
+			rows.append({"text": "%+d%% %s" % [stat[0], TranslationServer.translate(stat[1])], "good": stat[0] > 0})
+	return rows
 
 
 ## "Heavy weapon: wind-up x1.6" for the Forge and Gear Rack; "" if this isn't a weapon.

@@ -17,6 +17,7 @@ amount = 4
 
 [resource]
 script = ExtResource("1_data")
+max_stamina = 5
 armor_weight = 0.25
 id = &"tuskguard"
 name_key = "ITEM_TUSKGUARD"
