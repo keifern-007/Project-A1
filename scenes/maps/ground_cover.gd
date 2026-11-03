@@ -14,6 +14,8 @@ const FLOWER_COLORS: Array[Color] = [Color(0.98, 0.92, 0.45), Color(0.96, 0.96, 
 @export var spacing: float = 2.2 ## One spot per this many metres (then jittered).
 @export_range(0.0, 1.0) var flower_chance: float = 0.12
 @export_range(0.0, 1.0) var pebble_chance: float = 0.06
+## Tuft colors, picked at random (dry ones for deserts). Empty = the green defaults.
+@export var grass_colors: Array[Color] = []
 ## Spots kept bare, as Vector3(x, z, radius): base camp and the like.
 @export var clearings: Array[Vector3] = []
 
@@ -48,7 +50,8 @@ func _ready() -> void:
 				_add_flower_patch(x, floor_y, z)
 			else:
 				_grass.append(_spin(Vector3(x, floor_y + 0.13, z), _rng.randf_range(0.7, 1.3)))
-				_grass_colors.append(GRASS_COLORS[_rng.randi_range(0, GRASS_COLORS.size() - 1)])
+				var palette: Array[Color] = grass_colors if not grass_colors.is_empty() else GRASS_COLORS
+				_grass_colors.append(palette[_rng.randi_range(0, palette.size() - 1)])
 	_build(_grass, _grass_colors, _grass_mesh())
 	_build(_flowers, _flower_colors, _flower_mesh())
 	_build(_pebbles, [], _pebble_mesh())

@@ -8,6 +8,7 @@ const AGENT_RADIUS: float = 0.5 ## Routes keep this far from walls. About a gobl
 const LARGE_AGENT_RADIUS: float = 1.5 ## A second set of routes for bosses, which are far wider.
 const AGENT_HEIGHT: float = 1.5
 const WORLD_LAYER: int = 1
+const BODY_GROUP: StringName = &"nav_bodies"
 
 ## Routes for big creatures (bosses), on their own navigation map. Built in the background after the
 ## normal one, so it may not exist for the first moments: EnemyPath falls back to the normal routes.
@@ -25,20 +26,53 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
+	# CSG shapes (the floors, plateaus and cliffs maps are built from) build their collision a frame
+	# after they enter the tree; their full surfaces are read from that collision below.
+	await get_tree().physics_frame
+	if not is_inside_tree():
+		return
 	var mesh: NavigationMesh = NavigationMesh.new()
 	mesh.agent_radius = AGENT_RADIUS
 	mesh.agent_height = AGENT_HEIGHT
 	mesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
 	mesh.geometry_collision_mask = WORLD_LAYER
+	# Godot's own scan only reads the regular solid bodies, gathered in a group. CSG shapes are left to
+	# _add_csg_shapes(): Godot's scan would read their meshes back from the graphics card (slow).
+	mesh.geometry_source_geometry_mode = NavigationMesh.SOURCE_GEOMETRY_GROUPS_EXPLICIT
+	mesh.geometry_source_group_name = BODY_GROUP
+	for body: Node in get_parent().find_children("*", "StaticBody3D", true, false):
+		body.add_to_group(BODY_GROUP)
 	var bounds: AABB = _bounds_box()
 	if bounds.size != Vector3.ZERO: # Only where heroes can go: the floor may reach far under the scenery.
 		mesh.filter_baking_aabb = bounds
 	var source: NavigationMeshSourceGeometryData3D = NavigationMeshSourceGeometryData3D.new()
 	NavigationServer3D.parse_source_geometry_data(mesh, source, get_parent())
-	_add_csg_floors(source)
+	_add_csg_shapes(source)
 	NavigationServer3D.bake_from_source_geometry_data(mesh, source)
 	navigation_mesh = mesh
-	_build_large_routes(mesh, source)
+	# The wide routes are built in the background only once the normal ones are in use: started
+	# together, the background job held up the normal routes for seconds on big maps.
+	await _normal_routes_ready()
+	if is_inside_tree():
+		_build_large_routes(mesh, source)
+
+
+## Waits until the navigation map answers with real routes (at most about 10 s, just in case).
+func _normal_routes_ready() -> void:
+	var map: RID = get_navigation_map()
+	var probe: Vector3 = _any_floor()
+	for frame: int in 600:
+		if not is_inside_tree():
+			return
+		if NavigationServer3D.map_get_iteration_id(map) > 0 and NavigationServer3D.map_get_closest_point(map, probe) != Vector3.ZERO:
+			return
+		await get_tree().physics_frame
+
+
+## A point that should be on a floor: the middle of the map's Bounds (good enough to see the routes exist).
+func _any_floor() -> Vector3:
+	var bounds: AABB = _bounds_box()
+	return bounds.get_center() * Vector3(1, 0, 1) if bounds.size != Vector3.ZERO else Vector3.ZERO
 
 
 func _build_large_routes(mesh: NavigationMesh, source: NavigationMeshSourceGeometryData3D) -> void:
@@ -74,16 +108,14 @@ func _bounds_box() -> AABB:
 	return AABB(Vector3(low.x - 2.0, -50.0, low.z - 2.0), Vector3(high.x - low.x + 4.0, 100.0, high.z - low.z + 4.0))
 
 
-# The collider scan above skips CSG shapes, and the maps' floors are CSG boxes. Their top face is
-# added as plain triangles (reading a mesh back from the graphics card would stall the game).
-func _add_csg_floors(source: NavigationMeshSourceGeometryData3D) -> void:
-	for node: Node in get_parent().find_children("*", "CSGBox3D", true, false):
-		var floor_box: CSGBox3D = node
-		if not floor_box.use_collision:
+# The collider scan above skips CSG shapes, and maps are mostly built from them. Their real surfaces
+# (floors, walls, plateau sides, holes cut for water) come from their own collision, so a raised
+# plateau is a wall at ground level too. (Reading their render mesh instead would stall the game.)
+func _add_csg_shapes(source: NavigationMeshSourceGeometryData3D) -> void:
+	for node: Node in get_parent().find_children("*", "CSGShape3D", true, false):
+		var shape: CSGShape3D = node
+		if not shape.is_root_shape() or not shape.use_collision or (shape.collision_layer & WORLD_LAYER) == 0:
 			continue
-		var half: Vector3 = floor_box.size * 0.5
-		var a: Vector3 = Vector3(-half.x, half.y, -half.z)
-		var b: Vector3 = Vector3(half.x, half.y, -half.z)
-		var c: Vector3 = Vector3(half.x, half.y, half.z)
-		var d: Vector3 = Vector3(-half.x, half.y, half.z)
-		source.add_faces(PackedVector3Array([a, b, c, a, c, d]), floor_box.global_transform)
+		var collision: ConcavePolygonShape3D = shape.bake_collision_shape() as ConcavePolygonShape3D
+		if collision and not collision.get_faces().is_empty():
+			source.add_faces(collision.get_faces(), shape.global_transform)
