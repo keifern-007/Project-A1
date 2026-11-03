@@ -33,6 +33,17 @@ func add_xp(amount: int) -> void:
 	xp_changed.emit(xp, xp_to_next(), level)
 
 
+## Picks up a Run Level from an earlier step of a game mode. Its levels were already earned, so no banner.
+func restore(saved_level: int, saved_xp: int) -> void:
+	var gained: int = saved_level - level
+	level = saved_level
+	xp = saved_xp
+	stats.max_health += health_per_level * gained
+	stats.attack_power += attack_per_level * gained
+	health.set_max_health(stats.max_health, false)
+	xp_changed.emit(xp, xp_to_next(), level)
+
+
 func _level_up() -> void:
 	level += 1
 	stats.max_health += health_per_level

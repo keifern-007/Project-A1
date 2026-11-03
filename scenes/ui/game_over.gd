@@ -31,13 +31,16 @@ func _ready() -> void:
 
 ## rewards: [{ "material": MaterialData, "amount": int, "owned": int (profile total) }, ...]
 func show_results(victory: bool, run_time: float, kills: int, level: int, rewards: Array[Dictionary],
-		xp_lines: Array[String] = [], left_mission: bool = false) -> void:
+		xp_lines: Array[String] = [], left_mission: bool = false, title_key: String = "", subtitle_key: String = "") -> void:
 	# These labels auto-translate, so setting the key is enough.
 	title_label.text = "UI_VICTORY" if victory else "UI_GAME_OVER"
 	subtitle_label.text = "UI_VICTORY_SUB" if victory else "UI_GAME_OVER_SUB"
 	if left_mission:
 		title_label.text = "UI_LEFT_MISSION"
 		subtitle_label.text = "UI_LEFT_MISSION_SUB"
+	if title_key != "": # Game modes have their own endings.
+		title_label.text = title_key
+		subtitle_label.text = subtitle_key
 	stats_label.text = tr("UI_RUN_STATS") % [HUD.format_time(run_time), kills, level]
 	_fill_rewards(rewards, xp_lines)
 	show()

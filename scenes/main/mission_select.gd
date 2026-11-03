@@ -7,7 +7,7 @@ signal closed
 
 const RUN_SCENE: String = "res://scenes/main/retro_view.tscn"
 const BUTTON_FONT_SIZE: int = 20
-const BUTTON_SIZE: Vector2 = Vector2(280, 44)
+const BUTTON_SIZE: Vector2 = Vector2(280, 38) ## All the objectives and modes must fit at 1280×720.
 
 @export var maps: Array[MapData] = []
 @export var objectives: Array[ObjectiveData] = []
@@ -18,6 +18,8 @@ var _map: MapData
 var _objective: ObjectiveData
 var _challenge: ChallengeData
 var _objective_buttons: Array[Button] = []
+var _abandon_button: Button
+var _abandon_armed: bool = false
 
 @onready var map_list: VBoxContainer = %MapList
 @onready var objective_list: VBoxContainer = %ObjectiveList
@@ -114,19 +116,86 @@ func _update_details() -> void:
 		details.text = ""
 		start_button.disabled = true
 		return
-	var locked_rank: int = maxi(maxi(_map.required_rank, _objective.required_rank), _challenge.required_rank)
+	_refresh_abandon()
+	var saved: ModeRun = _saved_run()
+	start_button.text = "UI_CONTINUE_RUN" if saved else "UI_START"
+	if saved: # The run already chose its hero and difficulty; nothing here changes them.
+		start_button.disabled = false
+		details.text = _saved_run_text(saved)
+		return
+	# Modes that travel between maps don't use the selected map, so a locked one can't block them.
+	var multi_step: bool = _objective.is_multi_step()
+	var locked_rank: int = maxi(0 if multi_step else _map.required_rank, maxi(_objective.required_rank, _challenge.required_rank))
 	start_button.disabled = locked_rank > SaveManager.get_rank()
 	# The scouting report comes first: it's what you need before leaving camp, so it must never need scrolling.
 	var report: String = ScoutReport.text(_objective, SaveManager.get_character())
-	details.text = "%s  —  %s  —  %s\n%s%s\n%s\n%s" % [tr(_map.name_key), tr(_objective.name_key), tr(_challenge.name_key),
+	var best: String = RunSummary.best_line(_objective)
+	details.text = "%s%s  —  %s\n%s%s%s\n%s" % ["" if multi_step else tr(_map.name_key) + "  —  ", tr(_objective.name_key), tr(_challenge.name_key),
 		report + "\n\n" if report != "" else "",
-		tr(_map.description_key), tr(_objective.description_key), _challenge.describe()]
+		"" if multi_step else tr(_map.description_key) + "\n",
+		tr(_objective.description_key), _challenge.describe()]
+	if best != "":
+		details.text += "\n" + best
 	if start_button.disabled:
 		details.text += "\n" + tr("UI_RANK_NEEDED") % [locked_rank, SaveManager.get_rank()]
+
+
+## The Classic run waiting to be resumed, if Classic is what's selected.
+func _saved_run() -> ModeRun:
+	if _objective == null or _objective.type != ObjectiveData.Type.CLASSIC:
+		return null
+	return ModeRun.load_saved(_objective, _map)
+
+
+func _saved_run_text(run: ModeRun) -> String:
+	var hero: CharacterData = CharacterRegistry.get_by_id(run.character_id)
+	var difficulty: String = tr(run.challenge.name_key) if run.challenge else ""
+	var hp_text: String = tr("UI_FULL_HP") if run.hp < 0 else str(run.hp)
+	return "%s\n%s\n%s" % [tr("UI_SAVED_RUN") % [tr(hero.name_key), run.progress_text(), difficulty, hp_text, run.level],
+		tr("UI_SAVED_RUN_NOTE"), tr(_objective.description_key)]
+
+
+## Only there while a saved run is. Takes two presses, like leaving a mission.
+func _refresh_abandon() -> void:
+	if _abandon_button == null:
+		_abandon_button = Button.new()
+		_abandon_button.custom_minimum_size = Vector2(240, 48)
+		_abandon_button.add_theme_font_size_override("font_size", 22)
+		_abandon_button.pressed.connect(_on_abandon_pressed)
+		start_button.get_parent().add_child(_abandon_button)
+		start_button.get_parent().move_child(_abandon_button, start_button.get_index() + 1)
+		_abandon_button.focus_exited.connect(func() -> void:
+			_abandon_armed = false
+			_abandon_button.text = "UI_ABANDON_RUN")
+	_abandon_armed = false
+	_abandon_button.text = "UI_ABANDON_RUN"
+	_abandon_button.visible = _saved_run() != null
+
+
+## Abandoning counts like leaving any mission: you keep what you collected, and it isn't a win.
+func _on_abandon_pressed() -> void:
+	if not _abandon_armed:
+		_abandon_armed = true
+		_abandon_button.text = "UI_ABANDON_CONFIRM"
+		return
+	var saved: ModeRun = _saved_run()
+	SaveManager.profile["classic_run"] = {}
+	SaveManager.commit_run(saved.rewards, false)
+	_update_details()
+	start_button.grab_focus()
 
 
 func _start() -> void:
 	GameState.map = _map
 	GameState.objective = _objective
 	GameState.challenge = _challenge
+	GameState.mode_run = null
+	if _objective.is_multi_step():
+		GameState.mode_run = _saved_run()
+		if GameState.mode_run: # Back to the hero who started this run.
+			var hero: CharacterData = CharacterRegistry.get_by_id(GameState.mode_run.character_id)
+			SaveManager.select_character(hero)
+			GameState.character = hero
+		else:
+			GameState.mode_run = ModeRun.create(_objective, _map)
 	get_tree().change_scene_to_file(RUN_SCENE)

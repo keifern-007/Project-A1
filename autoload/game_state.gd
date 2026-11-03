@@ -7,6 +7,8 @@ var map: Resource = null
 var objective: Resource = null
 ## Difficulty picked on the Mission Board. null (e.g. F6 on the run scene) = Normal.
 var challenge: ChallengeData = null
+## Set while playing a mode made of several steps (Endless Boss, Classic). Survives reloading the run scene.
+var mode_run: ModeRun = null
 
 var run_seed: int = 0
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -50,7 +52,8 @@ func biome() -> BiomeData:
 
 
 func enemy_health_multiplier() -> float:
-	return challenge.enemy_health_multiplier if challenge else 1.0
+	var multiplier: float = challenge.enemy_health_multiplier if challenge else 1.0
+	return multiplier * mode_run.boss_health_multiplier() if mode_run else multiplier
 
 
 func damage_taken_multiplier() -> float:
@@ -59,6 +62,7 @@ func damage_taken_multiplier() -> float:
 
 ## Won a challenge? Multiply this run's materials and XP (rounded up). Call once, after
 ## all loot is collected and before saving. Returns the multiplier applied (1.0 = none).
+## Pass true for endless modes too: they can't be won, so reaching the end is what counts.
 func apply_challenge_bonus(victory: bool) -> float:
 	if not victory or challenge == null or challenge.reward_multiplier <= 1.0:
 		return 1.0

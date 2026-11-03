@@ -6,7 +6,7 @@ extends Node
 
 const SAVE_PATH: String = "user://save.json"
 const TEMP_PATH: String = "user://save.json.tmp"
-const SAVE_VERSION: int = 9 ## v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
+const SAVE_VERSION: int = 10 ## v10: game mode records, saved Classic run. v2: 8-slot loadout. v3: items are counted. v4: tracks bought with skill points.
 ## v5: characters, one loadout each. v6: talent trees per character. v7: discovered materials (hidden recipes).
 ## v8: the Consumable slot becomes an Inventory per character. v9: unlocked and chosen skills per character.
 const PACK_SLOTS: int = 6 ## Stacks a hero can carry on a mission.
@@ -40,6 +40,8 @@ func new_profile() -> Dictionary:
 		"track_levels": {}, # track key -> level; missing = level 1.
 		"rank_xp": 0,
 		"stats": { "runs_played": 0, "runs_won": 0 },
+		"records": { "endless_survival_wave": 0, "endless_boss_kills": 0, "classic_clears": 0 },
+		"classic_run": {}, # The Classic run in progress, as of the start of its current step. {} = none. See ModeRun.
 	}
 
 
@@ -89,6 +91,12 @@ func commit_run(run_rewards: Dictionary, victory: bool) -> Array[Dictionary]:
 		stats["runs_won"] += 1
 	save_profile()
 	return level_ups
+
+
+## Saves the Classic run in progress ({} = there's none any more).
+func set_classic_run(saved: Dictionary) -> void:
+	profile["classic_run"] = saved
+	save_profile()
 
 
 # --- Materials -------------------------------------------------------------------------------
@@ -542,6 +550,11 @@ func _migrate(data: Dictionary) -> Dictionary:
 	for key: String in stats:
 		stats[key] = int(stats[key])
 	merged["stats"] = stats
+	var records: Dictionary = new_profile()["records"]
+	records.merge(merged["records"], true)
+	for key: String in records:
+		records[key] = int(records[key])
+	merged["records"] = records
 	profile = merged # _clean_equipped checks mastery levels from this profile.
 	var loadouts: Dictionary = {}
 	if version < 5:

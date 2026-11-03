@@ -14,10 +14,10 @@ func _ready() -> void:
 
 
 func _on_wave_started(wave: int) -> void:
-	_report_progress(wave, data.waves_to_survive)
+	_report_progress(wave - start_wave, data.waves_to_survive)
 
 
 func _on_wave_cleared(wave: int) -> void:
-	if wave >= data.waves_to_survive:
+	if wave - start_wave >= data.waves_to_survive:
 		_spawner.stop()
 		_complete()

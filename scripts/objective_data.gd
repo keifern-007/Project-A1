@@ -2,7 +2,7 @@ class_name ObjectiveData
 extends Resource
 ## One mission objective, saved as a .tres in resources/objectives/.
 
-enum Type { HORDE, BOSS, GATHER, TUTORIAL }
+enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASSIC }
 
 @export var name_key: String = "" ## Translation key shown on the HUD, e.g. "OBJ_HORDE".
 @export var description_key: String = "" ## Shown on mission select.
@@ -34,6 +34,22 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL }
 @export var boss_drop_amount: int = 1
 @export var scout_boss: EnemyData ## What the Mission Board's scouting report describes. Empty = no report.
 @export var hazard: HazardData ## Lasting danger once the boss appears. Empty = none.
+
+@export_group("Game Mode") ## Endless Boss and Classic: a run made of several steps. See ModeRun.
+@export var boss_sequence: Array[ObjectiveData] = [] ## In order. Each boss's only_on_map is where it's fought.
+@export var stage_objective: ObjectiveData ## The survival stages before each boss.
+@export var stages_per_boss: int = 0
+@export var boss_health_growth: float = 0.0 ## +25% boss HP for every boss already beaten this run.
+
+
+## Never won, only ended: rewards count in full however it ends.
+func is_endless() -> bool:
+	return type == Type.ENDLESS_SURVIVAL or type == Type.ENDLESS_BOSS
+
+
+## Plays through several maps and objectives; the map picked on the board isn't used.
+func is_multi_step() -> bool:
+	return type == Type.ENDLESS_BOSS or type == Type.CLASSIC
 
 
 func available_on(map: MapData) -> bool:

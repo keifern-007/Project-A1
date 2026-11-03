@@ -5,9 +5,9 @@
 
 [resource]
 script = ExtResource("1_data")
-weapon_types = Array[StringName]([&"fists"])
 id = &"haymaker"
 name_key = "SKILL_HAYMAKER"
+weapon_types = Array[StringName]([&"fists"])
 damage_multiplier = 2.0
 cost = 20.0
 cast_time = 0.4

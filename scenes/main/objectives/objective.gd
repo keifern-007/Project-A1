@@ -5,7 +5,11 @@ extends Node
 
 signal completed
 
+const WAVE_KEY: String = "OBJ_WAVE"
+
 var data: ObjectiveData
+var start_wave: int = 0 ## Waves already behind this objective (a Classic stage continues the count).
+var skip_prep: bool = false ## Bosses in game modes appear right away, with no horde first.
 
 
 static func create(objective_data: ObjectiveData) -> Objective:
@@ -19,6 +23,8 @@ static func create(objective_data: ObjectiveData) -> Objective:
 			objective = GatherObjective.new()
 		ObjectiveData.Type.TUTORIAL:
 			objective = TutorialObjective.new()
+		ObjectiveData.Type.ENDLESS_SURVIVAL:
+			objective = EndlessObjective.new()
 		_:
 			push_error("Objective type not built yet: %s" % ObjectiveData.Type.keys()[objective_data.type])
 			return null
@@ -41,7 +47,8 @@ func _setup_spawner(max_waves: int) -> WaveSpawner:
 	spawner.first_wave_size = data.first_wave_size
 	spawner.wave_size_growth = data.wave_size_growth
 	spawner.health_growth_per_wave = data.health_growth_per_wave
-	spawner.max_waves = max_waves
+	spawner.max_waves = start_wave + max_waves if max_waves > 0 else 0
+	spawner.wave = start_wave
 	var map_data: MapData = GameState.map as MapData
 	if map_data and not map_data.enemy_pool.is_empty():
 		spawner.enemy_pool = map_data.enemy_pool

@@ -13,7 +13,7 @@ var _spawner: WaveSpawner
 func _ready() -> void:
 	EventBus.enemy_killed.connect(_on_enemy_killed)
 	EventBus.boss_defeated.connect(_on_boss_defeated)
-	if data.kills_before_boss <= 0:
+	if data.kills_before_boss <= 0 or skip_prep:
 		_spawn_boss.call_deferred()
 		return
 	_report_progress(0, data.kills_before_boss, PREP_KEY)

@@ -5,9 +5,9 @@
 
 [resource]
 script = ExtResource("1_data")
-weapon_types = Array[StringName]([&"axe", &"fists"])
 id = &"ground_slam"
 name_key = "SKILL_GROUND_SLAM"
+weapon_types = Array[StringName]([&"axe", &"fists"])
 cooldown = 8.0
 damage_multiplier = 3.0
 cost = 35.0

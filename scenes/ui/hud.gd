@@ -190,8 +190,31 @@ func _on_leveled_up(_level: int) -> void:
 	tween.tween_callback(level_up_label.hide)
 
 
+## A short message in the middle of the screen that rises and fades, never a flash.
+func show_banner(text: String) -> void:
+	var banner: Label = Label.new()
+	banner.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	banner.text = text
+	banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	banner.add_theme_font_size_override("font_size", 40)
+	banner.add_theme_constant_override("outline_size", 8)
+	banner.add_theme_color_override("font_outline_color", Color.BLACK)
+	banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	banner.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	banner.position.y = get_parent_area_size().y * 0.3
+	add_child(banner)
+	var tween: Tween = create_tween()
+	tween.tween_interval(1.4)
+	tween.tween_property(banner, "modulate:a", 0.0, 0.8)
+	tween.parallel().tween_property(banner, "position:y", banner.position.y - 30.0, 0.8)
+	tween.tween_callback(banner.queue_free)
+
+
+## target 0 = no end in sight (Endless Survival): just the count.
 func _on_objective_progress(name_key: String, current: int, target: int) -> void:
-	objective_label.text = "%s  %d/%d" % [tr(name_key), current, target]
+	objective_label.text = "%s  %d/%d" % [tr(name_key), current, target] if target > 0 else "%s  %d" % [tr(name_key), current]
+	if GameState.mode_run:
+		objective_label.text = "%s  -  %s" % [GameState.mode_run.progress_text(), objective_label.text]
 	if GameState.challenge and GameState.challenge.is_harder():
 		objective_label.text = "[%s]  %s" % [tr(GameState.challenge.name_key), objective_label.text]
 

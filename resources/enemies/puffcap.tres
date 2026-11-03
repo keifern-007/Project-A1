@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
 [ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="2_drop"]
-[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" uid="uid://dcpee41fmoemf" path="res://resources/items/heal_potion.tres" id="4_heal"]
 [ext_resource type="Resource" uid="uid://4a8axcif7d6d" path="res://resources/materials/moonleaf.tres" id="5_leaf"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/projectiles/poison_cloud.tscn" id="6_cloud"]
 

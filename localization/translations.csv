@@ -548,3 +548,34 @@ ITEM_SUNSTONE_CHARM_DESC,A seed of noon on a string. Mind your fingers.
 STAT_FIRE_POWER,Fire power
 STAT_ICE_POWER,Ice power
 STAT_POISON_POWER,Poison power
+OBJ_WAVE,Wave
+OBJ_ENDLESS_SURVIVAL,Endless Survival
+OBJ_ENDLESS_SURVIVAL_DESC,"Waves keep coming, bigger and tougher, until you fall. You keep everything you collect."
+OBJ_ENDLESS_BOSS,Endless Boss
+OBJ_ENDLESS_BOSS_DESC,"The bosses you've unlocked, one after another, each on its own map and tougher than the last. HP, Run Level and potions carry over, and each kill gives back 30% of your HP. Bring potions."
+OBJ_CLASSIC,Classic
+OBJ_CLASSIC_DESC,"Travel all three maps: 4 survival stages, then the boss, then on to the next. Beat all 3 to win. HP, Run Level and potions carry over, and the run saves at the start of every stage."
+OBJ_CLASSIC_STAGE,Survive
+MODE_CLASSIC_STAGE,Classic %d/%d: Stage %d/%d
+MODE_CLASSIC_BOSS,Classic %d/%d: Boss
+MODE_ENDLESS_BOSS,Boss %d
+UI_STAGE_CLEARED,Stage cleared
+UI_BOSS_DOWN,Boss defeated
+UI_RUN_OVER,Run Over
+UI_RUN_OVER_SUB,How far can you get next time?
+UI_CLASSIC_WON,Classic Complete
+UI_CLASSIC_WON_SUB,All three bosses have fallen.
+UI_RESULT_WAVE,Reached wave %d  |  Best %d
+UI_RESULT_BOSSES,Bosses defeated %d  |  Best %d
+UI_RESULT_CLASSIC,Got as far as %s
+UI_NEW_RECORD,New record!
+UI_BEST_WAVE,Best: wave %d
+UI_BEST_BOSSES,Best: %d bosses
+UI_CLASSIC_CLEARS,Classic wins: %d
+UI_CONTINUE_RUN,Continue Run
+UI_ABANDON_RUN,Abandon Run
+UI_ABANDON_CONFIRM,Press again to abandon
+UI_SAVED_RUN,Saved run: %s  |  %s  |  %s  |  HP %s  |  Run Level %d
+UI_SAVED_RUN_NOTE,"It keeps its hero and difficulty. Abandoning keeps what you collected, but it isn't a win."
+UI_FULL_HP,full
+UI_LEAVE_CLASSIC,Save and leave? Press again (this stage restarts)

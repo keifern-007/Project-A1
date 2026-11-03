@@ -27,6 +27,12 @@ func set_max_health(value: int, refill: bool = true) -> void:
 	health_changed.emit(current, max_health)
 
 
+## Sets HP outright (HP carried over from an earlier step of a game mode). Never kills.
+func set_current(value: int) -> void:
+	current = clampi(value, 1, max_health)
+	health_changed.emit(current, max_health)
+
+
 func take_damage(amount: int) -> void:
 	if is_dead or amount <= 0:
 		return

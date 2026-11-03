@@ -4,6 +4,7 @@ extends Control
 
 const CAMP_SCENE: String = "res://scenes/main/hub.tscn"
 const GAME_OVER_DELAY: float = 1.2 ## Seconds to watch the death before the screen appears.
+const STEP_DELAY: float = 2.2 ## Between a game mode's steps: time to read the banner and collect the loot.
 const TUTORIAL_BOX: PackedScene = preload("res://scenes/ui/tutorial_box.tscn")
 
 ## Fallbacks for running this scene directly (F6) without going through mission select.
@@ -19,13 +20,20 @@ var _player: Player
 
 
 func _ready() -> void:
+	var mode_run: ModeRun = GameState.mode_run
+	if mode_run:
+		mode_run.enter_step() # Decides the map and objective, and saves a Classic run's checkpoint.
 	add_child(LootDropper.new())
 	_load_map()
-	# Every load of this scene is a fresh run (Restart reloads it).
-	GameState.start_run()
+	# Every load of this scene is a fresh run (Restart reloads it), or the next step of a game mode.
+	GameState.start_run(mode_run.run_seed + mode_run.step if mode_run else 0)
 	_player = get_tree().get_first_node_in_group("players")
+	if mode_run:
+		mode_run.restore(_player)
 	if _player:
 		hud.bind_player(_player)
+	if mode_run:
+		hud.show_banner(mode_run.progress_text())
 	EventBus.player_died.connect(_on_player_died)
 	game_over.restart_requested.connect(_restart)
 	game_over.quit_requested.connect(get_tree().quit)
@@ -52,7 +60,10 @@ func _start_objective() -> void:
 		GameState.objective = default_objective
 	var objective: Objective = Objective.create(GameState.objective)
 	if objective:
-		objective.completed.connect(_end_run.bind(true))
+		objective.completed.connect(_on_objective_completed)
+		if GameState.mode_run:
+			objective.start_wave = GameState.mode_run.start_wave()
+			objective.skip_prep = true
 		if objective is TutorialObjective:
 			_add_tutorial_box(objective)
 		add_child(objective)
@@ -79,6 +90,30 @@ func _on_player_died(_player: Node) -> void:
 	_end_run(false)
 
 
+func _on_objective_completed() -> void:
+	if GameState.mode_run and GameState.mode_run.has_next_step():
+		_next_step()
+	else:
+		_end_run(true)
+
+
+## A game mode moves on: collect the loot, nothing can hurt the hero any more, then load the next step.
+func _next_step() -> void:
+	if not GameState.run_active: # Died first: only the first result counts.
+		return
+	var mode_run: ModeRun = GameState.mode_run
+	hud.show_banner(tr("UI_BOSS_DOWN" if mode_run.is_boss_step() else "UI_STAGE_CLEARED"))
+	GameState.end_run(true)
+	_player.status.clear()
+	_player.hurtbox.set_deferred("monitoring", false)
+	_player.combat_enabled = false
+	_vacuum_loot.call_deferred()
+	await get_tree().create_timer(STEP_DELAY).timeout
+	mode_run.advance(_player)
+	GameFeel.cancel_hit_stop()
+	get_tree().reload_current_scene()
+
+
 func _end_run(victory: bool) -> void:
 	# Only the first result counts: a Burn tick can finish the boss during the death delay.
 	if not GameState.run_active:
@@ -95,10 +130,14 @@ func _end_run(victory: bool) -> void:
 
 
 ## Pause menu: the run ends now, under the same rules as a defeat (the game is already paused).
+## A Classic run instead stops here and stays saved, to be resumed from the start of this step.
 func _leave_mission() -> void:
 	GameState.end_run(false)
 	if _is_tutorial():
 		_leave_tutorial()
+		return
+	if GameState.mode_run and GameState.mode_run.mode.type == ObjectiveData.Type.CLASSIC:
+		_go_to_camp()
 		return
 	_show_results(false, true)
 
@@ -119,23 +158,36 @@ func _show_results(victory: bool, left_mission: bool = false) -> void:
 	GameFeel.cancel_hit_stop()
 	get_tree().paused = true
 	hud.hide() # The results screen says it all; avoids a frozen banner or skill box underneath.
+	var mode_run: ModeRun = GameState.mode_run
+	var mode: ObjectiveData = mode_run.mode if mode_run else GameState.objective
+	var summary: String = RunSummary.finish(mode, mode_run, victory)
+	if mode.type == ObjectiveData.Type.CLASSIC:
+		SaveManager.profile["classic_run"] = {} # Saved with the rewards below: this run is over.
 	# Saved after the loot vacuum, so everything collected counts.
-	var bonus: float = GameState.apply_challenge_bonus(victory)
+	var bonus: float = GameState.apply_challenge_bonus(victory or mode.is_endless())
 	var level_ups: Array[Dictionary] = SaveManager.commit_run(GameState.run_rewards, victory)
 	var level: int = _player.level.level if _player else 1
+	var lines: Array[String] = _xp_lines(level_ups, bonus)
+	if summary != "":
+		lines.push_front(summary)
 	game_over.show_results(victory, GameState.run_time, GameState.kills, level, _collect_rewards(),
-		_xp_lines(level_ups, bonus), left_mission)
+		lines, left_mission, RunSummary.title_key(mode, victory), RunSummary.subtitle_key(mode, victory))
 
 
 func _restart() -> void:
 	GameFeel.cancel_hit_stop()
 	get_tree().paused = false
+	if GameState.mode_run: # A new run of the same mode, from its first step.
+		GameState.challenge = GameState.mode_run.challenge
+		GameState.mode_run = ModeRun.create(GameState.mode_run.mode, GameState.mode_run.return_map)
 	get_tree().reload_current_scene()
 
 
 func _go_to_camp() -> void:
 	GameFeel.cancel_hit_stop()
 	get_tree().paused = false
+	if GameState.mode_run:
+		GameState.mode_run.leave()
 	get_tree().change_scene_to_file(CAMP_SCENE)
 
 

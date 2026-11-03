@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_ogre.tres" id="2_ogre"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_hoarfrost.tres" id="3_hoarfrost"]
+[ext_resource type="Resource" path="res://resources/objectives/boss_king.tres" id="4_king"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_ENDLESS_BOSS"
+description_key = "OBJ_ENDLESS_BOSS_DESC"
+type = 5
+required_rank = 3
+boss_sequence = Array[ExtResource("1_data")]([ExtResource("2_ogre"), ExtResource("3_hoarfrost"), ExtResource("4_king")])
+stages_per_boss = 0
+boss_health_growth = 0.25

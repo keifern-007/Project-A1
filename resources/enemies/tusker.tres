@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ccetxhrqqfsse" path="res://scripts/enemy_data.gd" id="1_data"]
 [ext_resource type="Script" uid="uid://j4sesbon4vyj" path="res://scripts/drop_entry.gd" id="2_drop"]
-[ext_resource type="Resource" path="res://resources/items/heal_potion.tres" id="4_heal"]
-[ext_resource type="Resource" path="res://resources/items/fury_tonic.tres" id="5_fury"]
+[ext_resource type="Resource" uid="uid://dcpee41fmoemf" path="res://resources/items/heal_potion.tres" id="4_heal"]
+[ext_resource type="Resource" uid="uid://rqqp8o3x0isf" path="res://resources/items/fury_tonic.tres" id="5_fury"]
 [ext_resource type="Resource" uid="uid://ds0hspwtm2v6h" path="res://resources/enemies/tusker_frost.tres" id="6_frost"]
 [ext_resource type="Resource" uid="uid://drjs2j5p2gorf" path="res://resources/enemies/tusker_mummy.tres" id="7_mummy"]
 

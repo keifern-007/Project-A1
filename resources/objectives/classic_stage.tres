@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_CLASSIC_STAGE"
+description_key = "OBJ_CLASSIC_DESC"
+waves_to_survive = 2
+first_wave_size = 4
+wave_size_growth = 1
+health_growth_per_wave = 0.1
