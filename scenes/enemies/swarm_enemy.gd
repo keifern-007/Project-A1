@@ -68,9 +68,7 @@ func _process_chase() -> void:
 	var goal: Vector3 = target.global_position
 	if distance > flank_until:
 		goal += _flank_offset
-	var to_goal: Vector3 = goal - global_position
-	to_goal.y = 0.0
-	walk(to_goal.normalized())
+	walk(route_direction_to(goal))
 
 
 func _change_state(new_state: State) -> void:

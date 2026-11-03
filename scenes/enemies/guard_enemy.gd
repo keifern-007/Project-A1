@@ -80,15 +80,16 @@ func _process_chase(delta: float) -> void:
 	if not refresh_target():
 		_change_state(State.IDLE)
 		return
-	_turn_toward_target(delta)
-	var facing: float = _forward().dot(flat_direction_to(target))
 	if flat_distance_to(target) <= data.attack_range:
+		_turn_toward_target(delta)
 		stand_still()
-		if facing >= ATTACK_FACING:
+		if _forward().dot(flat_direction_to(target)) >= ATTACK_FACING:
 			_change_state(State.WINDUP)
 		return
+	var route: Vector3 = route_direction_to(target.global_position)
+	_turn_toward(route, delta)
 	# Walks the way the shield faces, so its slow turning really matters.
-	var speed: float = current_speed() * maxf(facing, 0.2)
+	var speed: float = current_speed() * maxf(_forward().dot(route), 0.2)
 	velocity.x = _forward().x * speed
 	velocity.z = _forward().z * speed
 
@@ -146,7 +147,10 @@ func _guard_scale(hitbox: HitboxComponent) -> float:
 func _turn_toward_target(delta: float) -> void:
 	if not is_target_valid():
 		return
-	var dir: Vector3 = flat_direction_to(target)
+	_turn_toward(flat_direction_to(target), delta)
+
+
+func _turn_toward(dir: Vector3, delta: float) -> void:
 	_yaw = rotate_toward(_yaw, atan2(-dir.x, -dir.z), data.turn_speed * status.speed_multiplier() * delta)
 	visual.rotation.y = _yaw
 

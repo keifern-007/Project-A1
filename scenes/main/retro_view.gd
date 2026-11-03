@@ -48,6 +48,8 @@ func _load_map() -> void:
 	var map_data: MapData = GameState.map as MapData
 	var world: Node = map_data.scene.instantiate()
 	retro_screen.add_world(world)
+	world.add_child(MapNavigation.new())
+	add_child(OccluderFader.new())
 	if GameState.objective == null:
 		GameState.objective = default_objective
 	var objective_data: ObjectiveData = GameState.objective as ObjectiveData
@@ -61,6 +63,8 @@ func _start_objective() -> void:
 	var objective: Objective = Objective.create(GameState.objective)
 	if objective:
 		objective.completed.connect(_on_objective_completed)
+		if objective is ExpeditionObjective:
+			objective.cart_taken.connect(_leave_by_cart)
 		if GameState.mode_run:
 			objective.start_wave = GameState.mode_run.start_wave()
 			objective.skip_prep = true
@@ -154,7 +158,15 @@ func _leave_tutorial() -> void:
 	_go_to_camp()
 
 
-func _show_results(victory: bool, left_mission: bool = false) -> void:
+## A big map's cart: home early, keeping what you collected, not a win.
+func _leave_by_cart() -> void:
+	if not GameState.run_active:
+		return
+	GameState.end_run(false)
+	_show_results(false, true, "UI_CART_HOME")
+
+
+func _show_results(victory: bool, left_mission: bool = false, title_key: String = "") -> void:
 	GameFeel.cancel_hit_stop()
 	get_tree().paused = true
 	hud.hide() # The results screen says it all; avoids a frozen banner or skill box underneath.
@@ -170,8 +182,13 @@ func _show_results(victory: bool, left_mission: bool = false) -> void:
 	var lines: Array[String] = _xp_lines(level_ups, bonus)
 	if summary != "":
 		lines.push_front(summary)
+	var subtitle_key: String = RunSummary.subtitle_key(mode, victory)
+	if title_key == "":
+		title_key = RunSummary.title_key(mode, victory)
+	else:
+		subtitle_key = title_key + "_SUB"
 	game_over.show_results(victory, GameState.run_time, GameState.kills, level, _collect_rewards(),
-		lines, left_mission, RunSummary.title_key(mode, victory), RunSummary.subtitle_key(mode, victory))
+		lines, left_mission, title_key, subtitle_key)
 
 
 func _restart() -> void:

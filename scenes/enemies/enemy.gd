@@ -18,6 +18,8 @@ const LEAN_FORWARD: float = -0.262 ## ~-15 degrees. The strike.
 @export var data: EnemyData
 ## Chase from any distance (set by spawners). Otherwise waits for detection_range.
 @export var hunt_from_start: bool = false
+
+var _route: EnemyPath
 ## Scales max HP from data (set by spawners for later waves).
 @export var health_multiplier: float = 1.0
 
@@ -143,6 +145,14 @@ func refresh_target() -> bool:
 	if not is_target_valid():
 		target = find_nearest_player()
 	return target != null
+
+
+## Direction to walk in to get to `point`, around whatever is in the way. Call it each frame while
+## chasing. Direct moves (retreats, charges, hops) use flat_direction_to instead.
+func route_direction_to(point: Vector3) -> Vector3:
+	if _route == null:
+		_route = EnemyPath.new(self)
+	return _route.direction_to(point, get_physics_process_delta_time())
 
 
 func flat_distance_to(node: Node3D) -> float:

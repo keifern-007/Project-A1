@@ -66,11 +66,16 @@ func damage_taken_multiplier() -> float:
 func apply_challenge_bonus(victory: bool) -> float:
 	if not victory or challenge == null or challenge.reward_multiplier <= 1.0:
 		return 1.0
+	multiply_rewards(challenge.reward_multiplier)
+	return challenge.reward_multiplier
+
+
+## Multiplies this run's materials and XP (rounded up). Call before saving.
+func multiply_rewards(multiplier: float) -> void:
 	for key: String in ["materials", "xp"]:
 		var rewards: Dictionary = run_rewards.get(key, {})
 		for id: Variant in rewards:
-			rewards[id] = ceili(rewards[id] * challenge.reward_multiplier)
-	return challenge.reward_multiplier
+			rewards[id] = ceili(rewards[id] * multiplier)
 
 
 func end_run(victory: bool) -> void:

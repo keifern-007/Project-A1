@@ -21,6 +21,7 @@ func _spawn_gather_nodes() -> void:
 		var node: GatherNode = data.gather_node_scene.instantiate()
 		node.gather_material = data.gather_material
 		point.add_child(node)
+		Compass.track(node, Compass.QUEST) # Harvested nodes are freed, which takes them off the compass.
 		total_yield += node.yield_amount
 	if total_yield < data.gather_amount:
 		push_warning("GatherObjective: map only has %d %s, objective needs %d." \

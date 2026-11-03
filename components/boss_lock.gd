@@ -43,7 +43,9 @@ func point() -> Vector3:
 
 ## Called every frame. `can_lock` = over the shoulder and actually playing (not paused, dead or in a menu).
 func update(can_lock: bool) -> void:
-	var lockable: bool = can_lock and is_instance_valid(_boss) and not _boss_hurtbox.invulnerable
+	# Also lets go while a hunted boss limps away, rather than swinging the camera across the map.
+	var fleeing: bool = is_instance_valid(_boss) and _boss.has_method("is_fleeing") and _boss.call("is_fleeing")
+	var lockable: bool = can_lock and is_instance_valid(_boss) and not _boss_hurtbox.invulnerable and not fleeing
 	if lockable and Input.is_action_just_pressed("lock_on"):
 		wanted = not wanted
 	var active: bool = lockable and wanted

@@ -38,6 +38,14 @@ var _stamina_warning_left: float = 0.0
 
 func _ready() -> void:
 	objective_label.text = ""
+	# Top right, under the kill count; shows itself when there's something to point at.
+	var compass: Compass = Compass.new()
+	add_child(compass)
+	compass.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	compass.offset_left = -Compass.DIAMETER - 20.0
+	compass.offset_right = -20.0
+	compass.offset_top = 56.0
+	compass.offset_bottom = 56.0 + Compass.DIAMETER
 	_on_camera_lock_changed(false, false)
 	EventBus.camera_lock_changed.connect(_on_camera_lock_changed)
 	EventBus.objective_progress.connect(_on_objective_progress)

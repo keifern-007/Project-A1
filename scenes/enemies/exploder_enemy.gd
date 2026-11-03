@@ -37,7 +37,7 @@ func _behave(delta: float) -> void:
 			elif flat_distance_to(target) <= data.attack_range:
 				_change_state(State.SWELL)
 			else:
-				walk(flat_direction_to(target))
+				walk(route_direction_to(target.global_position))
 		State.SWELL:
 			stand_still()
 			var t: float = minf(_state_time / data.attack_windup, 1.0)

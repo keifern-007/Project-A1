@@ -25,6 +25,10 @@ static func create(objective_data: ObjectiveData) -> Objective:
 			objective = TutorialObjective.new()
 		ObjectiveData.Type.ENDLESS_SURVIVAL:
 			objective = EndlessObjective.new()
+		ObjectiveData.Type.EXPEDITION:
+			objective = ExpeditionObjective.new()
+		ObjectiveData.Type.HUNT:
+			objective = HuntObjective.new()
 		_:
 			push_error("Objective type not built yet: %s" % ObjectiveData.Type.keys()[objective_data.type])
 			return null

@@ -15,8 +15,18 @@ signal interacted(player: Player)
 
 func _ready() -> void:
 	add_to_group("interactables")
-	prompt.text = tr("UI_INTERACT_PROMPT") % [InputHints.key_for("interact"), tr(prompt_key)]
+	refresh_prompt()
 	prompt.visible = false
+
+
+## Back to the usual "[E] <name>".
+func refresh_prompt() -> void:
+	prompt.text = tr("UI_INTERACT_PROMPT") % [InputHints.key_for("interact"), tr(prompt_key)]
+
+
+## A different message for a moment, e.g. "Press [E] again to ride home".
+func set_prompt_text(text: String) -> void:
+	prompt.text = text
 
 
 func _physics_process(_delta: float) -> void:

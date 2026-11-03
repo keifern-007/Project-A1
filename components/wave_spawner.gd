@@ -7,6 +7,7 @@ extends Node3D
 
 signal wave_started(wave: int)
 signal wave_cleared(wave: int)
+signal enemy_spawned(enemy: Node3D)
 
 @export var enemy_scenes: Array[PackedScene] = [] ## Fallback when enemy_pool is empty.
 ## Weighted, wave-gated list (set from MapData by the objective). Wins over enemy_scenes.
@@ -124,6 +125,7 @@ func _spawn_one(scene: PackedScene, point: Marker3D, rng: RandomNumberGenerator)
 	enemy.global_position = point.global_position + jitter
 	alive += 1
 	_spawned.append(enemy)
+	enemy_spawned.emit(enemy)
 
 
 ## Weighted pick among the pool entries allowed this wave.

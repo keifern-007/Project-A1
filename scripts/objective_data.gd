@@ -2,7 +2,7 @@ class_name ObjectiveData
 extends Resource
 ## One mission objective, saved as a .tres in resources/objectives/.
 
-enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASSIC }
+enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASSIC, EXPEDITION, HUNT }
 
 @export var name_key: String = "" ## Translation key shown on the HUD, e.g. "OBJ_HORDE".
 @export var description_key: String = "" ## Shown on mission select.
@@ -12,6 +12,8 @@ enum Type { HORDE, BOSS, GATHER, TUTORIAL, ENDLESS_SURVIVAL, ENDLESS_BOSS, CLASS
 @export var mood: MoodData
 ## Set = the Mission Board only lists this objective on that map. Empty = every map.
 @export var only_on_map: MapData
+## Materials and XP are multiplied by this when the mission is won (an Expedition's bonus). 1 = none.
+@export var victory_reward_multiplier: float = 1.0
 
 @export_group("Horde")
 @export var waves_to_survive: int = 5
@@ -53,4 +55,6 @@ func is_multi_step() -> bool:
 
 
 func available_on(map: MapData) -> bool:
+	if map and map.own_objectives_only:
+		return only_on_map == map
 	return only_on_map == null or only_on_map == map

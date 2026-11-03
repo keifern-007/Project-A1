@@ -48,7 +48,7 @@ func _process_chase() -> void:
 	if flat_distance_to(target) <= data.attack_range:
 		_change_state(State.ATTACK)
 		return
-	walk(flat_direction_to(target))
+	walk(route_direction_to(target.global_position))
 
 
 func _process_attack() -> void:

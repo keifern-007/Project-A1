@@ -63,7 +63,7 @@ func _process_move() -> void:
 		walk(-to_target, RETREAT_SPEED)
 		face(to_target) # Backs away facing you.
 	elif distance > data.attack_range:
-		walk(to_target)
+		walk(route_direction_to(target.global_position))
 	else:
 		stand_still()
 		face(to_target)

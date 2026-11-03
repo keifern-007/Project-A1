@@ -3,6 +3,8 @@ extends Area3D
 ## A harvestable resource node. A player standing in it and holding interact fills
 ## the progress bar; letting go drains it. When full, it reports the materials and vanishes.
 
+signal harvested(amount: int) ## For whoever placed it (a map region counting its own plants).
+
 @export var gather_material: MaterialData
 @export var yield_amount: int = 2
 @export var harvest_time: float = 1.2 ## Seconds of holding interact.
@@ -68,6 +70,7 @@ func _harvest() -> void:
 	_harvested = true
 	prompt.visible = false
 	bar.visible = false
+	harvested.emit(yield_amount)
 	EventBus.material_obtained.emit(gather_material, yield_amount)
 	EventBus.resource_harvested.emit(gather_material, yield_amount)
 	var tween: Tween = create_tween()

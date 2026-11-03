@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/maps/whisperwood.tres" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/thornback.tscn" id="3_boss"]
+[ext_resource type="Resource" path="res://resources/materials/ogre_tusk.tres" id="4_drop"]
+[ext_resource type="Resource" path="res://resources/enemies/thornback.tres" id="5_scout"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_HUNT_THORNBACK"
+description_key = "OBJ_HUNT_THORNBACK_DESC"
+type = 8
+required_rank = 4
+only_on_map = ExtResource("2_map")
+boss_scene = ExtResource("3_boss")
+boss_drop = ExtResource("4_drop")
+boss_drop_amount = 2
+scout_boss = ExtResource("5_scout")

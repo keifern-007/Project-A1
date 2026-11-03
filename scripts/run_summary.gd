@@ -4,7 +4,11 @@ extends RefCounted
 
 
 ## Updates the records (saved with the run's rewards) and returns the results line. "" = a normal mission.
+## Also applies a won mission's own reward bonus (an Expedition's), before anything is saved.
 static func finish(mode: ObjectiveData, run: ModeRun, victory: bool) -> String:
+	if victory and mode.victory_reward_multiplier > 1.0:
+		GameState.multiply_rewards(mode.victory_reward_multiplier)
+		return TranslationServer.translate("UI_EXPEDITION_BONUS") % mode.victory_reward_multiplier
 	match mode.type:
 		ObjectiveData.Type.ENDLESS_SURVIVAL:
 			return _record_line("UI_RESULT_WAVE", "endless_survival_wave", GameState.wave)

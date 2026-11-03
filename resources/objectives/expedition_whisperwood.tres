@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ObjectiveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/objective_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/maps/whisperwood.tres" id="2_map"]
+
+[resource]
+script = ExtResource("1_data")
+name_key = "OBJ_EXPEDITION"
+description_key = "OBJ_EXPEDITION_DESC"
+type = 7
+required_rank = 2
+only_on_map = ExtResource("2_map")
+victory_reward_multiplier = 1.5

@@ -11,10 +11,15 @@ extends CharacterBody3D
 ## Hits from elements it's weak to fill a stagger gauge. When full, it's stunned and takes extra damage,
 ## but only after finishing any attack in progress: players can't interrupt a boss's attack (team rule).
 
+## Hunted bosses (roam_points set before it's added): it wanders the map until a hero comes near or
+## hits it, and limps off to another zone at each flee_at share of its HP. Only then does it announce
+## itself (boss bar, camera lock). See BossRoaming.
+
 signal phase_changed(phase: int)
 signal stagger_changed(fraction: float, staggered: bool) ## The boss bar shows this in words.
+signal fled ## A hunted boss is fleeing to another zone.
 
-enum State { INTRO, CHASE, WINDUP, ACTIVE, RECOVER, DEAD }
+enum State { INTRO, CHASE, WINDUP, ACTIVE, RECOVER, DEAD, ROAM, FLEE }
 
 const HIT_STOP: float = 0.03
 const DEATH_HIT_STOP: float = 0.25
@@ -28,6 +33,14 @@ const DEATH_HIT_STOP: float = 0.25
 @export var phase_two_speed: float = 1.25
 @export var phase_two_scene: PackedScene ## Added to the arena when phase two starts.
 
+@export_group("Hunt") ## Only used when roam_points are set.
+@export var notice_range: float = 14.0 ## A hero this close is noticed.
+@export var lose_range: float = 45.0 ## A hero who gets this far away is lost: back to wandering.
+@export var flee_at: Array[float] = [0.66, 0.33] ## HP shares at which it limps away to another zone.
+@export var flee_speed: float = 1.8 ## Times its normal speed while fleeing (set it so it outruns every hero).
+
+var roam_points: Array[Vector3] = [] ## Set by the hunt before the boss is added. Empty = an arena boss.
+
 var state: State = State.INTRO
 var target: Node3D = null
 var phase: int = 1
@@ -40,6 +53,10 @@ var _extra_recovery: float = 0.0
 var _stagger_built: float = 0.0
 var _stagger_pending: bool = false
 var _stagger_left: float = 0.0
+var _roaming: BossRoaming
+var _route: EnemyPath
+var _announced: bool = false
+var _flees_done: int = 0
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var stats: StatsComponent = $StatsComponent
@@ -71,9 +88,67 @@ func _ready() -> void:
 	health.damaged.connect(_on_damaged)
 	health.died.connect(_on_died)
 	hurtbox.hurt.connect(_on_hurt)
+	_route = EnemyPath.new(self, true)
+	if roam_points.is_empty():
+		_announce()
+	else:
+		_roaming = BossRoaming.new(self)
+		_change_state(State.ROAM)
+
+
+## The roar, the boss bar and the camera lock: the fight begins.
+func _announce() -> void:
+	_announced = true
 	animator.roar(intro_time)
 	get_tree().create_timer(intro_time * 0.35).timeout.connect(func() -> void: GameFeel.shake(0.8))
 	EventBus.boss_spawned.emit(self)
+
+
+## A hunted boss notices a hero: the first time with its roar, later straight back into the fight.
+func engage(hero: Node3D) -> void:
+	target = hero
+	if _announced:
+		_change_state(State.CHASE)
+		return
+	_announce()
+	_change_state(State.INTRO)
+
+
+func is_fleeing() -> bool:
+	return state == State.FLEE
+
+
+func stand() -> void:
+	velocity.x = 0.0
+	velocity.z = 0.0
+
+
+## Out of a fight: follows its route directly (sliding round corners) while turning to face it.
+## In a fight it still walks the way it faces, so circling behind it stays a tactic.
+func walk_along(direction: Vector3, speed: float, turn_delta: float) -> void:
+	turn_toward(global_position + direction, turn_delta)
+	velocity.x = direction.x * speed
+	velocity.z = direction.z * speed
+
+
+## Done fleeing: rest, and wander again.
+func end_flee() -> void:
+	if stun_label:
+		stun_label.visible = false
+	_change_state(State.ROAM)
+
+
+func _start_flee() -> void:
+	if state == State.WINDUP or state == State.ACTIVE:
+		_move.cancel()
+	cancel_stagger()
+	_change_state(State.FLEE)
+	animator.recover(0.6)
+	if stun_label:
+		stun_label.text = tr("STATUS_FLEEING")
+		stun_label.visible = true
+	_roaming.start_flee(target)
+	fled.emit()
 
 
 func _physics_process(delta: float) -> void:
@@ -103,7 +178,10 @@ func _physics_process(delta: float) -> void:
 				if stun_label:
 					stun_label.visible = false
 				_change_state(State.CHASE)
-	if state != State.CHASE and not (state == State.ACTIVE and move_drives_velocity):
+		State.ROAM, State.FLEE:
+			_roaming.process(delta)
+	var walking: bool = state == State.CHASE or state == State.ROAM or state == State.FLEE
+	if not walking and not (state == State.ACTIVE and move_drives_velocity):
 		velocity.x = 0.0
 		velocity.z = 0.0
 	if not is_on_floor():
@@ -138,6 +216,10 @@ func cancel_stagger() -> void:
 
 func _on_hurt(amount: int, hitbox: HitboxComponent) -> void:
 	GameFeel.hit_stop(get_tree(), HIT_STOP)
+	if state == State.ROAM: # Hit before it noticed anyone.
+		var hero: Node3D = Targeting.nearest_player(self)
+		if hero:
+			engage(hero)
 	if data == null or data.stagger_threshold <= 0.0 or data.element_multiplier(hitbox.element) <= 1.0:
 		return
 	if _stagger_pending or _stagger_left > 0.0:
@@ -205,8 +287,16 @@ func _process_chase(delta: float) -> void:
 			velocity.x = 0.0
 			velocity.z = 0.0
 			return
-	turn_toward(target.global_position, delta)
 	var distance: float = Targeting.flat_distance(global_position, target.global_position)
+	if _roaming and distance > lose_range:
+		_roaming.lose_track()
+		_change_state(State.ROAM)
+		return
+	# Up close it faces the hero; farther off it follows a route around obstacles (same thing in an open arena).
+	var heading: Vector3 = target.global_position
+	if distance > stop_distance * 2.0:
+		heading = global_position + _route.direction_to(target.global_position, delta)
+	turn_toward(heading, delta)
 	var move: BossMove = _pick_move(distance)
 	if move:
 		_start_move(move)
@@ -264,6 +354,10 @@ func _end_active() -> void:
 
 
 func _on_damaged(_amount: int) -> void:
+	if _roaming and _flees_done < flee_at.size() and health.current > 0 \
+			and health.current <= health.max_health * flee_at[_flees_done]:
+		_flees_done += 1
+		_start_flee()
 	if phase == 1 and health.current <= health.max_health * phase_two_at:
 		phase = 2
 		speed_scale = phase_two_speed

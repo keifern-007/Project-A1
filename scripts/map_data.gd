@@ -7,6 +7,8 @@ extends Resource
 @export var description_key: String = ""
 @export var required_rank: int = 1 ## Locked on the Mission Board until this Rank.
 @export var biome: BiomeData ## Empty = enemies stay their base type.
+## True = only objectives made for this map (only_on_map) are offered on it, e.g. a big map's Expedition.
+@export var own_objectives_only: bool = false
 ## Which enemies spawn here, how often and from which wave. Empty = the map's WaveSpawner list.
 @export var enemy_pool: Array[SpawnEntry] = []
 ## The map scene: floor/walls, camera, player, WaveSpawner, and markers
