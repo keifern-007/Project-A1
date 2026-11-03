@@ -621,3 +621,9 @@ SITE_WATCHTOWER,Old Watchtower
 SITE_STANDING_STONES,Standing Stones
 UI_CACHE,Open the cache
 UI_SHRINE,Rest at the stones
+MAP_STONECROWN,Stonecrown Basin
+MAP_STONECROWN_DESC,"A desert oasis ringed by cliffs: sand round a great stone plateau, the Crown, with a lagoon to the west and a ruin beyond the northern pond. Mummified goblins hold it now."
+OBJ_EXPEDITION_STONECROWN_DESC,"Sites fill the basin: on the sand, up on the Crown and on its summit, different every time. Clear any 8 to win (rewards x1.5); the farther from camp, the tougher. The cart at base camp takes you home early with what you collected, but that isn't a win."
+MAP_FROSTVEIN,Frostvein Peaks
+MAP_FROSTVEIN_DESC,"A frozen mountain maze: snowfields carved out of the rock, joined by narrow passes, dark tunnels and a crystal cavern, with a high shelf of peaks reached only through the ice caves. Frost goblins rule it."
+OBJ_EXPEDITION_FROSTVEIN_DESC,"Sites hide all through the peaks: in the snowfields, up on the high shelf and in the crystal cavern, different every time. Clear any 8 to win (rewards x1.5); the farther from camp, the tougher. The tunnels are the only way between some areas. The cart at base camp takes you home early with what you collected, but that isn't a win."

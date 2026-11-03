@@ -6,19 +6,28 @@ extends Node
 ## Works from what you SEE, not collision: a tree only collides at its trunk, but its leaves block the view.
 ## Fadeable = every solid prop (StaticBody3D) and solid CSG shape on the map, except those in group
 ## "no_fade" (floors, ramps, map bounds). Props don't move, so their boxes are measured once.
+## Cave roofs (group "cave_roofs", looks only) aren't faded but hidden while in the way, still casting
+## their shadow, so the cave stays dark and everything inside it is in plain view.
+## Group "cutaway" (a mountain's rock, around tunnels): faded over the shoulder, but hidden like a roof
+## in the isometric view, where a tunnel deep in the rock would sit behind several faded layers.
 
 const SEE_THROUGH: float = 0.7 ## 0 = solid, 1 = invisible.
 const AIM_HEIGHT: float = 1.2 ## Aim at the hero's chest, not their feet.
 const MAX_SIZE: float = 30.0 ## Metres. Anything wider (a floor, a whole map) is never faded.
 const NEAR_HERO: float = 0.6 ## Stop the line this far short of the hero, so what they stand beside stays solid.
+const ROOF_GROUP: StringName = &"cave_roofs"
+const CUTAWAY_GROUP: StringName = &"cutaway"
+
+enum Kind { FADE, ROOF, CUTAWAY }
+enum Look { SOLID, SEE_THROUGH, HIDDEN }
 
 ## The map to watch (set by RetroView). Scanning this, not "the first hero's viewport", means a map
 ## that's still being freed during a scene change can never be scanned by mistake.
 var world: Node
 
-var _candidates: Array = [] # [root Node3D, AABB in world space]
+var _candidates: Array = [] # [root Node3D, AABB in world space, Kind]
 var _scanned: bool = false
-var _faded: Dictionary = {} # Node3D -> true
+var _faded: Dictionary = {} # Node3D -> Look
 
 
 func _physics_process(_delta: float) -> void:
@@ -33,17 +42,19 @@ func _physics_process(_delta: float) -> void:
 	var from: Vector3 = camera.global_position
 	var to: Vector3 = player.global_position + Vector3.UP * AIM_HEIGHT
 	to -= (to - from).normalized() * NEAR_HERO
+	var isometric: bool = camera.projection == Camera3D.PROJECTION_ORTHOGONAL
 	var now: Dictionary = {}
 	for entry: Array in _candidates:
 		var root: Node3D = entry[0]
 		if is_instance_valid(root) and (entry[1] as AABB).intersects_segment(from, to):
-			now[root] = true
+			var kind: Kind = entry[2]
+			now[root] = Look.HIDDEN if kind == Kind.ROOF or (kind == Kind.CUTAWAY and isometric) else Look.SEE_THROUGH
 	for root: Node3D in _faded:
-		if not now.has(root) and is_instance_valid(root):
-			_set_see_through(root, 0.0)
+		if now.get(root, Look.SOLID) != _faded[root] and is_instance_valid(root):
+			_show(root, Look.SOLID)
 	for root: Node3D in now:
-		if not _faded.has(root):
-			_set_see_through(root, SEE_THROUGH)
+		if now[root] != _faded.get(root, Look.SOLID):
+			_show(root, now[root])
 	_faded = now
 
 
@@ -64,10 +75,20 @@ func _scan(map: Node) -> void:
 		if root == null or seen.has(root):
 			continue
 		seen[root] = true
-		var box: AABB = _visual_box(root)
-		# Floors and whole maps never count: a map's invisible Bounds would otherwise fade the entire map.
-		if box.size != Vector3.ZERO and box.size.x <= MAX_SIZE and box.size.z <= MAX_SIZE:
-			_candidates.append([root, box])
+		_add(root, Kind.CUTAWAY if root.is_in_group(CUTAWAY_GROUP) else Kind.FADE)
+	# Cave roofs: any size (a cavern's roof is big), no collision needed.
+	for roof: Node in get_tree().get_nodes_in_group(ROOF_GROUP):
+		if roof is Node3D and map.is_ancestor_of(roof):
+			_add(roof, Kind.ROOF)
+
+
+func _add(root: Node3D, kind: Kind) -> void:
+	var box: AABB = _visual_box(root)
+	if box.size == Vector3.ZERO:
+		return
+	# Floors and whole maps never count: a map's invisible Bounds would otherwise fade the entire map.
+	if kind == Kind.ROOF or (box.size.x <= MAX_SIZE and box.size.z <= MAX_SIZE):
+		_candidates.append([root, box, kind])
 
 
 ## The node whose meshes should fade: a solid CSG shape, a prop body with its meshes, or the prop
@@ -109,11 +130,20 @@ func _meshes(root: Node3D) -> Array[GeometryInstance3D]:
 	if root is GeometryInstance3D:
 		meshes.append(root)
 	for node: Node in root.find_children("*", "GeometryInstance3D", true, false):
-		if not node is Label3D:
-			meshes.append(node)
+		# The parts of a CSG shape (the cuts in a mountain) aren't drawn by themselves, and their
+		# boxes reach far past the result: only the shape they make counts.
+		if node is Label3D or (node is CSGShape3D and not (node as CSGShape3D).is_root_shape()):
+			continue
+		meshes.append(node)
 	return meshes
 
 
-func _set_see_through(root: Node3D, amount: float) -> void:
+## Hidden = drawn as a shadow only, so what it shades stays dark. Only roofs and cutaway rock are ever
+## hidden (they're made with shadows on), so putting shadows back on never changes another prop.
+func _show(root: Node3D, look: Look) -> void:
 	for mesh: GeometryInstance3D in _meshes(root):
-		mesh.transparency = amount
+		mesh.transparency = SEE_THROUGH if look == Look.SEE_THROUGH else 0.0
+		if look == Look.HIDDEN:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+		elif mesh.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON

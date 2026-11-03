@@ -22,6 +22,10 @@
 [ext_resource type="Resource" path="res://resources/maps/whisperwood.tres" id="20_whisperwood"]
 [ext_resource type="Resource" path="res://resources/objectives/expedition_whisperwood.tres" id="21_expedition"]
 [ext_resource type="Resource" path="res://resources/objectives/hunt_thornback.tres" id="22_hunt"]
+[ext_resource type="Resource" path="res://resources/maps/stonecrown_basin.tres" id="23_stonecrown"]
+[ext_resource type="Resource" path="res://resources/objectives/expedition_stonecrown.tres" id="24_exp_stonecrown"]
+[ext_resource type="Resource" path="res://resources/maps/frostvein_peaks.tres" id="25_frostvein"]
+[ext_resource type="Resource" path="res://resources/objectives/expedition_frostvein.tres" id="26_exp_frostvein"]
 
 [sub_resource type="LabelSettings" id="TitleText"]
 font_size = 32
@@ -43,8 +47,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_select")
-maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox"), ExtResource("13_frost"), ExtResource("14_sunscar"), ExtResource("20_whisperwood")])
-objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("15_hoarfrost"), ExtResource("16_king"), ExtResource("8_sunbloom"), ExtResource("17_endless"), ExtResource("18_endless_boss"), ExtResource("19_classic"), ExtResource("21_expedition"), ExtResource("22_hunt")])
+maps = Array[ExtResource("2_mapdata")]([ExtResource("3_greybox"), ExtResource("13_frost"), ExtResource("14_sunscar"), ExtResource("20_whisperwood"), ExtResource("23_stonecrown"), ExtResource("25_frostvein")])
+objectives = Array[ExtResource("4_objdata")]([ExtResource("5_horde"), ExtResource("6_gather"), ExtResource("7_boss"), ExtResource("15_hoarfrost"), ExtResource("16_king"), ExtResource("8_sunbloom"), ExtResource("17_endless"), ExtResource("18_endless_boss"), ExtResource("19_classic"), ExtResource("21_expedition"), ExtResource("22_hunt"), ExtResource("24_exp_stonecrown"), ExtResource("26_exp_frostvein")])
 challenges = Array[ExtResource("9_chdata")]([ExtResource("10_normal"), ExtResource("11_hard"), ExtResource("12_brutal")])
 
 [node name="Background" type="ColorRect" parent="."]
