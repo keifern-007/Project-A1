@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/flame_whirlwind.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://resources/skills/whirlwind.tres" id="3_base"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"flame_whirlwind"
+name_key = "SKILL_FLAME_WHIRLWIND"
+anim = &"spin"
+cooldown = 9.0
+damage_multiplier = 0.8
+kind = 1
+cost = 40.0
+element = 1
+cast_time = 0.4
+commit_time = 0.4
+effect_scene = ExtResource("2_scene")
+base_skill = ExtResource("3_base")

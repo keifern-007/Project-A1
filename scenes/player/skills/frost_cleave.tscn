@@ -16,6 +16,8 @@ albedo_color = Color(0.55, 0.85, 1, 0.8)
 
 [node name="FrostCleave" type="Node3D"]
 script = ExtResource("1_script")
+swing = true
+fx_scale = 1.15
 shake = 0.3
 
 [node name="HitboxComponent" type="Area3D" parent="."]

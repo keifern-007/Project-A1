@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/ice_barrage.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://resources/skills/arcane_barrage.tres" id="3_base"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"ice_barrage"
+name_key = "SKILL_ICE_BARRAGE"
+anim = &"cast"
+cooldown = 6.0
+damage_multiplier = 1.2
+kind = 1
+cost = 30.0
+element = 2
+cast_time = 0.6
+commit_time = 0.2
+effect_scene = ExtResource("2_scene")
+base_skill = ExtResource("3_base")

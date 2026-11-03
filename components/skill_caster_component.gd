@@ -33,6 +33,9 @@ var guard_break_skills: Dictionary = {} ## skill -> true: a heavy weapon's skill
 var _cooldowns: Array[float] = []
 var _basic_left: float = 0.0
 var _cast: Dictionary = {} # While casting: slot (BASIC_SLOT = basic attack), skill, caster, direction, world, left.
+var _infusion_element: Element.Type = Element.Type.PHYSICAL ## What the basic attack deals during an infusion.
+var _infusion_left: float = 0.0
+var _timed_status: Dictionary = {} # HUD translation key -> seconds left.
 
 
 func _ready() -> void:
@@ -48,12 +51,38 @@ func set_skills(new_skills: Array[SkillData]) -> void:
 
 func _physics_process(delta: float) -> void:
 	_basic_left = maxf(_basic_left - delta, 0.0)
+	_infusion_left = maxf(_infusion_left - delta, 0.0)
+	for key: String in _timed_status.keys():
+		_timed_status[key] -= delta
+		if _timed_status[key] <= 0.0:
+			_timed_status.erase(key)
 	for i: int in _cooldowns.size():
 		_cooldowns[i] = maxf(_cooldowns[i] - delta * cooldown_speed, 0.0)
 	if is_casting():
 		_cast["left"] -= delta
 		if _cast["left"] <= 0.0:
 			_finish_cast()
+
+
+## The basic attack deals this element for a while (Ember Infusion). Refreshes if cast again.
+func infuse_basic_attack(new_element: Element.Type, seconds: float) -> void:
+	_infusion_element = new_element
+	_infusion_left = seconds
+
+
+## A buff skill's HUD line, as `key` % seconds left, for `seconds`. Casting again refreshes it.
+func show_timed_status(key: String, seconds: float) -> void:
+	_timed_status[key] = seconds
+
+
+## HUD lines for what these skills are doing right now, e.g. "Basic attack: ^ Fire 8s".
+func status_lines() -> Array[String]:
+	var lines: Array[String] = []
+	if _infusion_left > 0.0:
+		lines.append(tr("HUD_INFUSED") % [tr(Element.name_key(_infusion_element)), ceili(_infusion_left)])
+	for key: String in _timed_status:
+		lines.append(tr(key) % ceili(_timed_status[key]))
+	return lines
 
 
 ## Seconds until the slot is ready again. The HUD reads this.
@@ -171,7 +200,7 @@ func _spawn(skill: SkillData, caster: Node3D, direction: Vector3, world: Node) -
 	var effect: SkillEffect = skill.effect_scene.instantiate()
 	var attack_power: int = stats.get_attack_power() if stats else 0
 	effect.damage = roundi(attack_power * skill.damage_multiplier * _talent_mod(skill_damage_mods, skill))
-	effect.element = skill.element
+	effect.element = _infusion_element if skill == basic_attack and _infusion_left > 0.0 else skill.element
 	effect.direction = direction
 	effect.caster = caster
 	world.add_child(effect)

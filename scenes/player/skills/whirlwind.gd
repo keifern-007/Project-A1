@@ -28,6 +28,8 @@ func _physics_process(delta: float) -> void:
 func _pulse() -> void:
 	hitbox.active = true
 	GameFeel.shake(0.1)
+	if element != Element.Type.PHYSICAL:
+		SkillFx.burst(get_parent(), global_position + Vector3.UP, element, 1.3)
 	get_tree().create_timer(pulse_active, false, true).timeout.connect(_end_pulse)
 
 

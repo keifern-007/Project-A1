@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/player/skills/self_buff.gd" id="1_script"]
+
+[node name="Sprint" type="Node3D"]
+script = ExtResource("1_script")
+duration = 5.0
+status_key = "HUD_BUFF_SPRINT"
+speed_multiplier = 1.3
+aura = 0

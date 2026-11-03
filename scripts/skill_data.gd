@@ -32,6 +32,11 @@ enum Kind { PHYSICAL, MAGIC }
 @export var anim: StringName = &""
 
 
+## Translation key for what it does, e.g. "SKILL_GROUND_SLAM_DESC". Shown at the Skill Shrine.
+func description_key() -> String:
+	return name_key + "_DESC"
+
+
 ## "Whirlwind (^ Fire)" for menus; physical skills show just their name.
 func display_name() -> String:
 	var skill_name: String = TranslationServer.translate(name_key)

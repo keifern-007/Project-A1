@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/frost_slam.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"frost_slam"
+name_key = "SKILL_FROST_SLAM"
+anim = &"slam"
+cooldown = 8.0
+damage_multiplier = 1.5
+kind = 1
+cost = 30.0
+element = 2
+cast_time = 0.5
+commit_time = 0.35
+effect_scene = ExtResource("2_scene")

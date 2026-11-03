@@ -18,6 +18,7 @@ albedo_color = Color(0.65, 0.92, 1, 1.0)
 
 [node name="IceLance" type="Node3D"]
 script = ExtResource("1_script")
+fx_size = 1.2
 speed = 16.0
 max_distance = 14.0
 

@@ -21,6 +21,8 @@ albedo_color = Color(0.8, 0.6, 1, 1.0)
 
 [node name="MagicBolt" type="Node3D"]
 script = ExtResource("1_script")
+plain_magic = true
+fx_size = 0.8
 
 [node name="HitboxComponent" type="Area3D" parent="."]
 collision_layer = 16

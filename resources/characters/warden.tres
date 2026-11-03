@@ -1,5 +1,8 @@
 [gd_resource type="Resource" script_class="CharacterData" load_steps=13 format=3]
 
+[ext_resource type="Resource" path="res://resources/skills/shield_charge.tres" id="pool_shield_charge"]
+[ext_resource type="Resource" path="res://resources/skills/burning_aegis.tres" id="pool_burning_aegis"]
+[ext_resource type="Resource" path="res://resources/skills/frost_slam.tres" id="pool_frost_slam"]
 [ext_resource type="PackedScene" path="res://scenes/player/models/warden_rig.tscn" id="rig_scene"]
 [ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/passives/bulwark.tres" id="2_passive"]
@@ -37,4 +40,5 @@ color = Color(0.35, 0.5, 0.8, 1)
 rig = ExtResource("rig_scene")
 passive = ExtResource("2_passive")
 signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_shield_bash"), ExtResource("5_iron_guard")])
+skill_pool = Array[ExtResource("3_skill")]([ExtResource("pool_frost_slam"), ExtResource("pool_burning_aegis"), ExtResource("pool_shield_charge")])
 talents = Array[ExtResource("30_talent")]([ExtResource("31_thick_hide"), ExtResource("32_shield_training"), ExtResource("33_bastion"), ExtResource("34_unbreakable"), ExtResource("35_juggernaut"), ExtResource("36_fortress")])

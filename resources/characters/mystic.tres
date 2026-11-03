@@ -1,5 +1,10 @@
 [gd_resource type="Resource" script_class="CharacterData" load_steps=14 format=3]
 
+[ext_resource type="Resource" path="res://resources/skills/frost_nova.tres" id="pool_frost_nova"]
+[ext_resource type="Resource" path="res://resources/skills/venom_spray.tres" id="pool_venom_spray"]
+[ext_resource type="Resource" path="res://resources/skills/ember_infusion.tres" id="pool_ember_infusion"]
+[ext_resource type="Resource" path="res://resources/skills/fireball.tres" id="pool_fireball"]
+[ext_resource type="Resource" path="res://resources/skills/ice_barrage.tres" id="pool_ice_barrage"]
 [ext_resource type="PackedScene" path="res://scenes/player/models/mystic_rig.tscn" id="rig_scene"]
 [ext_resource type="Script" path="res://scripts/character_data.gd" id="1_data"]
 [ext_resource type="Resource" path="res://resources/passives/attunement.tres" id="2_passive"]
@@ -38,5 +43,6 @@ color = Color(0.65, 0.4, 0.85, 1)
 rig = ExtResource("rig_scene")
 passive = ExtResource("2_passive")
 signature_skills = Array[ExtResource("3_skill")]([ExtResource("4_arcane_barrage"), ExtResource("5_blink")])
+skill_pool = Array[ExtResource("3_skill")]([ExtResource("pool_ice_barrage"), ExtResource("pool_fireball"), ExtResource("pool_ember_infusion"), ExtResource("pool_venom_spray"), ExtResource("pool_frost_nova")])
 basic_attack = ExtResource("6_magic_bolt")
 talents = Array[ExtResource("30_talent")]([ExtResource("31_focus"), ExtResource("32_phase_step"), ExtResource("33_deep_attunement"), ExtResource("34_storm_of_bolts"), ExtResource("35_overcharge"), ExtResource("36_warding")])

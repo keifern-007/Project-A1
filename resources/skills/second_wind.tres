@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/second_wind.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"second_wind"
+name_key = "SKILL_SECOND_WIND"
+anim = &"raise"
+cooldown = 16.0
+damage_multiplier = 0.0
+kind = 1
+cost = 35.0
+element = 0
+cast_time = 0.5
+commit_time = 0.2
+effect_scene = ExtResource("2_scene")
+shared = true

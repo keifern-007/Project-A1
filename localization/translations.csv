@@ -225,6 +225,56 @@ TALENT_SKILL_COOLDOWN,%s: %+d%% cooldown
 UI_TAB_TRACKS,Tracks
 UI_TAB_TALENTS,%s Talents
 UI_TAB_SKILLS,%s Skills
+HUD_INFUSED,Basic attack: %s %ds
+HUD_BUFF_RAGE,! Rage: +40%% damage and +20%% damage taken %ds
+HUD_BUFF_BLOODTHIRST,+ Bloodthirst: kills heal %ds
+HUD_BUFF_SPRINT,+ Sprint %ds
+SKILL_RAGE_BURST,Rage Burst
+SKILL_RAGE_BURST_DESC,+40% damage for 6 s but you take +20% damage.
+SKILL_BLOODTHIRST,Bloodthirst
+SKILL_BLOODTHIRST_DESC,Kills heal 5% max HP for 6 s. Does nothing if you aren't killing.
+SKILL_SHIELD_CHARGE,Shield Charge
+SKILL_SHIELD_CHARGE_DESC,Rushes forward with strong knockback. Unlike a dodge you can still be hit.
+SKILL_VENOM_SPRAY,Venom Spray
+SKILL_VENOM_SPRAY_DESC,Wide fan that stacks Poison. Weak on impact and strong over time.
+SKILL_FROST_NOVA,Frost Nova
+SKILL_FROST_NOVA_DESC,Chills everything around you. Short range for a caster.
+SKILL_SECOND_WIND,Second Wind
+SKILL_SECOND_WIND_DESC,Heals 25% max HP over 4 s. Uses a key and a lot of mana.
+SKILL_SPRINT,Sprint
+SKILL_SPRINT_DESC,+30% move speed for 5 s. Adds no damage or defense.
+SKILL_STAMINA_SURGE,Stamina Surge
+SKILL_STAMINA_SURGE_DESC,Restores 30 stamina by trading mana for more attacks and dodges.
+SKILL_FLAME_WHIRLWIND,Flame Whirlwind
+SKILL_FLAME_WHIRLWIND_DESC,Whirlwind that Burns. Costs more and hits softer.
+SKILL_KNOCKOUT_BLOW,Knockout Blow
+SKILL_KNOCKOUT_BLOW_DESC,Huge hit that breaks guards. A boss's hit during the long wind-up cancels it.
+SKILL_COLD_FIST,Cold Fist
+SKILL_COLD_FIST_DESC,Quick 3-hit combo that stacks Chill. Low damage per hit.
+SKILL_FROST_SLAM,Frost Slam
+SKILL_FROST_SLAM_DESC,Ground slam that Chills everything nearby.
+SKILL_BURNING_AEGIS,Burning Aegis
+SKILL_BURNING_AEGIS_DESC,Fire pulses around you for 5 s. Low damage so you must stay in the fight.
+SKILL_ICE_BARRAGE,Ice Barrage
+SKILL_ICE_BARRAGE_DESC,3 bolts in a row that can Freeze one target. Costs more and hits softer.
+SKILL_FIREBALL,Fireball
+SKILL_FIREBALL_DESC,One big bolt that Burns. The long wind-up slows you and can leave you exposed.
+SKILL_EMBER_INFUSION,Ember Infusion
+SKILL_EMBER_INFUSION_DESC,Your basic attack deals Fire for 10 s. Uses a key that could hold an attack.
+SKILL_EMBER_STRIKE,Ember Strike
+SKILL_EMBER_STRIKE_DESC,Melee hit that Burns.
+SKILL_FROST_STRIKE,Frost Strike
+SKILL_FROST_STRIKE_DESC,Melee hit that Chills.
+SKILL_VENOM_STRIKE,Venom Strike
+SKILL_VENOM_STRIKE_DESC,Melee hit that Poisons.
+SKILL_BACKSTAB,Backstab
+SKILL_BACKSTAB_DESC,Fast single stab. Short reach so you must stand close.
+SKILL_DASH_STRIKE_DESC,Dashes forward and hits what it passes.
+SKILL_WHIRLWIND_DESC,Spins and hits all around you.
+SKILL_SHIELD_BASH_DESC,Short-range shield strike.
+SKILL_IRON_GUARD_DESC,Take 60% less damage for 3 s.
+SKILL_ARCANE_BARRAGE_DESC,Fires 3 bolts in a row.
+SKILL_BLINK_DESC,Short teleport. Briefly invulnerable.
 TALENT_ONLY_EQUIPPED,Only when that skill is equipped
 UI_SKILLS_PICK_KEY,Pick a key and then a skill for it. Choices apply from your next mission.
 UI_SKILLS_HERO_HEADER,Keys 1 and 2: hero skills

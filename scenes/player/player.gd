@@ -17,6 +17,7 @@ const BOSS_MIN_KNOCKBACK_TAKEN: float = 0.5 ## Knockback immunity (Bulwark) only
 
 signal dodged
 signal attack_interrupted ## A boss's hit cancelled our wind-up. Hook for a sound.
+signal strike_repeated ## The next hit of a combo skill: the model strikes again. Hook for a sound.
 signal stamina_short ## An attack or dodge was refused for lack of stamina (HUD shows 'No stamina').
 signal collected(pickup: Pickup) ## Hook for pickup sounds.
 
@@ -50,6 +51,7 @@ var _dodge_buffer_left: float = 0.0
 var _commit_left: float = 0.0
 var _attack_stamina_cost: float = 0.0
 var _speed_modifiers: Dictionary = {} # source -> walk speed multiplier (quicksand...).
+var _speed_boosts: Dictionary = {} # source -> walk speed multiplier above 1 (Sprint...).
 var _dodge_stamina_cost: float = 0.0
 var _lean_tween: Tween
 var rig: HeroRig ## The hero's model. Built in _ready from CharacterData.rig.
@@ -84,6 +86,8 @@ func _ready() -> void:
 	hazards.stats = $StatsComponent
 	add_child(hazards)
 	boosters.hazards = hazards
+	if combat_enabled and controlled:
+		_warm_up_effects.call_deferred()
 	skill_caster.set_skills(character.skill_loadout())
 	skill_caster.basic_attack = character.data.basic_attack
 	var weapon_windup: float = character.weapon_windup_multiplier()
@@ -189,6 +193,11 @@ func _show_gear() -> void:
 	_attack_stamina_cost = character.data.attack_stamina_cost * EquipmentComponent.attack_cost_multiplier(load_amount)
 	_dodge_stamina_cost = character.data.max_stamina / character.data.dodges_per_bar \
 		* EquipmentComponent.dodge_cost_multiplier(load_amount)
+
+
+func _warm_up_effects() -> void:
+	SkillFx.warm_up(get_parent(), global_position)
+	status.warm_up_labels()
 
 
 func _armor_load() -> float:
@@ -323,7 +332,17 @@ func speed_modifier() -> float:
 	var strongest: float = 1.0
 	for multiplier: float in _speed_modifiers.values():
 		strongest = minf(strongest, multiplier)
+	for boost: float in _speed_boosts.values():
+		strongest *= boost
 	return strongest
+
+
+## Skills that speed you up (Sprint). Each source sets its own; 1.0 removes it. Slows still apply on top.
+func set_speed_boost(source: StringName, multiplier: float) -> void:
+	if is_equal_approx(multiplier, 1.0):
+		_speed_boosts.erase(source)
+	else:
+		_speed_boosts[source] = multiplier
 
 
 ## Mouse/right stick if aiming, otherwise the way we're facing.

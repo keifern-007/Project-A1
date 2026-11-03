@@ -100,6 +100,8 @@ func _process(delta: float) -> void:
 		lines.append(_passives.status_text())
 	if _hazards and _hazards.status_text() != "":
 		lines.append(_hazards.status_text())
+	if _skill_caster:
+		lines.append_array(_skill_caster.status_lines())
 	boost_label.text = "\n".join(lines)
 	if _skill_caster:
 		for i: int in _slots.size():

@@ -193,6 +193,18 @@ func _show_popup(text: String) -> void:
 	tween.chain().tween_callback(popup.queue_free)
 
 
+## Shows every status text once, invisibly, when a mission starts. Otherwise the first hit that
+## applies a status freezes the game for a moment while its letters are prepared.
+func warm_up_labels() -> void:
+	var label: Label3D = _make_label()
+	label.text = "%s %s %s %s\n%s %s %s %s %s" % [tr("STATUS_BURN"), tr("STATUS_CHILL") % 1, tr("STATUS_FROZEN"), tr("STATUS_POISON") % 1,
+		tr("POPUP_WEAK"), tr("POPUP_RESIST"), tr("POPUP_ABSORBED"), tr("STATUS_STUNNED"), tr("STATUS_STAGGERED")]
+	label.modulate.a = 0.01
+	label.outline_modulate.a = 0.01
+	add_child(label)
+	get_tree().create_timer(0.1, false, true).timeout.connect(label.queue_free)
+
+
 func _make_label() -> Label3D:
 	var label: Label3D = Label3D.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED

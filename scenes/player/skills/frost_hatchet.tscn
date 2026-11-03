@@ -18,6 +18,9 @@ albedo_color = Color(0.6, 0.9, 1, 1.0)
 
 [node name="FrostHatchet" type="Node3D"]
 script = ExtResource("1_script")
+show_weapon = true
+spin_speed = 16.0
+weapon_leaves_hand_for = 0.55
 speed = 14.0
 max_distance = 10.0
 

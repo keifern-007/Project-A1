@@ -14,6 +14,8 @@ func _ready() -> void:
 	hitbox.element = element
 	hitbox.active = true
 	GameFeel.shake(shake)
+	if element != Element.Type.PHYSICAL:
+		SkillFx.burst(get_parent(), global_position + Vector3.UP * 0.4, element, 2.0)
 	get_tree().create_timer(active_time, false, true).timeout.connect(_on_active_ended)
 
 	ring.scale = Vector3.ONE * 0.2

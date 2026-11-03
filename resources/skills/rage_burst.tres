@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/skill_data.gd" id="1_data"]
+[ext_resource type="PackedScene" path="res://scenes/player/skills/rage_burst.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"rage_burst"
+name_key = "SKILL_RAGE_BURST"
+anim = &"raise"
+cooldown = 18.0
+damage_multiplier = 0.0
+kind = 1
+cost = 30.0
+element = 0
+cast_time = 0.1
+commit_time = 0.15
+effect_scene = ExtResource("2_scene")

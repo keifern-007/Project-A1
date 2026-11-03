@@ -139,6 +139,9 @@ func _make_row(skill: SkillData, button: Button) -> Control:
 	text.add_theme_constant_override("separation", 0)
 	text.add_child(_make_label(skill.display_name(), 17))
 	text.add_child(_make_label(_numbers_of(skill), 14))
+	var about: String = tr(skill.description_key())
+	if about != skill.description_key(): # Not every skill has a description.
+		text.add_child(_make_label(about, 14))
 	row.add_child(text)
 	button.custom_minimum_size = Vector2(ACTION_WIDTH, 38)
 	row.add_child(button)

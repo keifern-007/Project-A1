@@ -63,6 +63,7 @@ func _connect_player() -> void:
 			_strike()
 		else:
 			_stop())
+	player.strike_repeated.connect(_strike_again)
 	player.dodged.connect(func() -> void: _start(Action.ROLL, player.dodge_duration))
 	player.hurtbox.hurt.connect(func(_amount: int, _hitbox: HitboxComponent) -> void:
 		if _action == Action.NONE or _action == Action.FLOURISH:
@@ -110,6 +111,17 @@ func _strike() -> void:
 	_start(Action.STRIKE, SPIN_TIME if _pose == &"spin" else STRIKE_TIME)
 
 
+## The next hit of a combo: the other hand (where there is one) pulls back at once and strikes.
+func _strike_again() -> void:
+	_side = -_side
+	_target.clear()
+	_stance()
+	_pose_windup(_pose, 1.0)
+	for joint: String in _target:
+		(_joints[joint] as Node3D).rotation = _target[joint]
+	_strike()
+
+
 func _start(action: Action, length: float) -> void:
 	_action = action
 	_action_time = 0.0
@@ -141,6 +153,8 @@ func _weapon_pose() -> StringName:
 func _pose_of(skill: SkillData) -> StringName:
 	if skill == player.skill_caster.basic_attack:
 		return &"cast"
+	if skill.anim == &"slash" and rig.weapon_kind == &"":
+		return &"punch" # Nothing in hand to swing.
 	if skill.anim != &"":
 		return skill.anim
 	return &"cast" if skill.kind == SkillData.Kind.MAGIC else _weapon_pose()
@@ -301,6 +315,16 @@ func _pose_windup(pose: StringName, t: float) -> void:
 			_add("Torso", Vector3(0.35 * t, 0.3 * t, 0.0))
 			_add("ThighR", Vector3(-0.5 * t, 0.0, 0.0))
 			_add("ThighL", Vector3(0.5 * t, 0.0, 0.0))
+		&"throw": # One arm cocked back behind the head.
+			_pose_joint("ArmR", Vector3(2.7 * t, 0.0, 0.3))
+			_pose_joint("ForeR", Vector3(1.3 * t, 0.0, 0.0))
+			_add("Torso", Vector3(-0.3 * t, 0.5 * t, 0.0))
+			_add("ThighR", Vector3(-0.25 * t, 0.0, 0.0))
+			_add("ThighL", Vector3(0.3 * t, 0.0, 0.0))
+		&"bash": # Shield pulled in, shoulder turned.
+			_pose_joint("ArmL", Vector3(0.5, 0.0, -0.3 * t))
+			_pose_joint("ForeL", Vector3(1.8, 0.0, 0.0))
+			_add("Torso", Vector3(-0.1 * t, -0.5 * t, 0.0))
 		&"spin":
 			_pose_joint("ArmR", Vector3(1.5, 0.0, 1.0))
 			_pose_joint("ForeR", Vector3(0.2, 0.0, 0.0))
@@ -347,6 +371,18 @@ func _pose_strike(pose: StringName, t: float) -> void:
 			_add("Head", Vector3(-0.4, 0.0, 0.0))
 		&"guard":
 			_pose_windup(&"guard", 1.0)
+		&"throw": # Arm whips over and follows through.
+			_pose_joint("ArmR", Vector3(1.25 * hit, 0.0, -0.15))
+			_pose_joint("ForeR", Vector3(0.1, 0.0, 0.0))
+			_add("Torso", Vector3(0.45 * hit, -0.5 * hit, 0.0))
+			_add("ThighR", Vector3(0.45 * hit, 0.0, 0.0))
+			_add("ThighL", Vector3(-0.3 * hit, 0.0, 0.0))
+		&"bash": # Shield thrust forward, weight behind it.
+			_pose_joint("ArmL", Vector3(1.5, 0.0, 0.0))
+			_pose_joint("ForeL", Vector3(0.1, 0.0, 0.0))
+			_add("Torso", Vector3(0.3 * hit, 0.45 * hit, 0.0))
+			_add("ThighR", Vector3(-0.3 * hit, 0.0, 0.0))
+			_add("ThighL", Vector3(0.55 * hit, 0.0, 0.0))
 		&"spin":
 			_pose_windup(&"spin", 1.0)
 			rig.rotation.y = t * TAU
